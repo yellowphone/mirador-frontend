@@ -1,7 +1,6 @@
 {
   "name": "mirador",
   "version": "1.0.0",
-  "main": "index.js",
   "scripts": {
     "start:dev": "webpack serve",
     "build:dev": "webpack --mode development",
@@ -12,7 +11,6 @@
     "lodash": "^4.17.20",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
-    "react-hot-loader": "^4.13.0",
     "webpack": "^5.6.0"
   },
   "devDependencies": {
