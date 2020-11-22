@@ -2,13 +2,14 @@ import { hot } from 'react-hot-loader/root';
 import React from 'react';
 import { HelloWorld } from '../components/HelloWorld';
 
-const App: React.FC = () => {
+export const App: React.FC = () => {
 
     return (
         <>
-            <HelloWorld firstName="Bailey" lastName="Spell" />	  
+            <h1>lets get this going</h1>	  
         </>
     );
 }
 
-export default hot(App);
+// export default hot(App);
+export default App;
