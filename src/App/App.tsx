@@ -1,3 +1,4 @@
+import { ChakraProvider } from '@chakra-ui/react';
 import React from 'react';
 import { Redirect, Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 import { Adventure } from '../components/adventure/Adventure';
@@ -9,16 +10,18 @@ import { Paths } from '../utils/paths';
 
 export const App: React.FC = () => {
     return (
-      <Router>
-        <Switch>
-          <Route exact path={Paths.Home} component={Home} />
-          <Route exact path={Paths.Blog} component={Blog} />
-          <Route exact path={Paths.Adventure} component={Adventure} />
-          <Route exact path={Paths.Itenerary} component={Itenterary} />
-          <Route exact path={Paths.Profile} component={Profile} />
-          <Redirect from='*' to={Paths.Home} />
-        </Switch>
-      </Router>
+      <ChakraProvider>
+        <Router>
+          <Switch>
+            <Route exact path={Paths.Home} component={Home} />
+            <Route exact path={Paths.Blog} component={Blog} />
+            <Route exact path={Paths.Adventure} component={Adventure} />
+            <Route exact path={Paths.Itenerary} component={Itenterary} />
+            <Route exact path={Paths.Profile} component={Profile} />
+            <Redirect from='*' to={Paths.Home} />
+          </Switch>
+        </Router>
+      </ChakraProvider>
     );
 }
 
