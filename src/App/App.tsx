@@ -1,11 +1,24 @@
 import React from 'react';
+import { Redirect, Route, BrowserRouter as Router, Switch } from 'react-router-dom';
+import { Adventure } from '../components/adventure/Adventure';
+import { Blog } from '../components/blog/Blog';
+import { Home } from '../components/home/Home';
+import { Itenterary } from '../components/itenterary/Itenterary';
+import { Profile } from '../components/profile/Profile';
+import { Paths } from '../utils/paths';
 
 export const App: React.FC = () => {
-
     return (
-        <>
-            <h1>Hey Geo</h1>	  
-        </>
+      <Router>
+        <Switch>
+          <Route exact path={Paths.Home} component={Home} />
+          <Route exact path={Paths.Blog} component={Blog} />
+          <Route exact path={Paths.Adventure} component={Adventure} />
+          <Route exact path={Paths.Itenerary} component={Itenterary} />
+          <Route exact path={Paths.Profile} component={Profile} />
+          <Redirect from='*' to={Paths.Home} />
+        </Switch>
+      </Router>
     );
 }
 
