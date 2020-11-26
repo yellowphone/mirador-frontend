@@ -18,6 +18,7 @@ export const Map: FC<IMapDataProps> = ({ height, width }) => {
             <GoogleMapReact
             bootstrapURLKeys={{ key: process.env.MAPS_API_KEY ?? '' }}
             defaultCenter={center}
+            options={{ gestureHandling: "greedy" }}
             defaultZoom={15}
             ></GoogleMapReact>
       </div>
