@@ -15,7 +15,7 @@
     "watch": true,
     "sourceMap": true,
     "outDir": "./dist/",
-    "types": ["googlemaps"],
+    "types": ["googlemaps", "node"],
   },
   "include": [
     "src"

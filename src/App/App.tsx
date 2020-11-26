@@ -13,9 +13,9 @@ export const App: React.FC = () => {
       <ChakraProvider>
         <Router>
           <Switch>
-            <Route exact path={Paths.Home} component={Home} />
+            <Route exact path={Paths.Home} component={Adventure} />
             <Route exact path={Paths.Blog} component={Blog} />
-            <Route exact path={Paths.Adventure} component={Adventure} />
+            <Route exact path={Paths.Adventure} component={Home} />
             <Route exact path={Paths.Itenerary} component={Itenterary} />
             <Route exact path={Paths.Profile} component={Profile} />
             <Redirect from='*' to={Paths.Home} />
