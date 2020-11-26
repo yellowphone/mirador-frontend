@@ -1,0 +1,11 @@
+.navbar-brand {
+    cursor: pointer;
+}
+
+.center {
+    justify-content: center;
+}
+
+a {
+    white-space: nowrap;
+}
