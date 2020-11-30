@@ -8,7 +8,7 @@ export interface IAdventure {
     title: string
     rating: number
     lat: number
-    long: number
+    lng: number
     difficulty: DifficultyType
 }
 
