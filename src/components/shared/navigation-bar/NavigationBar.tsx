@@ -1,4 +1,4 @@
-import { Box, Flex, Spacer } from '@chakra-ui/react';
+import { GridItem, Spacer, Grid } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 import { Nav } from 'react-bootstrap';
 import Navbar from 'react-bootstrap/Navbar';
@@ -15,26 +15,26 @@ export const NavigationBar = () => {
 
     return (
         <Navbar bg="light justify-content-between" sticky='top'>
-            <Flex>
-                <Box p='4'>
+            <Grid templateColumns='repeat(5, 1fr)' gap='20'>
+                <GridItem p='4'>
                     <Navbar.Brand onClick={() => onNavigate(Paths.Home)}>Mirador</Navbar.Brand>
-                </Box>
+                </GridItem>
                 <Spacer />
-                <Box size='50%' pr='85%' pl='85%' pt='4' >
+                <GridItem pt='4'>
                     <Nav className='center'>
                         <Nav.Link onClick={() => onNavigate(Paths.Adventure)}>Adventures</Nav.Link>
                         <Nav.Link onClick={() => onNavigate(Paths.Blog)}>Blogs</Nav.Link>
                         <Nav.Link onClick={() => onNavigate(Paths.Itenerary)}>Iteneraries</Nav.Link>
                     </Nav>
-                </Box>
+                </GridItem>
                 <Spacer />
-                <Box p='4'>
-                    <Nav>
-                        <Nav.Link>Login</Nav.Link>
-                        <Nav.Link>Sign up</Nav.Link>
+                <GridItem p='4'>
+                    <Nav className='center'>
+                            <Nav.Link>Login</Nav.Link>
+                            <Nav.Link>Sign up</Nav.Link>
                     </Nav>
-                </Box>
-            </Flex>
+                </GridItem>
+            </Grid>
         </Navbar>
     )
 }
