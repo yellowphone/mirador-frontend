@@ -12,7 +12,15 @@ Run ```yarn install```
 
 To run our development server
 
-Run ``` yarn start:dev``` in the root folder of the project
+Run ```yarn start:dev``` in the root folder of the project
+
+## Front Libraries
+
+We mainly use chakra but only use bootstrap when we cannot do it in Chakra.
+
+Chakra https://chakra-ui.com/docs/getting-started
+
+React bootstrap https://react-bootstrap.github.io/getting-started/introduction
 
 ## Contributors
 
