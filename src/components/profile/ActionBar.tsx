@@ -1,31 +1,19 @@
-import { Center, Container, Divider, Box, SimpleGrid, Text, HStack } from '@chakra-ui/react';
+import { Center } from '@chakra-ui/react';
+import { Button, ButtonGroup } from '@material-ui/core';
 import React from 'react';
 
 export const ActionBar = () => {
 
     return (
-        <>
-            <Container>
-                <HStack>
-                    <Box>
-                        <Center>
-                            <Text>Overview</Text>
-                        </Center>
-                    </Box>
-                    <Divider orientation='vertical' />
-                    <Box>
-                        Adventures
-                    </Box>
-                    <Divider orientation='vertical' />
-                    <Box>
-                        Blogs
-                    </Box>
-                    <Divider orientation='vertical' />
-                    <Box>
-                        Itineraries
-                    </Box>
-                </HStack>
-            </Container>
-        </>
+        <div style={{ paddingTop: '10px' }}>
+            <Center>
+                <ButtonGroup>
+                    <Button>Overview</Button>
+                    <Button>Adventures</Button>
+                    <Button>Blogs</Button>
+                    <Button>Iteneraries</Button>
+                </ButtonGroup>
+            </Center>
+        </div>
     );
 };

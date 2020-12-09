@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavigationBar } from '../shared/navigation-bar/NavigationBar';
 
-export const Itenterary = () => {
+export const Itinerary = () => {
 
     return (
         <>
