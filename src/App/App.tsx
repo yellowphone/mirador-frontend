@@ -1,5 +1,5 @@
 import { ChakraProvider } from '@chakra-ui/react';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Redirect, Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 import { ConnectedAdventure } from '../components/adventure/ConnectedAdventure';
 import { Blog } from '../components/blog/Blog';
@@ -8,8 +8,20 @@ import { Itenterary } from '../components/itenterary/Itenterary';
 import { Profile } from '../components/profile/Profile';
 import { Paths } from '../utils/paths';
 
+// graphql imports
+import { ApolloProvider } from '@apollo/client';
+import { client } from '../graphql/client';
+
 export const App: React.FC = () => {
-    return (
+
+  useEffect(() => {
+    const bootstrapAsync = async () => {
+    }
+    bootstrapAsync();
+  });
+
+  return (
+    <ApolloProvider client={client}>
       <ChakraProvider>
         <Router>
           <Switch>
@@ -22,7 +34,8 @@ export const App: React.FC = () => {
           </Switch>
         </Router>
       </ChakraProvider>
-    );
+    </ApolloProvider>
+  );
 }
 
 export default App;
