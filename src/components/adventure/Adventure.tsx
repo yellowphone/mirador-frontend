@@ -19,7 +19,7 @@ export const Adventure: FC<AdventureDataProps> = ({ adventures }) => {
     return (
         <>
             <NavigationBar />
-             <Flex direction='column'>
+             <Flex>
                 <Box css={leftSideStyle} maxW='50%' width={screen.width / 2}>
                     <Center 
                         pt='5'
