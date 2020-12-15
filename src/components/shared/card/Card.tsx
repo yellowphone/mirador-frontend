@@ -18,6 +18,7 @@ export const Card: FC<CardDataProps> = ({
 
     return (
         <Container maxW="20em" borderWidth="1px" borderRadius="lg" overflow="hidden">
+
             <Image src={imageUrl} alt={imageAlt} />
 
             <Box p="6">
