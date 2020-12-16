@@ -1,12 +1,15 @@
-import { GridItem, Spacer, Grid } from '@chakra-ui/react';
+import { GridItem, Spacer, Grid, Icon, Tooltip, Menu, MenuButton, Button, MenuList, MenuItem } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 import { Nav } from 'react-bootstrap';
 import Navbar from 'react-bootstrap/Navbar';
 import { useHistory } from 'react-router-dom';
 import { Paths } from '../../../utils/paths';
 import './NavigationBar.css'
+import { MdPerson } from 'react-icons/md'
+import { AddIcon, ChevronDownIcon } from '@chakra-ui/icons';
 
 export const NavigationBar = () => {
+    const loggedIn = true;
     const history = useHistory();
 
     const onNavigate = useCallback((path: Paths) => {
@@ -30,8 +33,34 @@ export const NavigationBar = () => {
                 <Spacer />
                 <GridItem p='4'>
                     <Nav className='center'>
-                            <Nav.Link>Login</Nav.Link>
-                            <Nav.Link>Sign up</Nav.Link>
+                    {
+                        loggedIn 
+                        ? (
+                            <Grid templateColumns='repeat(3, 1fr)'>
+                                <GridItem>
+                                    <Menu>
+                                        <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+                                            <AddIcon />
+                                        </MenuButton>
+                                        <MenuList>
+                                            <MenuItem>New Adventure</MenuItem>
+                                            <MenuItem>New Itinerary</MenuItem>
+                                            <MenuItem>New Blog</MenuItem>
+                                        </MenuList>
+                                    </Menu>
+                                </GridItem>
+                                <Spacer />
+                                <GridItem onClick={() => onNavigate(Paths.Profile)}>
+                                    <Icon as={MdPerson} w={8} h={8} />
+                                </GridItem>
+                            </Grid>
+                        ) : (
+                            <>
+                                <Nav.Link>Login</Nav.Link>
+                                <Nav.Link>Sign up</Nav.Link>
+                            </>
+                        )
+                    }
                     </Nav>
                 </GridItem>
             </Grid>

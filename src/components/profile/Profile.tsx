@@ -1,4 +1,7 @@
 import React from 'react';
+import { NavigationBar } from '../shared/navigation-bar/NavigationBar';
+import { ActionBar } from './ActionBar';
+import { ProfileCard } from './ProfileCard';
 
 import { useQuery } from '@apollo/react-hooks';
 
@@ -21,8 +24,10 @@ export const Profile = () => {
     console.log(data);
 
     return (
-        <h1>
-            Profile
-        </h1>
-    )
+        <>
+            <NavigationBar />
+            <ProfileCard />
+            <ActionBar />
+        </>
+    );
 }
