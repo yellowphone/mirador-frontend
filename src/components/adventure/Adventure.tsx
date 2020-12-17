@@ -1,7 +1,7 @@
 import { Box, Center, Flex, Input } from '@chakra-ui/react';
 import React, { FC } from 'react';
 import { NavigationBar } from '../shared/navigation-bar/NavigationBar';
-import { Map } from '../shared/Map/Map';
+import { Map } from '../shared/Google/Map';
 import './Adventure.css';
 import { AdventureDataProps } from './Adventure.types';
 import { CardsGrid } from '../shared/cards-grid/CardsGrid';
