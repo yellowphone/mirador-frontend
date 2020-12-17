@@ -1,4 +1,4 @@
-import { GridItem, Spacer, Grid, Icon, Tooltip, Menu, MenuButton, Button, MenuList, MenuItem } from '@chakra-ui/react';
+import { GridItem, Spacer, Grid, Icon, Menu, MenuButton, Button, MenuList, MenuItem } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 import { Nav } from 'react-bootstrap';
 import Navbar from 'react-bootstrap/Navbar';
@@ -9,7 +9,7 @@ import { MdPerson } from 'react-icons/md'
 import { AddIcon, ChevronDownIcon } from '@chakra-ui/icons';
 
 export const NavigationBar = () => {
-    const loggedIn = true;
+    const loggedIn = false;
     const history = useHistory();
 
     const onNavigate = useCallback((path: Paths) => {
@@ -56,7 +56,7 @@ export const NavigationBar = () => {
                             </Grid>
                         ) : (
                             <>
-                                <Nav.Link>Login</Nav.Link>
+                                <Nav.Link onClick={() => onNavigate(Paths.Login)}>Login</Nav.Link>
                                 <Nav.Link>Sign up</Nav.Link>
                             </>
                         )

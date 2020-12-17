@@ -4,4 +4,5 @@ export enum Paths {
     Adventure = '/adventure',
     Profile = '/profile',
     Itenerary = '/itenterary',
+    Login = '/login',
 }
