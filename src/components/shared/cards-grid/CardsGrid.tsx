@@ -10,8 +10,8 @@ export const CardsGrid: FC<CardsGridDataProps<IAdventure>> = ({
     return (
         <Grid pt='5' templateColumns="repeat(2, 1fr)" gap={6}>
             {
-                list.map(i => {
-                    return <Card adventure={i} />
+                list.map((i, index) => {
+                    return <Card adventure={i} key={index} />
                 })
             }
         </Grid>

@@ -1,4 +1,4 @@
-import { GridItem, Spacer, Grid, Icon, Menu, MenuButton, Button, MenuList, MenuItem } from '@chakra-ui/react';
+import { GridItem, Spacer, Grid, Icon, Menu, MenuButton, Button, MenuList, MenuItem, Text, useDisclosure } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 import { Nav } from 'react-bootstrap';
 import Navbar from 'react-bootstrap/Navbar';
@@ -7,8 +7,10 @@ import { Paths } from '../../../utils/paths';
 import './NavigationBar.css'
 import { MdPerson } from 'react-icons/md'
 import { AddIcon, ChevronDownIcon } from '@chakra-ui/icons';
+import { Login } from '../../login/Login';
 
 export const NavigationBar = () => {
+    const { isOpen, onOpen, onClose } = useDisclosure();
     const loggedIn = false;
     const history = useHistory();
 
@@ -56,13 +58,17 @@ export const NavigationBar = () => {
                             </Grid>
                         ) : (
                             <>
-                                <Nav.Link onClick={() => onNavigate(Paths.Login)}>Login</Nav.Link>
+                                <Nav.Link onClick={onOpen}>
+                                    {/* <Login isOpen={isOpen} onOpen={onOpen} onClose={onClose} /> */}
+                                    <Text>Login</Text>
+                                </Nav.Link>
                                 <Nav.Link>Sign up</Nav.Link>
                             </>
                         )
                     }
                     </Nav>
                 </GridItem>
+                <Login onClose={onClose} isOpen={isOpen} />
             </Grid>
         </Navbar>
     )

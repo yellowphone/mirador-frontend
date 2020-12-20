@@ -15,7 +15,7 @@ export const App: React.FC = () => {
         <Router>
           <Switch>
             <Route exact path={Paths.Blog} component={ConnectedBlog} />
-            <Route exact path={Paths.Home} component={Login/*ConnectedHome*/} />
+            <Route exact path={Paths.Home} component={ConnectedHome} />
             <Route exact path={Paths.Adventure} component={ConnectedAdventure} />
             <Route exact path={Paths.Itenerary} component={ConnectedItinerary} />
             <Route exact path={Paths.Profile} component={ConnectedProfile} />
