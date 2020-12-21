@@ -10,7 +10,6 @@ interface IMapDataProps {
     width: number,
     height: number,
 }
-
 export const Map: FC<IMapDataProps> = ({ height, width }) => {
 
     return (

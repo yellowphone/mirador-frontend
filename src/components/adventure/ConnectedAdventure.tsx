@@ -29,7 +29,7 @@ export const ConnectedAdventure = () => {
             imageAlt: "ok",
             length: 3,
             elevation: 233,
-            title: item.title,
+            title: "ok",
             rating: 4,
             lat: item.lat,
             lng: item.lng,

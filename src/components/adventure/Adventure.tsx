@@ -6,6 +6,8 @@ import './Adventure.css';
 import { AdventureDataProps } from './Adventure.types';
 import { CardsGrid } from '../shared/cards-grid/CardsGrid';
 
+import { Search } from '../shared/Google/Search'
+
 const leftSideStyle = {
     scroll: 'auto',
 }
@@ -24,10 +26,7 @@ export const Adventure: FC<AdventureDataProps> = ({ adventures }) => {
                     <Center 
                         pt='5'
                     >
-                        <Input
-                            width='40%'
-                            placeholder={'Where do you want to go?'}
-                        />
+                        <Search/>
                     </Center>
 
                     <CardsGrid list={adventures} />
