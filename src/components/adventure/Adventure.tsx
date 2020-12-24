@@ -1,5 +1,5 @@
 import { Box, Center, Flex, Input } from '@chakra-ui/react';
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState, useRef } from 'react';
 import { NavigationBar } from '../shared/navigation-bar/NavigationBar';
 import { Map } from '../shared/Google/Map';
 import './Adventure.css';
@@ -7,6 +7,8 @@ import { AdventureDataProps } from './Adventure.types';
 import { CardsGrid } from '../shared/cards-grid/CardsGrid';
 
 import { Search } from '../shared/Google/Search'
+
+import { Loader } from '@googlemaps/js-api-loader';
 
 const leftSideStyle = {
     scroll: 'auto',
@@ -18,6 +20,13 @@ const rightSideStyle = {
 }
 
 export const Adventure: FC<AdventureDataProps> = ({ adventures }) => {
+
+    const loader = new Loader({
+        apiKey: `${process.env.MAPS_API_KEY}`,
+        version: "weekly",
+        libraries: ["places", "geometry"]
+    });
+
     return (
         <>
             <NavigationBar />
@@ -26,13 +35,13 @@ export const Adventure: FC<AdventureDataProps> = ({ adventures }) => {
                     <Center 
                         pt='5'
                     >
-                        <Search/>
+                        <Search />
                     </Center>
 
                     <CardsGrid list={adventures} />
                 </Box>
                 <Box css={rightSideStyle} maxW='50%' width={screen.width / 2}>
-                    <Map width={screen.width / 2} height={screen.height - 170} />
+                    <Map width={screen.width / 2} height={screen.height - 170} loader={loader} />
                 </Box>
             </Flex> 
         </>
