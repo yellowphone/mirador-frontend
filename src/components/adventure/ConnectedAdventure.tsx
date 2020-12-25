@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { DifficultyType } from "../shared/media/Badges/Badges.types";
 import { Adventure } from "./Adventure";
 import { IAdventure } from "./Adventure.types";
@@ -9,8 +9,10 @@ import { FIND_ADVENTURE_BY_COORDINATES } from '../../graphql/queries/adventureQu
 
 export const ConnectedAdventure = () => {
 
+    const [coords, setCoords] = useState({lat: 44.349483, lng: -68.187912});
+
     const { data: adventureItems, loading, error, refetch } = useQuery(FIND_ADVENTURE_BY_COORDINATES, {
-        variables: { lat: 44.349483, lng: -68.187912 },
+        variables: { lat: coords["lat"], lng: coords["lng"] },
     });
 
     if (loading) {
@@ -29,7 +31,7 @@ export const ConnectedAdventure = () => {
             imageAlt: "ok",
             length: 3,
             elevation: 233,
-            title: item.title,
+            title: "ok",
             rating: 4,
             lat: item.lat,
             lng: item.lng,
@@ -38,6 +40,6 @@ export const ConnectedAdventure = () => {
     })
 
     return (
-        <Adventure adventures={adventureList} />
+        <Adventure adventures={adventureList} coords={coords} setCoords={setCoords} refetch={refetch} />
     );
 }

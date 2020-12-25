@@ -1,10 +1,13 @@
 import { Box, Center, Flex, Input } from '@chakra-ui/react';
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState, useRef } from 'react';
 import { NavigationBar } from '../shared/navigation-bar/NavigationBar';
-import { Map } from '../shared/Google/Map';
 import './Adventure.css';
 import { AdventureDataProps } from './Adventure.types';
 import { CardsGrid } from '../shared/cards-grid/CardsGrid';
+
+import { Search } from '../shared/Google/Search'
+import { Map } from '../shared/Google/Map';
+import { Loader } from '@googlemaps/js-api-loader';
 
 const leftSideStyle = {
     scroll: 'auto',
@@ -15,7 +18,14 @@ const rightSideStyle = {
     // position: 'fixed', // need to get the map to be fixed to the right
 }
 
-export const Adventure: FC<AdventureDataProps> = ({ adventures }) => {
+export const Adventure: FC<AdventureDataProps> = ({ adventures, coords, setCoords, refetch }) => {
+
+    const loader = new Loader({
+        apiKey: `${process.env.MAPS_API_KEY}`,
+        version: "weekly",
+        libraries: ["places", "geometry"]
+    });
+
     return (
         <>
             <NavigationBar />
@@ -24,16 +34,13 @@ export const Adventure: FC<AdventureDataProps> = ({ adventures }) => {
                     <Center 
                         pt='5'
                     >
-                        <Input
-                            width='40%'
-                            placeholder={'Where do you want to go?'}
-                        />
+                        <Search setCoords={setCoords} refetch={refetch} />
                     </Center>
 
                     <CardsGrid list={adventures} />
                 </Box>
                 <Box css={rightSideStyle} maxW='50%' width={screen.width / 2}>
-                    <Map width={screen.width / 2} height={screen.height - 170} />
+                    <Map width={screen.width / 2} height={screen.height - 170} loader={loader} coords={coords} adventures={adventures}/>
                 </Box>
             </Flex> 
         </>
