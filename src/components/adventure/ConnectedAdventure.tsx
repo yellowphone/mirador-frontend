@@ -40,6 +40,6 @@ export const ConnectedAdventure = () => {
     })
 
     return (
-        <Adventure adventures={adventureList} coords={coords} setCoords={setCoords} />
+        <Adventure adventures={adventureList} coords={coords} setCoords={setCoords} refetch={refetch} />
     );
 }

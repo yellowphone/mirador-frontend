@@ -16,4 +16,5 @@ export interface AdventureDataProps {
     adventures: Array<IAdventure>;
     coords: Array<number>;
     setCoords: Function;
+    refetch: any;
 }

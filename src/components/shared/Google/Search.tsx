@@ -7,9 +7,10 @@ import './Search.css'
 
 interface ISearchDataProps {
     setCoords: Function
+    refetch: any
 }
 
-export const Search = ({ setCoords }: ISearchDataProps) => {
+export const Search = ({ setCoords, refetch }: ISearchDataProps) => {
 
     const onChange = <P extends keyof Search>(props: P, value: Search[P]) => {
         const autocomplete = new google.maps.places.Autocomplete(value);
@@ -17,6 +18,8 @@ export const Search = ({ setCoords }: ISearchDataProps) => {
         autocomplete.addListener("place_changed", () => {
         const place = autocomplete.getPlace();
             setCoords([place.geometry?.location.lat(), place.geometry?.location.lng()])
+            // Refetch potentially new data anytime a search occurs
+            refetch();
         })
     }
 

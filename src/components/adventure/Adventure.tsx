@@ -18,9 +18,7 @@ const rightSideStyle = {
     // position: 'fixed', // need to get the map to be fixed to the right
 }
 
-export const Adventure: FC<AdventureDataProps> = ({ adventures, coords, setCoords }) => {
-
-    // const [coords, setCoords] = useState([44.349483, -68.187912]);
+export const Adventure: FC<AdventureDataProps> = ({ adventures, coords, setCoords, refetch }) => {
 
     const loader = new Loader({
         apiKey: `${process.env.MAPS_API_KEY}`,
@@ -36,7 +34,7 @@ export const Adventure: FC<AdventureDataProps> = ({ adventures, coords, setCoord
                     <Center 
                         pt='5'
                     >
-                        <Search setCoords={setCoords} />
+                        <Search setCoords={setCoords} refetch={refetch} />
                     </Center>
 
                     <CardsGrid list={adventures} />
