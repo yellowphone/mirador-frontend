@@ -9,10 +9,10 @@ import { FIND_ADVENTURE_BY_COORDINATES } from '../../graphql/queries/adventureQu
 
 export const ConnectedAdventure = () => {
 
-    const [coords, setCoords] = useState([44.349483, -68.187912]);
+    const [coords, setCoords] = useState({lat: 44.349483, lng: -68.187912});
 
     const { data: adventureItems, loading, error, refetch } = useQuery(FIND_ADVENTURE_BY_COORDINATES, {
-        variables: { lat: coords[0], lng: coords[1] },
+        variables: { lat: coords["lat"], lng: coords["lng"] },
     });
 
     if (loading) {

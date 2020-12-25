@@ -17,7 +17,7 @@ export const Search = ({ setCoords, refetch }: ISearchDataProps) => {
         autocomplete.setFields(["address_components", "geometry", "icon", "name"]);
         autocomplete.addListener("place_changed", () => {
         const place = autocomplete.getPlace();
-            setCoords([place.geometry?.location.lat(), place.geometry?.location.lng()])
+            setCoords({lat: place.geometry?.location.lat(), lng: place.geometry?.location.lng()})
             // Refetch potentially new data anytime a search occurs
             refetch();
         })
@@ -25,7 +25,7 @@ export const Search = ({ setCoords, refetch }: ISearchDataProps) => {
 
     const debounceOnChange = debounce(searchQuery => {
         onChange('query', searchQuery)
-    }, 200)
+    }, 500)
 
     type Search = {
         query: HTMLInputElement;

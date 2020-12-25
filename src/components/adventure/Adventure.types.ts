@@ -12,9 +12,14 @@ export interface IAdventure {
     difficulty: DifficultyType
 }
 
+export interface ICoordinates {
+    lat: number
+    lng: number
+}
+
 export interface AdventureDataProps {
     adventures: Array<IAdventure>;
-    coords: Array<number>;
+    coords: ICoordinates;
     setCoords: Function;
     refetch: any;
 }

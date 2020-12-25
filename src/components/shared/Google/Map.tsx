@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useEffect } from 'react';
-import { IAdventure } from './../../adventure/Adventure.types';
+import { IAdventure, ICoordinates } from './../../adventure/Adventure.types';
 
 import { Loader } from '@googlemaps/js-api-loader';
 
@@ -7,7 +7,7 @@ interface IMapDataProps {
     width: number,
     height: number,
     loader: Loader,
-    coords: Array<number>,
+    coords: ICoordinates,
     adventures: Array<IAdventure>
 }
 
@@ -15,8 +15,8 @@ export const Map: FC<IMapDataProps> = ({ height, width, loader, coords, adventur
 
     var mapOptions = {
         center: {
-            lat: coords[0],
-            lng: coords[1]
+            lat: coords["lat"],
+            lng: coords["lng"]
         },
         zoom: 10,
         options: {
@@ -36,7 +36,7 @@ export const Map: FC<IMapDataProps> = ({ height, width, loader, coords, adventur
         const map = new google.maps.Map(div, mapOptions);
 
         const centerMarker = new google.maps.Marker({
-            position: {lat: coords[0], lng: coords[1]},
+            position: {lat: coords["lat"], lng: coords["lng"]},
             map: map,
             icon: iconBase
         })
