@@ -20,7 +20,7 @@ const rightSideStyle = {
 
 export const Adventure: FC<AdventureDataProps> = ({ adventures }) => {
 
-    const [coords, setCoords] = useState([37.223454, -80.424]);
+    const [coords, setCoords] = useState([44.349483, -68.187912]);
 
     const loader = new Loader({
         apiKey: `${process.env.MAPS_API_KEY}`,
@@ -42,7 +42,7 @@ export const Adventure: FC<AdventureDataProps> = ({ adventures }) => {
                     <CardsGrid list={adventures} />
                 </Box>
                 <Box css={rightSideStyle} maxW='50%' width={screen.width / 2}>
-                    <Map width={screen.width / 2} height={screen.height - 170} loader={loader} coords={coords} />
+                    <Map width={screen.width / 2} height={screen.height - 170} loader={loader} coords={coords} adventures={adventures}/>
                 </Box>
             </Flex> 
         </>

@@ -5,23 +5,24 @@ import debounce from 'lodash/debounce'
 
 import './Search.css'
 
-export const Search = ({ setCoords }) => {
+interface ISearchDataProps {
+    setCoords: Function
+}
+
+export const Search = ({ setCoords }: ISearchDataProps) => {
 
     const onChange = <P extends keyof Search>(props: P, value: Search[P]) => {
         const autocomplete = new google.maps.places.Autocomplete(value);
         autocomplete.setFields(["address_components", "geometry", "icon", "name"]);
         autocomplete.addListener("place_changed", () => {
         const place = autocomplete.getPlace();
-            console.log(place);
-            console.log(place.geometry.location.lat())
-            console.log(place.geometry.location.lng())
             setCoords([place.geometry?.location.lat(), place.geometry?.location.lng()])
         })
     }
 
     const debounceOnChange = debounce(searchQuery => {
         onChange('query', searchQuery)
-    }, 600)
+    }, 200)
 
     type Search = {
         query: HTMLInputElement;
@@ -32,6 +33,9 @@ export const Search = ({ setCoords }) => {
             <div>
                 <div>
                     <Box maxW='100%'>
+                        {/* <Input placeholder={'Enter a location'} onChange={e => {
+                            onChange('query', e.target)
+                        }}></Input> */}
                         <Input placeholder={'Enter a location'} onChange={e => {
                             debounceOnChange(e.target)
                         }}></Input>
