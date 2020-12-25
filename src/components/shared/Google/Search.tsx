@@ -33,9 +33,6 @@ export const Search = ({ setCoords }: ISearchDataProps) => {
             <div>
                 <div>
                     <Box maxW='100%'>
-                        {/* <Input placeholder={'Enter a location'} onChange={e => {
-                            onChange('query', e.target)
-                        }}></Input> */}
                         <Input placeholder={'Enter a location'} onChange={e => {
                             debounceOnChange(e.target)
                         }}></Input>
