@@ -1,5 +1,5 @@
 import { GridItem, Spacer, Grid, Icon, Menu, MenuButton, Button, MenuList, MenuItem, Text, useDisclosure } from '@chakra-ui/react';
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { Nav } from 'react-bootstrap';
 import Navbar from 'react-bootstrap/Navbar';
 import { useHistory } from 'react-router-dom';
@@ -8,16 +8,17 @@ import './NavigationBar.css'
 import { MdPerson } from 'react-icons/md'
 import { AddIcon, ChevronDownIcon } from '@chakra-ui/icons';
 import { Login } from '../../login/Login';
+import { getLoginContext } from '../../../utils/User';
 
 export const NavigationBar = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const loggedIn = false;
+    const user = getLoginContext();
     const history = useHistory();
 
     const onNavigate = useCallback((path: Paths) => {
         history.push(path);
     }, []);
-
+    console.log(user)
     return (
         <Navbar bg="light justify-content-between" sticky='top'>
             <Grid templateColumns='repeat(5, 1fr)' gap='20'>
@@ -36,7 +37,7 @@ export const NavigationBar = () => {
                 <GridItem p='4'>
                     <Nav className='center'>
                     {
-                        loggedIn 
+                        user 
                         ? (
                             <Grid templateColumns='repeat(3, 1fr)'>
                                 <GridItem>
@@ -68,7 +69,7 @@ export const NavigationBar = () => {
                     }
                     </Nav>
                 </GridItem>
-                <Login onClose={onClose} isOpen={isOpen} />
+                { !user && <Login onClose={onClose} isOpen={isOpen} /> }
             </Grid>
         </Navbar>
     )
