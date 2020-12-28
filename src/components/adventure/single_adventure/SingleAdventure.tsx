@@ -1,14 +1,12 @@
 import React, { useState, FC } from "react";
 import { useQuery } from '@apollo/react-hooks';
 
-import { NavigationBar } from '../shared/navigation-bar/NavigationBar';
-import { FIND_ADVENTURE_BY_ID } from '../../graphql/queries/adventureQuery';
+import { NavigationBar } from '../../shared/navigation-bar/NavigationBar';
+import { FIND_ADVENTURE_BY_ID } from '../../../graphql/queries/adventureQuery';
 
-interface IAdventurePageProps {
-    history: object
-}
+import { IAdventurePageProps } from './SingleAdventure.type'
 
-export const AdventurePage: FC<IAdventurePageProps> = ({ history }) => {
+export const SingleAdventure: FC<IAdventurePageProps> = ({ history }) => {
     
     const { data, loading, error, refetch } = useQuery(FIND_ADVENTURE_BY_ID, {
         variables: { pkadventure: history.location.state.fk_adventure_location }

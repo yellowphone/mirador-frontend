@@ -5,7 +5,6 @@ import { CardDataProps } from "./Card.types";
 
 import { Paths } from '../../../utils/paths';
 import { useHistory } from 'react-router-dom';
-// import { Nav } from 'react-bootstrap';
 
 export const Card: FC<CardDataProps> = ({
     adventure
@@ -27,7 +26,7 @@ export const Card: FC<CardDataProps> = ({
     }, []);
 
     return (
-        <Container onClick={() => onNavigate(Paths.AdventurePage)} maxW="20em" borderWidth="1px" borderRadius="lg" overflow="hidden">
+        <Container onClick={() => onNavigate(Paths.SingleAdventure)} maxW="20em" borderWidth="1px" borderRadius="lg" overflow="hidden">
 
             <Image src={imageUrl} alt={imageAlt} />
 
