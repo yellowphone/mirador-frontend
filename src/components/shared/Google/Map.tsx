@@ -24,8 +24,6 @@ export const Map: FC<IMapDataProps> = ({ height, width, loader, coords, adventur
         }
     };
 
-    var iconBase = "https://lh3.googleusercontent.com/ak_p7XchXRmvQb6BOMFKNMiyjkexq7JA0NZuy_hx7jWWjTfE79FOhrkPSsT5vxpmA6HKn3efihvcjiipUyJI8tGBauEoWRE2NH8SroSd-9b49wrrVBXdAK78qkwr4p_hLPajHVA_780=w50"
-
     loader
     .load()
     .then(() => {
@@ -34,6 +32,11 @@ export const Map: FC<IMapDataProps> = ({ height, width, loader, coords, adventur
             throw new Error("Google Maps error\nMost likely an issue with loading in Google Maps API")
         }
         const map = new google.maps.Map(div, mapOptions);
+
+        var iconBase = {
+            url: "https://www9.lunapic.com/editor/premade/transparent.gif",
+            scaledSize: new google.maps.Size(50, 50)
+        }
 
         const centerMarker = new google.maps.Marker({
             position: {lat: coords["lat"], lng: coords["lng"]},

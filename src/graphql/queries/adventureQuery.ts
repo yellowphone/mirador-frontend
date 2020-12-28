@@ -36,6 +36,7 @@ export const FIND_ADVENTURE_BY_COORDINATES = gql`
         findAdventureByCoordinates(lat: $lat, lng: $lng) {
             lat
             lng
+            fk_adventure_location
         }
     }
 `;

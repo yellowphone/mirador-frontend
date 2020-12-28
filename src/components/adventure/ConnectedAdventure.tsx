@@ -27,6 +27,7 @@ export const ConnectedAdventure = () => {
 
     const adventureList: Array<IAdventure> = adventureItems?.findAdventureByCoordinates?.map((item: IAdventure) => {
         return {
+            fk_adventure_location: item.fk_adventure_location,
             imageUrl: "http://www.citrusmilo.com/acadia/joebraun_precipice27.jpg",
             imageAlt: "ok",
             length: 3,
