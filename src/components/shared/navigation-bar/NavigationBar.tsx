@@ -1,5 +1,5 @@
 import { GridItem, Spacer, Grid, Icon, Menu, MenuButton, Button, MenuList, MenuItem, Text, useDisclosure } from '@chakra-ui/react';
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback } from 'react';
 import { Nav } from 'react-bootstrap';
 import Navbar from 'react-bootstrap/Navbar';
 import { useHistory } from 'react-router-dom';

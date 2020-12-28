@@ -1,6 +1,6 @@
 import { DifficultyType } from '../shared/media/Badges/Badges.types';
 
-export interface IAdventure {
+export interface IExperience {
     imageUrl: string
     imageAlt: string
     length: number
@@ -12,6 +12,6 @@ export interface IAdventure {
     difficulty: DifficultyType
 }
 
-export interface AdventureDataProps {
-    adventures: Array<IAdventure>;
+export interface ExperienceDataProps {
+    experiences: Array<IExperience>;
 }

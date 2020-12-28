@@ -1,7 +1,7 @@
 import { ChakraProvider } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { Redirect, Route, BrowserRouter as Router, Switch } from 'react-router-dom';
-import { ConnectedAdventure } from '../components/adventure/ConnectedAdventure';
+import { ConnectedAdventure } from '../components/experience/ConnectedExperience';
 import { ConnectedBlog } from '../components/blog/ConnectedBlog';
 import { ConnectedHome } from '../components/home/ConnectedHome';
 import { ConnectedItinerary } from '../components/itenterary/ConnectedItinerary';

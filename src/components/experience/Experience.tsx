@@ -2,8 +2,8 @@ import { Box, Center, Flex, Input } from '@chakra-ui/react';
 import React, { FC } from 'react';
 import { NavigationBar } from '../shared/navigation-bar/NavigationBar';
 import { Map } from '../shared/Map/Map';
-import './Adventure.css';
-import { AdventureDataProps } from './Adventure.types';
+import './Experience.css';
+import { ExperienceDataProps } from './Experience.types';
 import { CardsGrid } from '../shared/cards-grid/CardsGrid';
 
 const leftSideStyle = {
@@ -15,7 +15,7 @@ const rightSideStyle = {
     // position: 'fixed', // need to get the map to be fixed to the right
 }
 
-export const Adventure: FC<AdventureDataProps> = ({ adventures }) => {
+export const Experience: FC<ExperienceDataProps> = ({ experiences }) => {
     return (
         <>
             <NavigationBar />
@@ -30,7 +30,7 @@ export const Adventure: FC<AdventureDataProps> = ({ adventures }) => {
                         />
                     </Center>
 
-                    <CardsGrid list={adventures} />
+                    <CardsGrid list={experiences} />
                 </Box>
                 <Box css={rightSideStyle} maxW='50%' width={screen.width / 2}>
                     <Map width={screen.width / 2} height={screen.height - 170} />

@@ -1,10 +1,10 @@
 import React from "react";
 import { DifficultyType } from "../shared/media/Badges/Badges.types";
-import { Adventure } from "./Adventure";
-import { IAdventure } from "./Adventure.types";
+import { Experience } from "./Experience";
+import { IExperience } from "./Experience.types";
 
-export const ConnectedAdventure = () => {
-    const mockAdventures: Array<IAdventure> = [
+export const ConnectedExperience = () => {
+    const mockAdventures: Array<IExperience> = [
         {
             title: 'Precipice Trail',
             imageAlt: 'Image of Precipice Trail',
@@ -41,6 +41,6 @@ export const ConnectedAdventure = () => {
     ];
 
     return (
-        <Adventure adventures={mockAdventures} />
+        <Experience experiences={mockAdventures} />
     );
 }
