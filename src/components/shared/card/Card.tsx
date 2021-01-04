@@ -22,7 +22,7 @@ export const Card: FC<CardDataProps> = ({
 
     const history = useHistory();
     const onNavigate = useCallback((path: Paths) => {
-        history.push(path, { fk_adventure_location: fk_adventure_location });
+        history.push(path, { pkadventure: fk_adventure_location });
     }, []);
 
     return (

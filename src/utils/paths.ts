@@ -3,6 +3,7 @@ export enum Paths {
     Blog = '/blog',
     Adventure = '/adventure',
     Profile = '/profile',
-    Itenerary = '/itenterary',
-    SingleAdventure = '/singleadventure'
+    Itinerary = '/itinerary',
+    SingleAdventure = '/singleadventure',
+    CreateAdventure = '/createadventure'
 }

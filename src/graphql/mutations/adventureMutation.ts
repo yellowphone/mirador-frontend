@@ -2,13 +2,15 @@ import { gql } from '@apollo/client';
 
 export const CREATE_ADVENTURE = gql`
     mutation createAdventure($title: String, $pkuser: Int!, $summary: String, $miles: Float, $elevation: Int, $climbing: String, $difficulty: Difficulty_Level, $lat: Float!, $lng: Float!, $images: [Upload!], $caption: String) {
-        createAdventure(title: $title, pkuser: $pkuser, summary: $summary, miles: $miles, elevation: $elevation, climbing: $climbing, difficulty: $difficulty, lat: $lat, lng: $lng, images: $images, caption: $caption)
+        createAdventure(title: $title, pkuser: $pkuser, summary: $summary, miles: $miles, elevation: $elevation, climbing: $climbing, difficulty: $difficulty, lat: $lat, lng: $lng, images: $images, caption: $caption) {
+            pkadventure
+        }
     }
 `;
 
 export const ADD_IMG_TO_ADVENTURE = gql`
     mutation addImageToAdventure($images: [Upload!]!, $pkadventure: Int!, $caption: String, $pkuser: Int!) {
-        addImageToAdventure(images: $images, pkadventure: $pkadventure, caption: $caption, pkuser: $pkuser): String
+        addImageToAdventure(images: $images, pkadventure: $pkadventure, caption: $caption, pkuser: $pkuser)
     }
 `;
 

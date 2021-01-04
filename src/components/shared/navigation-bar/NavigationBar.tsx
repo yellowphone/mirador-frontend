@@ -27,7 +27,7 @@ export const NavigationBar = () => {
                     <Nav className='center'>
                         <Nav.Link onClick={() => onNavigate(Paths.Adventure)}>Adventures</Nav.Link>
                         <Nav.Link onClick={() => onNavigate(Paths.Blog)}>Blogs</Nav.Link>
-                        <Nav.Link onClick={() => onNavigate(Paths.Itenerary)}>Iteneraries</Nav.Link>
+                        <Nav.Link onClick={() => onNavigate(Paths.Itinerary)}>Iteneraries</Nav.Link>
                     </Nav>
                 </GridItem>
                 <Spacer />
@@ -43,7 +43,7 @@ export const NavigationBar = () => {
                                             <AddIcon />
                                         </MenuButton>
                                         <MenuList>
-                                            <MenuItem>New Adventure</MenuItem>
+                                            <MenuItem onClick={() => onNavigate(Paths.CreateAdventure)}>New Adventure</MenuItem>
                                             <MenuItem>New Itinerary</MenuItem>
                                             <MenuItem>New Blog</MenuItem>
                                         </MenuList>

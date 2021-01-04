@@ -1,3 +1,3 @@
-export interface IAdventurePageProps {
+export interface ISingleAdventureProps {
     history: object
 }

@@ -4,12 +4,12 @@ import { useQuery } from '@apollo/react-hooks';
 import { NavigationBar } from '../../shared/navigation-bar/NavigationBar';
 import { FIND_ADVENTURE_BY_ID } from '../../../graphql/queries/adventureQuery';
 
-import { IAdventurePageProps } from './SingleAdventure.type'
+import { ISingleAdventureProps } from './SingleAdventure.type'
 
-export const SingleAdventure: FC<IAdventurePageProps> = ({ history }) => {
+export const SingleAdventure: FC<ISingleAdventureProps> = ({ history }) => {
     
     const { data, loading, error, refetch } = useQuery(FIND_ADVENTURE_BY_ID, {
-        variables: { pkadventure: history.location.state.fk_adventure_location }
+        variables: { pkadventure: history.location.state.pkadventure }
     })
 
     if (loading) {
