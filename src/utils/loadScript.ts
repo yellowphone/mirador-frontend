@@ -1,5 +1,5 @@
 
-export default (d: Document, s: string, id: string, jsSrc: string, cb: () => void, onError: (error: any) => void) => {
+export default (d: Document, s: string, id: string, jsSrc: string, cb: (resolve: any) => Promise<any>, onError: (error: any) => void) => {
   const element = d.getElementsByTagName(s)[0]
   const fjs = element
   let js = element
