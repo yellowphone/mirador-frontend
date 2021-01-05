@@ -2,6 +2,8 @@ import React, { FC, useCallback, useEffect } from 'react';
 import { IAdventure, ICoordinates } from './../../adventure/Adventure.types';
 
 import { Loader } from '@googlemaps/js-api-loader';
+import { useHistory } from 'react-router-dom';
+import { Paths } from '../../../utils/paths';
 
 interface IMapDataProps {
     width: number,
@@ -24,8 +26,9 @@ export const Map: FC<IMapDataProps> = ({ height, width, loader, coords, adventur
         }
     };
 
-    loader
-    .load()
+    const history = useHistory();
+
+    loader.load()
     .then(() => {
         const div = document.getElementById('map')
         if (!div) {
@@ -48,6 +51,9 @@ export const Map: FC<IMapDataProps> = ({ height, width, loader, coords, adventur
             const newMarker = new google.maps.Marker({
                 position: {lat: x.lat, lng: x.lng},
                 map: map
+            });
+            newMarker.addListener('click', e => {
+                history.push(Paths.SingleAdventure, { pkadventure: x.fk_adventure_location })
             })
         })
 

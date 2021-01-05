@@ -34,7 +34,7 @@ export const Adventure: FC<AdventureDataProps> = ({ adventures, coords, setCoord
                     <Center 
                         pt='5'
                     >
-                        <Search setCoords={setCoords} refetch={refetch} />
+                        <Search loader={loader} setCoords={setCoords} refetch={refetch} />
                     </Center>
 
                     <CardsGrid list={adventures} />
