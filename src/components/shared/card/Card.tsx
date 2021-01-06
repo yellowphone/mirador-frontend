@@ -16,7 +16,7 @@ export const Card: FC<CardDataProps> = ({
         imageUrl,
         title,
         elevation,
-        length,
+        miles,
         rating,
     } = adventure
 
@@ -41,7 +41,7 @@ export const Card: FC<CardDataProps> = ({
                     textTransform="uppercase"
                     ml="2"
                 >
-                    {length} miles &bull; {elevation} feet
+                    {miles && miles.toFixed(2)} miles &bull; {elevation} feet
                 </Box>
             </Box>
         

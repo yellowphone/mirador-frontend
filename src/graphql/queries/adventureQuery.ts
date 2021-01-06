@@ -37,6 +37,14 @@ export const FIND_ADVENTURE_BY_COORDINATES = gql`
             lat
             lng
             fk_adventure_location
+            distance
+            title
+            summary
+            created_on
+            miles
+            elevation
+            climbing
+            difficulty
         }
     }
 `;

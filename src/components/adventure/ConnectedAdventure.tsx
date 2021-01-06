@@ -30,13 +30,14 @@ export const ConnectedAdventure = () => {
             fk_adventure_location: item.fk_adventure_location,
             imageUrl: "http://www.citrusmilo.com/acadia/joebraun_precipice27.jpg",
             imageAlt: "ok",
-            length: 3,
-            elevation: 233,
-            title: "ok",
+            miles: item.miles,
+            elevation: item.elevation,
+            title: item.title,
+            summary: item.summary,
             rating: 4,
             lat: item.lat,
             lng: item.lng,
-            difficulty: DifficultyType.Hard
+            difficulty: item.difficulty
         }
     })
 

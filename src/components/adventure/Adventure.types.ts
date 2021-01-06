@@ -4,9 +4,10 @@ export interface IAdventure {
     fk_adventure_location: number,
     imageUrl: string
     imageAlt: string
-    length: number
+    miles: number
     elevation: number
     title: string
+    summary: string
     rating: number
     lat: number
     lng: number
