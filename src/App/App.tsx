@@ -12,8 +12,8 @@ import { Paths } from '../utils/paths';
 import { ApolloProvider } from '@apollo/client';
 import { client } from '../graphql/client';
 
-import { SingleAdventure } from '../components/adventure/single_adventure/SingleAdventure';
-import { CreateAdventure } from '../components/adventure/create_adventure/CreateAdventure';
+import { ConnectedSingleAdventure } from '../components/adventure/single_adventure/ConnectedSingleAdventure';
+import { ConnectedCreateAdventure } from '../components/adventure/create_adventure/ConnectedCreateAdventure';
 
 export const App: React.FC = () => {
 
@@ -33,8 +33,8 @@ export const App: React.FC = () => {
             <Route exact path={Paths.Adventure} component={ConnectedAdventure} />
             <Route exact path={Paths.Itinerary} component={ConnectedItinerary} />
             <Route exact path={Paths.Profile} component={ConnectedProfile} />
-            <Route exact path={Paths.SingleAdventure} component={SingleAdventure} />
-            <Route exact path={Paths.CreateAdventure} component={CreateAdventure} />
+            <Route exact path={Paths.SingleAdventure} component={ConnectedSingleAdventure} />
+            <Route exact path={Paths.CreateAdventure} component={ConnectedCreateAdventure} />
             <Redirect from='*' to={Paths.Home} />
           </Switch>
         </Router>

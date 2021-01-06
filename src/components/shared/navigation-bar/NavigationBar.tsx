@@ -27,7 +27,7 @@ export const NavigationBar = () => {
                     <Nav className='center'>
                         <Nav.Link onClick={() => onNavigate(Paths.Adventure)}>Adventures</Nav.Link>
                         <Nav.Link onClick={() => onNavigate(Paths.Blog)}>Blogs</Nav.Link>
-                        <Nav.Link onClick={() => onNavigate(Paths.Itinerary)}>Iteneraries</Nav.Link>
+                        <Nav.Link onClick={() => onNavigate(Paths.Itinerary)}>Itineraries</Nav.Link>
                     </Nav>
                 </GridItem>
                 <Spacer />

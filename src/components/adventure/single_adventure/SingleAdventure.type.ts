@@ -1,3 +1,7 @@
-export interface ISingleAdventureProps {
+export interface ConnectedSingleAdventureProps {
     history: object
+}
+
+export interface SingleAdventureProps {
+    data: any
 }
