@@ -3,10 +3,10 @@ import { useQuery } from '@apollo/react-hooks';
 
 import { FIND_ADVENTURE_BY_ID } from '../../../graphql/queries/adventureQuery';
 
-import { ConnectedSingleAdventureProps } from './SingleAdventure.type'
-import { SingleAdventure } from './SingleAdventure'
+import { ConnectedSingleExperienceProps } from './SingleExperience.type'
+import { SingleExperience } from './SingleExperience'
 
-export const ConnectedSingleAdventure: FC<ConnectedSingleAdventureProps> = ({ history }) => {
+export const ConnectedSingleExperience: FC<ConnectedSingleExperienceProps> = ({ history }) => {
     
     const { data, loading, error, refetch } = useQuery(FIND_ADVENTURE_BY_ID, {
         variables: { pkadventure: history.location.state.pkadventure }
@@ -23,7 +23,7 @@ export const ConnectedSingleAdventure: FC<ConnectedSingleAdventureProps> = ({ hi
 
     return(
         <>
-            <SingleAdventure data={data} />
+            <SingleExperience data={data} />
         </>
     )
 }

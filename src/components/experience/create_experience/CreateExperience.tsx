@@ -14,9 +14,9 @@ import { Button } from "@chakra-ui/react"
 import { NavigationBar } from '../../shared/navigation-bar/NavigationBar';
 import { Search } from '../../shared/Google/Search'
 import { DifficultyType } from "../../shared/media/Badges/Badges.types";
-import { CreateAdventureDataProps } from './CreateAdventure.types'
+import { CreateExperienceDataProps } from './CreateExperience.types'
 
-export const CreateAdventure: FC<CreateAdventureDataProps> = ({ onSubmit, setCreateCoords, loader }) => {
+export const CreateExperience: FC<CreateExperienceDataProps> = ({ onSubmit, setCreateCoords, loader }) => {
 
     const { register, handleSubmit, errors } = useForm();
 

@@ -2,9 +2,9 @@ import React, { FC } from "react";
 
 import { NavigationBar } from '../../shared/navigation-bar/NavigationBar';
 
-import { SingleAdventureProps } from './SingleAdventure.type'
+import { SingleExperienceProps } from './SingleExperience.type'
 
-export const SingleAdventure: FC<SingleAdventureProps> = ({ data }) => {
+export const SingleExperience: FC<SingleExperienceProps> = ({ data }) => {
 
     console.log(data)
     const id = data["findAdventureById"]["pkadventure"]
@@ -20,7 +20,7 @@ export const SingleAdventure: FC<SingleAdventureProps> = ({ data }) => {
             <NavigationBar />
             <div>
                 <h1>{title}</h1>
-                <p>primary key of this adventure: {id}</p>
+                <p>primary key of this experience: {id}</p>
                 <p>lat: {lat}</p>
                 <p>lng: {lng}</p>
                 <p>summary: {summary}</p>

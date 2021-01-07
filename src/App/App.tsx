@@ -1,7 +1,7 @@
 import { ChakraProvider } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 import { Redirect, Route, BrowserRouter as Router, Switch } from 'react-router-dom';
-import { ConnectedAdventure } from '../components/adventure/ConnectedAdventure';
+import { ConnectedExperience } from '../components/experience/ConnectedExperience';
 import { ConnectedBlog } from '../components/blog/ConnectedBlog';
 import { ConnectedHome } from '../components/home/ConnectedHome';
 import { ConnectedItinerary } from '../components/itinerary/ConnectedItinerary';
@@ -12,8 +12,8 @@ import { Paths } from '../utils/paths';
 import { ApolloProvider } from '@apollo/client';
 import { client } from '../graphql/client';
 
-import { ConnectedSingleAdventure } from '../components/adventure/single_adventure/ConnectedSingleAdventure';
-import { ConnectedCreateAdventure } from '../components/adventure/create_adventure/ConnectedCreateAdventure';
+import { ConnectedSingleExperience } from '../components/experience/single_experience/ConnectedSingleExperience';
+import { ConnectedCreateExperience } from '../components/experience/create_experience/ConnectedCreateExperience';
 
 export const App: React.FC = () => {
 
@@ -30,11 +30,11 @@ export const App: React.FC = () => {
           <Switch>
             <Route exact path={Paths.Blog} component={ConnectedBlog} />
             <Route exact path={Paths.Home} component={ConnectedProfile} />
-            <Route exact path={Paths.Adventure} component={ConnectedAdventure} />
+            <Route exact path={Paths.Experience} component={ConnectedExperience} />
             <Route exact path={Paths.Itinerary} component={ConnectedItinerary} />
             <Route exact path={Paths.Profile} component={ConnectedProfile} />
-            <Route exact path={Paths.SingleAdventure} component={ConnectedSingleAdventure} />
-            <Route exact path={Paths.CreateAdventure} component={ConnectedCreateAdventure} />
+            <Route exact path={Paths.SingleExperience} component={ConnectedSingleExperience} />
+            <Route exact path={Paths.CreateExperience} component={ConnectedCreateExperience} />
             <Redirect from='*' to={Paths.Home} />
           </Switch>
         </Router>

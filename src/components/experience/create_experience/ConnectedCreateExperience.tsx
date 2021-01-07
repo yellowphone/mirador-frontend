@@ -3,11 +3,11 @@ import { useMutation } from '@apollo/react-hooks';
 import { CREATE_ADVENTURE } from '../../../graphql/mutations/adventureMutation';
 import { Paths } from '../../../utils/paths';
 import { useHistory } from 'react-router-dom';
-import { CreateAdventure } from './CreateAdventure'
+import { CreateExperience } from './CreateExperience'
 import { Loader } from '@googlemaps/js-api-loader';
 
 
-export const ConnectedCreateAdventure = () => {
+export const ConnectedCreateExperience = () => {
 
     const [createCoords, setCreateCoords] = useState({lat: 0, lng: 0});
 
@@ -35,13 +35,13 @@ export const ConnectedCreateAdventure = () => {
                 lng: createCoords["lng"]
             }
         }).then(data => {
-            history.push(Paths.SingleAdventure, { pkadventure: data.data["createAdventure"]["pkadventure"] });
+            history.push(Paths.SingleExperience, { pkadventure: data.data["createAdventure"]["pkadventure"] });
         })
     };
 
     return (
         <>
-            <CreateAdventure onSubmit={onSubmit} setCreateCoords={setCreateCoords} loader={loader} />
+            <CreateExperience onSubmit={onSubmit} setCreateCoords={setCreateCoords} loader={loader} />
         </>
     )
 }

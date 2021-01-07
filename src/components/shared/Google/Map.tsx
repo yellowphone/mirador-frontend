@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useEffect } from 'react';
-import { IAdventure, ICoordinates } from './../../adventure/Adventure.types';
+import { IExperience, ICoordinates } from '../../experience/Experience.types';
 
 import { Loader } from '@googlemaps/js-api-loader';
 import { useHistory } from 'react-router-dom';
@@ -10,10 +10,10 @@ interface IMapDataProps {
     height: number,
     loader: Loader,
     coords: ICoordinates,
-    adventures: Array<IAdventure>
+    experiences: Array<IExperience>
 }
 
-export const Map: FC<IMapDataProps> = ({ height, width, loader, coords, adventures }) => {
+export const Map: FC<IMapDataProps> = ({ height, width, loader, coords, experiences }) => {
 
     var mapOptions = {
         center: {
@@ -47,13 +47,13 @@ export const Map: FC<IMapDataProps> = ({ height, width, loader, coords, adventur
             icon: iconBase
         })
 
-        adventures.map(x => {
+        experiences.map(x => {
             const newMarker = new google.maps.Marker({
                 position: {lat: x.lat, lng: x.lng},
                 map: map
             });
             newMarker.addListener('click', e => {
-                history.push(Paths.SingleAdventure, { pkadventure: x.fk_adventure_location })
+                history.push(Paths.SingleExperience, { pkadventure: x.fk_adventure_location })
             })
         })
 

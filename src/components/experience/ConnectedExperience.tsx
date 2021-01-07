@@ -1,17 +1,17 @@
 import React, { useState } from "react";
 import { DifficultyType } from "../shared/media/Badges/Badges.types";
-import { Adventure } from "./Adventure";
-import { IAdventure } from "./Adventure.types";
+import { Experience } from "./Experience";
+import { IExperience } from "./Experience.types";
 
 import { useQuery } from '@apollo/react-hooks';
 
 import { FIND_ADVENTURE_BY_COORDINATES } from '../../graphql/queries/adventureQuery';
 
-export const ConnectedAdventure = () => {
+export const ConnectedExperience = () => {
 
     const [coords, setCoords] = useState({lat: 44.349483, lng: -68.187912});
 
-    const { data: adventureItems, loading, error, refetch } = useQuery(FIND_ADVENTURE_BY_COORDINATES, {
+    const { data: experienceItems, loading, error, refetch } = useQuery(FIND_ADVENTURE_BY_COORDINATES, {
         variables: { lat: coords["lat"], lng: coords["lng"] },
     });
 
@@ -23,9 +23,9 @@ export const ConnectedAdventure = () => {
         return <h1>Error!</h1>
     }
 
-    console.log(adventureItems)
+    console.log(experienceItems)
 
-    const adventureList: Array<IAdventure> = adventureItems?.findAdventureByCoordinates?.map((item: IAdventure) => {
+    const experienceList: Array<IExperience> = experienceItems?.findAdventureByCoordinates?.map((item: IExperience) => {
         return {
             fk_adventure_location: item.fk_adventure_location,
             imageUrl: "http://www.citrusmilo.com/acadia/joebraun_precipice27.jpg",
@@ -42,6 +42,6 @@ export const ConnectedAdventure = () => {
     })
 
     return (
-        <Adventure adventures={adventureList} coords={coords} setCoords={setCoords} refetch={refetch} />
+        <Experience experiences={experienceList} coords={coords} setCoords={setCoords} refetch={refetch} />
     );
 }

@@ -7,7 +7,7 @@ import { Paths } from '../../../utils/paths';
 import { useHistory } from 'react-router-dom';
 
 export const Card: FC<CardDataProps> = ({
-    adventure
+    experience
 }) => {
 
     const {
@@ -18,7 +18,7 @@ export const Card: FC<CardDataProps> = ({
         elevation,
         miles,
         rating,
-    } = adventure
+    } = experience
 
     const history = useHistory();
     const onNavigate = useCallback((path: Paths) => {
@@ -26,7 +26,7 @@ export const Card: FC<CardDataProps> = ({
     }, []);
 
     return (
-        <Container onClick={() => onNavigate(Paths.SingleAdventure)} maxW="20em" borderWidth="1px" borderRadius="lg" overflow="hidden">
+        <Container onClick={() => onNavigate(Paths.SingleExperience)} maxW="20em" borderWidth="1px" borderRadius="lg" overflow="hidden">
 
             <Image src={imageUrl} alt={imageAlt} />
 
