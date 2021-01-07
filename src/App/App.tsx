@@ -8,15 +8,18 @@ import { ConnectedItinerary } from '../components/itenterary/ConnectedItinerary'
 import { ConnectedProfile } from '../components/profile/ConnectedProfile';
 import { Login } from '../components/login/Login';
 import { Paths } from '../utils/paths';
-import { getLoginContext, IGoogleProfile, initLoginContext, LoginContext } from '../utils/User';
+import { IGoogleProfile, initLoginContext, LoginContext } from '../utils/User';
 
 export const App: React.FC = () => {
+  // probably not what we want to have long term but works
   const [user, setUser] = useState<LoginContext>(undefined);
   
   useEffect(() => {
-    initLoginContext().then(user => setUser(user as IGoogleProfile))
+    initLoginContext().then(user => {
+      setUser(user as IGoogleProfile)
+    })
 
-  }, [initLoginContext, setUser]);
+  }, [initLoginContext]);
   // console.log(user);
 
   return (

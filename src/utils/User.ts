@@ -1,4 +1,3 @@
-import { createContext, useContext } from "react";
 import loadScript from "./loadScript";
 
 export interface IGoogleProfile {
@@ -30,27 +29,19 @@ export const initLoginContext = () => new Promise(
         }
     )
 );
-// )
-//     console.log('loading script')
-    
-//     console.log('done loading')
-// }
 
 const googleLogin = (resolve: any) => {
-    console.log('logging in')
     window.gapi.load('auth2', () => {
         const params = {
             client_id: process.env.GOOGLE_CLIENT_ID,
         };
-        console.log('loading')
+
         window.gapi.auth2.init(params).then(
             (res: { isSignedIn: { get: () => any; }; currentUser: { get: () => any; }; }) => {
-                console.log('here')
-                const signedIn = res.isSignedIn.get()
+                const signedIn = res.isSignedIn.get();
+
                 if (signedIn) {
                     const googleProfile = res.currentUser.get().getBasicProfile();
-                    console.log(googleProfile)
-                    console.log(googleProfile.getEmail())
                     const user = {
                         email: googleProfile.getEmail(),
                         lastName: googleProfile.getFamilyName(),
@@ -59,6 +50,7 @@ const googleLogin = (resolve: any) => {
                         imageUrl: googleProfile.getImageUrl(),
                         fullName: googleProfile.getName(),
                     };
+
                     setLoginContext(user);
                     resolve(user)
                 } else {
@@ -74,15 +66,9 @@ const googleLogin = (resolve: any) => {
     });
 };
 
-export const setLoginContext = (profileObj?: IGoogleProfile) => {
-    console.log('setting here')
-    loginContext = profileObj;
-}
+export const setLoginContext = (profileObj?: IGoogleProfile) => loginContext = profileObj;
 
-export const getLoginContext = (): LoginContext => {
-    console.log('getting conttext')
-    return loginContext //useContext(createContext(loginContext))
-};
+export const getLoginContext = (): LoginContext => loginContext;
 
 export const setIsUserLoggedIn = (isLoggedIn: boolean) => isUserLoggedIn = isLoggedIn;
 
