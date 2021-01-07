@@ -1,11 +1,13 @@
 import { DifficultyType } from '../shared/media/Badges/Badges.types';
 
-export interface IAdventure {
+export interface IExperience {
+    fk_adventure_location: number,
     imageUrl: string
     imageAlt: string
-    length: number
+    miles: number
     elevation: number
     title: string
+    summary: string
     rating: number
     lat: number
     lng: number
@@ -17,8 +19,8 @@ export interface ICoordinates {
     lng: number
 }
 
-export interface AdventureDataProps {
-    adventures: Array<IAdventure>;
+export interface ExperienceDataProps {
+    experiences: Array<IExperience>;
     coords: ICoordinates;
     setCoords: Function;
     refetch: any;

@@ -1,23 +1,32 @@
 import { Box, Button, Container, Image, Spacer } from "@chakra-ui/react"
-import React, { FC } from "react"
+import React, { FC, useCallback } from "react"
 import { Stars } from "../media/Stars/Stars";
 import { CardDataProps } from "./Card.types";
 
+import { Paths } from '../../../utils/paths';
+import { useHistory } from 'react-router-dom';
 
 export const Card: FC<CardDataProps> = ({
-    adventure
+    experience
 }) => {
+
     const {
+        fk_adventure_location,
         imageAlt,
         imageUrl,
         title,
         elevation,
-        length,
+        miles,
         rating,
-    } = adventure
+    } = experience
+
+    const history = useHistory();
+    const onNavigate = useCallback((path: Paths) => {
+        history.push(path, { pkadventure: fk_adventure_location });
+    }, []);
 
     return (
-        <Container maxW="20em" borderWidth="1px" borderRadius="lg" overflow="hidden">
+        <Container onClick={() => onNavigate(Paths.SingleExperience)} maxW="20em" borderWidth="1px" borderRadius="lg" overflow="hidden">
 
             <Image src={imageUrl} alt={imageAlt} />
 
@@ -32,7 +41,7 @@ export const Card: FC<CardDataProps> = ({
                     textTransform="uppercase"
                     ml="2"
                 >
-                    {length} miles &bull; {elevation} feet
+                    {miles && miles.toFixed(2)} miles &bull; {elevation} feet
                 </Box>
             </Box>
         

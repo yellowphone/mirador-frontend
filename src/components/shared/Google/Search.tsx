@@ -8,19 +8,24 @@ import './Search.css'
 interface ISearchDataProps {
     setCoords: Function
     refetch: any
+    loader: any
 }
 
-export const Search = ({ setCoords, refetch }: ISearchDataProps) => {
+export const Search = ({ setCoords, refetch, loader }: ISearchDataProps) => {
 
     const onChange = <P extends keyof Search>(props: P, value: Search[P]) => {
-        const autocomplete = new google.maps.places.Autocomplete(value);
-        autocomplete.setFields(["address_components", "geometry", "icon", "name"]);
-        autocomplete.addListener("place_changed", () => {
-        const place = autocomplete.getPlace();
-            setCoords({lat: place.geometry?.location.lat(), lng: place.geometry?.location.lng()})
-            // Refetch potentially new data anytime a search occurs
-            refetch();
+        loader.load()
+        .then(() => {
+            const autocomplete = new google.maps.places.Autocomplete(value);
+            autocomplete.setFields(["address_components", "geometry", "icon", "name"]);
+            autocomplete.addListener("place_changed", () => {
+            const place = autocomplete.getPlace();
+                setCoords({lat: place.geometry?.location.lat(), lng: place.geometry?.location.lng()})
+                // Refetch potentially new data anytime a search occurs
+                refetch();
+            })
         })
+
     }
 
     const debounceOnChange = debounce(searchQuery => {

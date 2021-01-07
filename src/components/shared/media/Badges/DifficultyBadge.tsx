@@ -5,11 +5,11 @@ import { DifficultyBadgeDataProps, DifficultyType } from './Badges.types';
 export const DifficultyBadge: FC<DifficultyBadgeDataProps> = ({ difficulty }) => {
     const color = useCallback((difficulty: string) => {
         switch (difficulty) {
-            case DifficultyType.Easy:
+            case DifficultyType.EASY:
                 return 'green';
-            case DifficultyType.Medium:
+            case DifficultyType.MODERATE:
                 return 'orange';
-            case DifficultyType.Hard:
+            case DifficultyType.HARD:
                 return 'red';
             default:
                 return 'teal';
