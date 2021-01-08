@@ -11,7 +11,7 @@ export const Card: FC<CardDataProps> = ({
 }) => {
 
     const {
-        fk_adventure_location,
+        fk_experience_location,
         imageAlt,
         imageUrl,
         title,
@@ -22,7 +22,7 @@ export const Card: FC<CardDataProps> = ({
 
     const history = useHistory();
     const onNavigate = useCallback((path: Paths) => {
-        history.push(path, { pkadventure: fk_adventure_location });
+        history.push(path, { pkexperience: fk_experience_location });
     }, []);
 
     return (

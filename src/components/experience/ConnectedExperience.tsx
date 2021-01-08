@@ -5,13 +5,13 @@ import { IExperience } from "./Experience.types";
 
 import { useQuery } from '@apollo/react-hooks';
 
-import { FIND_ADVENTURE_BY_COORDINATES } from '../../graphql/queries/adventureQuery';
+import { FIND_EXPERIENCE_BY_COORDINATES } from '../../graphql/queries/experienceQuery';
 
 export const ConnectedExperience = () => {
 
     const [coords, setCoords] = useState({lat: 44.349483, lng: -68.187912});
 
-    const { data: experienceItems, loading, error, refetch } = useQuery(FIND_ADVENTURE_BY_COORDINATES, {
+    const { data: experienceItems, loading, error, refetch } = useQuery(FIND_EXPERIENCE_BY_COORDINATES, {
         variables: { lat: coords["lat"], lng: coords["lng"] },
     });
 
@@ -25,9 +25,9 @@ export const ConnectedExperience = () => {
 
     console.log(experienceItems)
 
-    const experienceList: Array<IExperience> = experienceItems?.findAdventureByCoordinates?.map((item: IExperience) => {
+    const experienceList: Array<IExperience> = experienceItems?.findExperienceByCoordinates?.map((item: IExperience) => {
         return {
-            fk_adventure_location: item.fk_adventure_location,
+            fk_experience_location: item.fk_experience_location,
             imageUrl: "http://www.citrusmilo.com/acadia/joebraun_precipice27.jpg",
             imageAlt: "ok",
             miles: item.miles,

@@ -1,15 +1,15 @@
 import React, { FC } from "react";
 import { useQuery } from '@apollo/react-hooks';
 
-import { FIND_ADVENTURE_BY_ID } from '../../../graphql/queries/adventureQuery';
+import { FIND_EXPERIENCE_BY_ID } from '../../../graphql/queries/experienceQuery';
 
 import { ConnectedSingleExperienceProps } from './SingleExperience.type'
 import { SingleExperience } from './SingleExperience'
 
 export const ConnectedSingleExperience: FC<ConnectedSingleExperienceProps> = ({ history }) => {
     
-    const { data, loading, error, refetch } = useQuery(FIND_ADVENTURE_BY_ID, {
-        variables: { pkadventure: history.location.state.pkadventure }
+    const { data, loading, error, refetch } = useQuery(FIND_EXPERIENCE_BY_ID, {
+        variables: { pkexperience: history.location.state.pkexperience }
     })
 
     if (loading) {

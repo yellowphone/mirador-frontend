@@ -10,8 +10,8 @@ export const FIND_USER = gql`
             firstname
             lastname
             bio
-            adventures {
-                pkadventure
+            experiences {
+                pkexperience
             }
             blogs {
                 pkblog
@@ -30,8 +30,8 @@ export const FIND_MANY_USERS = gql`
             firstname
             lastname
             bio
-            adventures {
-                pkadventure
+            experiences {
+                pkexperience
             }
             blogs {
                 pkblog

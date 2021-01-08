@@ -1,9 +1,9 @@
 import { gql } from '@apollo/client';
 
-export const FIND_ADVENTURE_BY_ID = gql`
-    query findAdventureById($pkadventure: Int!) {
-        findAdventureById(pkadventure: $pkadventure) {
-            pkadventure
+export const FIND_EXPERIENCE_BY_ID = gql`
+    query findExperienceById($pkexperience: Int!) {
+        findExperienceById(pkexperience: $pkexperience) {
+            pkexperience
             title
             summary
             created_on
@@ -15,12 +15,12 @@ export const FIND_ADVENTURE_BY_ID = gql`
             elevation
             climbing
             difficulty
-            adventure_images {
+            experience_images {
                 images {
                     url
                 }
             }
-            review_adventures {
+            review_experiences {
                 rating
                 content
                 users {
@@ -31,12 +31,12 @@ export const FIND_ADVENTURE_BY_ID = gql`
     }
 `;
 
-export const FIND_ADVENTURE_BY_COORDINATES = gql`
-    query findAdventureByCoordinates($lat: Float!, $lng: Float!) {
-        findAdventureByCoordinates(lat: $lat, lng: $lng) {
+export const FIND_EXPERIENCE_BY_COORDINATES = gql`
+    query findExperienceByCoordinates($lat: Float!, $lng: Float!) {
+        findExperienceByCoordinates(lat: $lat, lng: $lng) {
             lat
             lng
-            fk_adventure_location
+            fk_experience_location
             distance
             title
             summary
