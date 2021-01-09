@@ -12,8 +12,8 @@ import { Paths } from '../utils/paths';
 import { ApolloProvider } from '@apollo/client';
 import { client } from '../graphql/client';
 
-import { ConnectedSingleExperience } from '../components/experience/single_experience/ConnectedSingleExperience';
-import { ConnectedCreateExperience } from '../components/experience/create_experience/ConnectedCreateExperience';
+import { ConnectedSingleExperience } from '../components/experience/single-experience/ConnectedSingleExperience';
+import { ConnectedCreateExperience } from '../components/experience/create-experience/ConnectedCreateExperience';
 
 export const App: React.FC = () => {
 

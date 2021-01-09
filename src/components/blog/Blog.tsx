@@ -1,6 +1,7 @@
 import { HStack } from '@chakra-ui/react';
 import React from 'react';
 import { NavigationBar } from '../shared/navigation-bar/NavigationBar';
+import { SingleBlog } from './single-blog/SingleBlog'
 
 export const Blog = () => {
 
@@ -8,10 +9,10 @@ export const Blog = () => {
         <>
             <NavigationBar />
             <h1>Blogs</h1>
-            
-            <HStack>
-
-            </HStack>
+            <p>Here's a sample for a single blog</p>
+            <br></br>
+            <br></br>
+            <SingleBlog />
         </>
     )
 }
