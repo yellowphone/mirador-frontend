@@ -1,7 +1,7 @@
 import { DifficultyType } from '../shared/media/Badges/Badges.types';
 
 export interface IExperience {
-    fk_adventure_location: number,
+    fk_experience_location: number,
     imageUrl: string
     imageAlt: string
     miles: number

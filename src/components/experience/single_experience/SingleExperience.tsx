@@ -7,13 +7,13 @@ import { SingleExperienceProps } from './SingleExperience.type'
 export const SingleExperience: FC<SingleExperienceProps> = ({ data }) => {
 
     console.log(data)
-    const id = data["findAdventureById"]["pkadventure"]
-    const title = data["findAdventureById"]["title"]
-    const miles = data["findAdventureById"]["miles"]
-    const elevation = data["findAdventureById"]["elevation"]
-    const summary = data["findAdventureById"]["summary"]
-    const lat = (data["findAdventureById"]["locations"]["lat"])
-    const lng = (data["findAdventureById"]["locations"]["lng"])
+    const id = data["findExperienceById"]["pkexperience"]
+    const title = data["findExperienceById"]["title"]
+    const miles = data["findExperienceById"]["miles"]
+    const elevation = data["findExperienceById"]["elevation"]
+    const summary = data["findExperienceById"]["summary"]
+    const lat = (data["findExperienceById"]["locations"]["lat"])
+    const lng = (data["findExperienceById"]["locations"]["lng"])
 
     return(
         <>

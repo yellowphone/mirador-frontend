@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useMutation } from '@apollo/react-hooks';
-import { CREATE_ADVENTURE } from '../../../graphql/mutations/adventureMutation';
+import { CREATE_EXPERIENCE } from '../../../graphql/mutations/experienceMutation';
 import { Paths } from '../../../utils/paths';
 import { useHistory } from 'react-router-dom';
 import { CreateExperience } from './CreateExperience'
@@ -11,7 +11,7 @@ export const ConnectedCreateExperience = () => {
 
     const [createCoords, setCreateCoords] = useState({lat: 0, lng: 0});
 
-    const [ createAdventure, { data }] = useMutation(CREATE_ADVENTURE);
+    const [ createExperience, { data }] = useMutation(CREATE_EXPERIENCE);
 
     const history = useHistory();
 
@@ -23,7 +23,7 @@ export const ConnectedCreateExperience = () => {
 
     const onSubmit = (input: any) => {   
         console.log(input)
-        createAdventure({
+        createExperience({
             variables: {
                 title: input["title"],
                 summary: input["summary"],
@@ -35,7 +35,7 @@ export const ConnectedCreateExperience = () => {
                 lng: createCoords["lng"]
             }
         }).then(data => {
-            history.push(Paths.SingleExperience, { pkadventure: data.data["createAdventure"]["pkadventure"] });
+            history.push(Paths.SingleExperience, { pkexperience: data.data["createExperience"]["pkexperience"] });
         })
     };
 
