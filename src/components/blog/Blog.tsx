@@ -12,7 +12,6 @@ export const Blog = () => {
             <p>Here's a sample for a single blog</p>
             <br></br>
             <br></br>
-            <SingleBlog />
         </>
     )
 }

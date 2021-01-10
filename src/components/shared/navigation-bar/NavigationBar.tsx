@@ -45,7 +45,7 @@ export const NavigationBar = () => {
                                         <MenuList>
                                             <MenuItem onClick={() => onNavigate(Paths.CreateExperience)}>New Experience</MenuItem>
                                             <MenuItem>New Itinerary</MenuItem>
-                                            <MenuItem>New Blog</MenuItem>
+                                            <MenuItem onClick={() => onNavigate(Paths.CreateBlog)}>New Blog</MenuItem>
                                         </MenuList>
                                     </Menu>
                                 </GridItem>

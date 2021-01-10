@@ -14,6 +14,8 @@ import { client } from '../graphql/client';
 
 import { ConnectedSingleExperience } from '../components/experience/single-experience/ConnectedSingleExperience';
 import { ConnectedCreateExperience } from '../components/experience/create-experience/ConnectedCreateExperience';
+import { SingleBlog } from '../components/blog/single-blog/SingleBlog';
+import { ConnectedCreateBlog } from '../components/blog/create-blog/ConnectedCreateBlog';
 
 export const App: React.FC = () => {
 
@@ -29,12 +31,14 @@ export const App: React.FC = () => {
         <Router>
           <Switch>
             <Route exact path={Paths.Blog} component={ConnectedBlog} />
+            <Route exact path={Paths.SingleBlog} component={SingleBlog} />
+            <Route exact path={Paths.CreateBlog} component={ConnectedCreateBlog} />
             <Route exact path={Paths.Home} component={ConnectedProfile} />
             <Route exact path={Paths.Experience} component={ConnectedExperience} />
-            <Route exact path={Paths.Itinerary} component={ConnectedItinerary} />
-            <Route exact path={Paths.Profile} component={ConnectedProfile} />
             <Route exact path={Paths.SingleExperience} component={ConnectedSingleExperience} />
             <Route exact path={Paths.CreateExperience} component={ConnectedCreateExperience} />
+            <Route exact path={Paths.Itinerary} component={ConnectedItinerary} />
+            <Route exact path={Paths.Profile} component={ConnectedProfile} />
             <Redirect from='*' to={Paths.Home} />
           </Switch>
         </Router>
