@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 
 export const CREATE_BLOG = gql`
-    mutation createBlog($title: String, $pkuser: Int!, $summary: String, $content: String) {
+    mutation createBlog($title: String, $pkuser: Int!, $summary: String, $content: Json) {
         createBlog(title: $title, pkuser: $pkuser, summary: $summary, content: $content) {
             pkblog
         }

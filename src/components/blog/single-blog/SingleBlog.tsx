@@ -5,19 +5,15 @@ import { BlogExperienceCard } from '../blog-experience-card/BlogExperienceCard'
 import { useQuery } from '@apollo/client';
 import { FIND_BLOG_BY_ID } from '../../../graphql/queries/blogQuery';
 
-// interface SingleBlogDataProps {
-//     history: History
-// }
+interface SingleBlogDataProps {
+    history: History
+}
 
-// export const SingleBlog: FC<SingleBlogDataProps> = ({ history }) => {
-export const SingleBlog = () => {
+export const SingleBlog: FC<SingleBlogDataProps> = ({ history }) => {
 
     const { data, loading, error, refetch } = useQuery(FIND_BLOG_BY_ID, {
-        variables: { pkblog: 3 }
+        variables: { pkblog: history.location.state.pkblog }
     })
-    // const { data, loading, error, refetch } = useQuery(FIND_BLOG_BY_ID, {
-    //     variables: { pkblog: history.location.state.pkblog }
-    // })
 
     if (loading) {
         return <h1>Loading</h1>
@@ -64,7 +60,7 @@ export const SingleBlog = () => {
 
     return(
         <>
-        {/* <NavigationBar/> */}
+        <NavigationBar/>
         <Container maxW="lg">
             <VStack spacing='40px'>
                 <Center>
@@ -72,7 +68,6 @@ export const SingleBlog = () => {
                 </Center>
                 { html }
 
-                {/* <Container dangerouslySetInnerHTML={{__html: data["findBlogById"]["content"]}}/> */}
             </VStack>
         </Container>         
         </>
