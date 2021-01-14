@@ -9,7 +9,7 @@ export const ActionBar = () => {
             <Center>
                 <ButtonGroup>
                     <Button>Overview</Button>
-                    <Button>Adventures</Button>
+                    <Button>Experiences</Button>
                     <Button>Blogs</Button>
                     <Button>Iteneraries</Button>
                 </ButtonGroup>

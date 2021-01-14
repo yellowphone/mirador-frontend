@@ -4,11 +4,18 @@ import { Redirect, Route, BrowserRouter as Router, Switch } from 'react-router-d
 import { ConnectedExperience } from '../components/experience/ConnectedExperience';
 import { ConnectedBlog } from '../components/blog/ConnectedBlog';
 import { ConnectedHome } from '../components/home/ConnectedHome';
-import { ConnectedItinerary } from '../components/itenterary/ConnectedItinerary';
+import { ConnectedItinerary } from '../components/itinerary/ConnectedItinerary';
 import { ConnectedProfile } from '../components/profile/ConnectedProfile';
 import { Login } from '../components/login/Login';
 import { Paths } from '../utils/paths';
 import { IGoogleProfile, initLoginContext, LoginContext } from '../utils/User';
+
+// graphql imports
+import { ApolloProvider } from '@apollo/client';
+import { client } from '../graphql/client';
+
+import { ConnectedSingleExperience } from '../components/experience/single_experience/ConnectedSingleExperience';
+import { ConnectedCreateExperience } from '../components/experience/create_experience/ConnectedCreateExperience';
 
 export const App: React.FC = () => {
   // probably not what we want to have long term but works
@@ -20,22 +27,24 @@ export const App: React.FC = () => {
     })
 
   }, [initLoginContext]);
-  // console.log(user);
 
   return (
-    <ChakraProvider>
-      <Router>
-        <Switch>
-          <Route exact path={Paths.Blog} component={ConnectedBlog} />
-          <Route exact path={Paths.Home} component={ConnectedHome} />
-          <Route exact path={Paths.Adventure} component={ConnectedExperience} />
-          <Route exact path={Paths.Itenerary} component={ConnectedItinerary} />
-          <Route exact path={Paths.Profile} component={ConnectedProfile} />
-          <Route exact path={Paths.Login} component={Login} />
-          <Redirect from='*' to={Paths.Home} />
-        </Switch>
-      </Router>
-    </ChakraProvider>
+    <ApolloProvider client={client}>
+      <ChakraProvider>
+        <Router>
+          <Switch>
+            <Route exact path={Paths.Blog} component={ConnectedBlog} />
+            <Route exact path={Paths.Home} component={ConnectedProfile} />
+            <Route exact path={Paths.Experience} component={ConnectedExperience} />
+            <Route exact path={Paths.Itinerary} component={ConnectedItinerary} />
+            <Route exact path={Paths.Profile} component={ConnectedProfile} />
+            <Route exact path={Paths.SingleExperience} component={ConnectedSingleExperience} />
+            <Route exact path={Paths.CreateExperience} component={ConnectedCreateExperience} />
+            <Redirect from='*' to={Paths.Home} />
+          </Switch>
+        </Router>
+      </ChakraProvider>
+    </ApolloProvider>
   );
 }
 

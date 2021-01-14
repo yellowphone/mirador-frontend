@@ -1,10 +1,13 @@
 import { Box, Center, Flex, Input } from '@chakra-ui/react';
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState, useRef } from 'react';
 import { NavigationBar } from '../shared/navigation-bar/NavigationBar';
-import { Map } from '../shared/Map/Map';
 import './Experience.css';
 import { ExperienceDataProps } from './Experience.types';
 import { CardsGrid } from '../shared/cards-grid/CardsGrid';
+
+import { Search } from '../shared/Google/Search'
+import { Map } from '../shared/Google/Map';
+import { Loader } from '@googlemaps/js-api-loader';
 
 const leftSideStyle = {
     scroll: 'auto',
@@ -15,7 +18,14 @@ const rightSideStyle = {
     // position: 'fixed', // need to get the map to be fixed to the right
 }
 
-export const Experience: FC<ExperienceDataProps> = ({ experiences }) => {
+export const Experience: FC<ExperienceDataProps> = ({ experiences, coords, setCoords, refetch }) => {
+
+    const loader = new Loader({
+        apiKey: `${process.env.MAPS_API_KEY}`,
+        version: "weekly",
+        libraries: ["places", "geometry"]
+    });
+
     return (
         <>
             <NavigationBar />
@@ -24,16 +34,13 @@ export const Experience: FC<ExperienceDataProps> = ({ experiences }) => {
                     <Center 
                         pt='5'
                     >
-                        <Input
-                            width='40%'
-                            placeholder={'Where do you want to go?'}
-                        />
+                        <Search loader={loader} setCoords={setCoords} refetch={refetch} />
                     </Center>
 
                     <CardsGrid list={experiences} />
                 </Box>
                 <Box css={rightSideStyle} maxW='50%' width={screen.width / 2}>
-                    <Map width={screen.width / 2} height={screen.height - 170} />
+                    <Map width={screen.width / 2} height={screen.height - 170} loader={loader} coords={coords} experiences={experiences}/>
                 </Box>
             </Flex> 
         </>
