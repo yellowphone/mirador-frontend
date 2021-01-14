@@ -1,26 +1,28 @@
 import { Badge, Box, Image, Stack } from '@chakra-ui/react';
 import React from 'react';
+import { getLoginContext } from '../../utils/User';
 
 export const ProfileCard = () => {
+    const user = getLoginContext();
 
     return (
-        <Box maxW="30em" borderWidth="1px" borderRadius="lg" overflow="hidden">
+        <Box margin='auto' maxW="30em" borderWidth="1px" borderRadius="lg" overflow="hidden" >
             <Stack direction='row'>
                 <Image 
-                    src={'https://www.trbimg.com/img-57d07f92/turbine/dp-ugc-article-toanos-geo-min-wins-dominion-scholarship-2016-09-07'}
+                    src={user.imageUrl}
                     alt='Profile picture'
                     borderRadius="full"
                     boxSize="150px"
                 />
                 <Box p="6">
                     <Box>
-                        baileyg2016
+                        {user.email}
                     </Box>
                     <Box>
                         100 Followers &bull; 50 Following
                     </Box>
                     <Box>
-                        Bailey Spell
+                        {user.fullName}
                     </Box>
                     <Stack direction='row' wrap='wrap'>
                         <Badge>Climbing</Badge>

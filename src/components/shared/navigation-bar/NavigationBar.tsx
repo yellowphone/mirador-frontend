@@ -1,5 +1,5 @@
-import { GridItem, Spacer, Grid, Icon, Tooltip, Menu, MenuButton, Button, MenuList, MenuItem } from '@chakra-ui/react';
-import React, { useCallback } from 'react';
+import { GridItem, Spacer, Grid, Icon, Menu, MenuButton, Button, MenuList, MenuItem, Text, useDisclosure } from '@chakra-ui/react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import { Nav } from 'react-bootstrap';
 import Navbar from 'react-bootstrap/Navbar';
 import { useHistory } from 'react-router-dom';
@@ -7,14 +7,26 @@ import { Paths } from '../../../utils/paths';
 import './NavigationBar.css'
 import { MdPerson } from 'react-icons/md'
 import { AddIcon, ChevronDownIcon } from '@chakra-ui/icons';
+import { Login } from '../../login/Login';
+import { getLoginContext, IGoogleProfile, initLoginContext, LoginContext } from '../../../utils/User';
 
-export const NavigationBar = () => {
-    const loggedIn = true;
+export const NavigationBar: FC = () => {
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    const [user, setUser] = useState<LoginContext>(undefined);
     const history = useHistory();
 
     const onNavigate = useCallback((path: Paths) => {
         history.push(path);
-    }, []);
+    }, [history]);
+    console.log(user)
+
+    useEffect(() => {
+        // if (!user) {
+            console.log('setting')
+            initLoginContext().then(user => setUser(user as IGoogleProfile))
+        // }
+        console.log(getLoginContext())
+    }, [setUser]);
 
     return (
         <Navbar bg="light justify-content-between" sticky='top'>
@@ -34,7 +46,7 @@ export const NavigationBar = () => {
                 <GridItem p='4'>
                     <Nav className='center'>
                     {
-                        loggedIn 
+                        user 
                         ? (
                             <Grid templateColumns='repeat(3, 1fr)'>
                                 <GridItem>
@@ -56,13 +68,17 @@ export const NavigationBar = () => {
                             </Grid>
                         ) : (
                             <>
-                                <Nav.Link>Login</Nav.Link>
+                                <Nav.Link onClick={onOpen}>
+                                    {/* <Login isOpen={isOpen} onOpen={onOpen} onClose={onClose} /> */}
+                                    <Text>Login</Text>
+                                </Nav.Link>
                                 <Nav.Link>Sign up</Nav.Link>
                             </>
                         )
                     }
                     </Nav>
                 </GridItem>
+                { !user && <Login onClose={onClose} isOpen={isOpen} /> }
             </Grid>
         </Navbar>
     )
