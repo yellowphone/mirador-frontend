@@ -2,13 +2,43 @@ import React, { FC, useState } from 'react';
 import { useForm } from "react-hook-form";
 import { NavigationBar } from '../../shared/navigation-bar/NavigationBar';
 import { CreateBlogDataProps } from './CreateBlog.types'
-import { Container, SimpleGrid, Center, Heading, VStack, Text, Image, Box, Textarea, Button, Input } from "@chakra-ui/react"
+import { Container, SimpleGrid, Center, Heading, VStack, Text, Image, Box, Textarea, Button, Input, Select } from "@chakra-ui/react"
 import { BlogExperienceCard } from '../blog-experience-card/BlogExperienceCard';
+import { ExperienceSearch } from '../../shared/search/experienceSearch';
 
 
 export const CreateBlog: FC<CreateBlogDataProps> = ({ onSubmit, jsonContent, setJsonContent }) => {
 
     const [ html, setHtml ] = useState([]);
+
+    const [ textButton, setTextButton ] = useState(false)
+    const [ imageButton, setImageButton ] = useState(false)
+    const [ experienceButton, setExperienceButton ] = useState(false)
+    // const [ two_colButton, setTwo_colButton ] = useState(false)
+    const textOnClick = () => { 
+        setTextButton(true)
+        setImageButton(false)
+        setExperienceButton(false)
+        // setTwo_colButton(false)
+    }
+    const imageOnClick = () => {
+        setTextButton(false)
+        setImageButton(true)
+        setExperienceButton(false)
+        // setTwo_colButton(false)
+    }
+    const experienceOnClick = () => {
+        setTextButton(false)
+        setImageButton(false)
+        setExperienceButton(true)
+        // setTwo_colButton(false)
+    }
+    // const two_colOnClick = () => {
+    //     setTextButton(false)
+    //     setImageButton(false)
+    //     setExperienceButton(false)
+    //     setTwo_colButton(true)
+    // }
 
     const { register, handleSubmit, errors } = useForm();
 
@@ -36,57 +66,88 @@ export const CreateBlog: FC<CreateBlogDataProps> = ({ onSubmit, jsonContent, set
 
     const testFunc = (input: any) => {
         console.log(input)
-        addContent(input["title"], input["content"])
+        if (input["type"] != "two_col") {
+            addContent(input["type"], input["content"])
+        }
+        
     }
-
-    // var html: Object[] = []
-    // jsonContent.map(elem => {
-    //     console.log(elem);
-    //     if (elem["type"] == "two_col") {
-    //         html.push(
-    //             <SimpleGrid columns={2} spacing={5}>
-    //                 {renderBlogComponents(elem["col1"]["type"], elem["col1"]["content"])}
-    //                 {renderBlogComponents(elem["col2"]["type"], elem["col2"]["content"])}
-    //             </SimpleGrid>
-    //         )
-    //     }
-    //     else {
-    //         html.push(
-    //             <SimpleGrid columns={1}>
-    //                 {renderBlogComponents(elem["type"], elem["content"])}
-    //             </SimpleGrid>
-    //         )
-            
-    //     }
-    // })
 
     return(
         <>
             <NavigationBar/>
-            <Box maxW='100%'>
-                <form onSubmit = { handleSubmit(onSubmit) }>
-                    <Input name="title" placeholder="Title" ref={register} />
-                    <Textarea name="summary" placeholder="Summary" ref={register} />
-                    <Button type="submit">Create</Button>
-                </form>
+            <Container maxW='xl'>
+                <Box maxW='100%'>
+                    <form onSubmit = { handleSubmit(onSubmit) }>
+                        <Center>
+                            <Button type="submit">Create</Button>
+                        </Center>
+                        <Input name="title" placeholder="Title" ref={register} />
+                        <Textarea name="summary" placeholder="Summary" ref={register} />
+                    </form>
+                    <br></br>
 
-                <form onSubmit = { handleSubmit(testFunc) }>
-                    <Input name="title" placeholder="Type" ref={register} />
-                    <Input name="content" placeholder="Content" ref={register} />
-                    <Button type="submit">Add</Button>
-                </form>
+                    <Container maxW="lg">
+                        <VStack spacing='40px'>
+                            { html }
+                        </VStack>
+                    </Container>     
 
+                    <form onSubmit = { handleSubmit(testFunc) }>
+                        <Center>
+                            <Button onClick={textOnClick}>Add text</Button>
+                            <Button onClick={imageOnClick}>Add image</Button>
+                            <Button onClick={experienceOnClick}>Add experience</Button>
+                            {/* <Button style={{ paddingBlock: "10px" }} onClick={two_colOnClick}>Add two col</Button> */}
+                        </Center>
+                        
 
-                { html } 
+                        { textButton ? 
+                            <>
+                                <Input style={{ visibility: "hidden"}} name="type" defaultValue="text" ref={register}/>
+                                <Textarea name="content" placeholder="Type text here" ref={register}/>
+                                <Center>
+                                    <Button type="submit">Add</Button>
+                                </Center>
+                            </> 
+                        : null }
 
-                {/* <form onSubmit = { handleSubmit(onSubmit) } > */}
-                    {/* { html }  */}
-                    {/* <Input name="title" placeholder="Title" ref={register} />
-                    <Textarea name="summary" placeholder="Summary" ref={register} /> */}
-                    {/* <Textarea name="content" placeholder="Add HTML" ref={register} /> */}
-                    {/* <Button type="submit">Create</Button> */}
-                {/* </form> */}
-            </Box>
+                        { imageButton ? 
+                            <>
+                                <Input style={{ visibility: "hidden"}} name="type" defaultValue="image" ref={register}/>
+                                <Input name="content" placeholder="Put image url here" ref={register}/>
+                                <Center>
+                                    <Button type="submit">Add</Button>
+                                </Center>
+                            </> 
+                        : null }
+
+                        { experienceButton ? 
+                            <>
+                                <Input style={{ visibility: "hidden"}} name="type" defaultValue="experience" ref={register}/>
+                                <ExperienceSearch/>
+                                <Center>
+                                    <Button type="submit">Add</Button>
+                                </Center>
+                            </> 
+                        : null }
+
+                        {/* { two_colButton ? 
+                            <>
+                                <Input style={{ visibility: "hidden"}} name="type" defaultValue="two_col" ref={register}/>
+                                <SimpleGrid columns={2} spacing={3}>
+
+                                </SimpleGrid>
+                                <Input name="content" placeholder="Put pkexperience here" ref={register}/>
+                                <Center>
+                                    <Button type="submit">Add</Button>
+                                </Center>
+                            </> 
+                        : null } */}
+
+                    </form>
+                </Box>
+            </Container>
+            
         </>
     )
 }

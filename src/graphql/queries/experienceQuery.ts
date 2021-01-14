@@ -31,6 +31,15 @@ export const FIND_EXPERIENCE_BY_ID = gql`
     }
 `;
 
+export const FIND_EXPERIENCE_BY_TITLE = gql`
+    query findExperienceByTitle($title: String!) {
+        findExperienceByTitle(title: $title) {
+            pkexperience
+            title
+        }
+    }
+`;
+
 export const FIND_EXPERIENCE_BY_COORDINATES = gql`
     query findExperienceByCoordinates($lat: Float!, $lng: Float!) {
         findExperienceByCoordinates(lat: $lat, lng: $lng) {

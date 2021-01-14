@@ -9,10 +9,6 @@ export const Blog = () => {
         <>
             <NavigationBar />
             <h1>Blogs</h1>
-            <p>Here's a sample for a single blog</p>
-            <br></br>
-            <br></br>
-            <SingleBlog/>
         </>
     )
 }
