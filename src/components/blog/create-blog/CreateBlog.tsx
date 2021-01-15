@@ -123,11 +123,7 @@ export const CreateBlog: FC<CreateBlogDataProps> = ({ onSubmit, jsonContent, set
 
                         { experienceButton ? 
                             <>
-                                <Input style={{ visibility: "hidden"}} name="type" defaultValue="experience" ref={register}/>
-                                <ExperienceSearch/>
-                                <Center>
-                                    <Button type="submit">Add</Button>
-                                </Center>
+                                <ExperienceSearch addContent={addContent}/>
                             </> 
                         : null }
 
