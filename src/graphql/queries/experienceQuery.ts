@@ -7,7 +7,7 @@ export const FIND_EXPERIENCE_BY_ID = gql`
             title
             summary
             created_on
-            locations {
+            experience_locations {
                 lat
                 lng
             }

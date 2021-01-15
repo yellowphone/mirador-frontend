@@ -12,8 +12,8 @@ export const SingleExperience: FC<SingleExperienceProps> = ({ data }) => {
     const miles = data["findExperienceById"]["miles"]
     const elevation = data["findExperienceById"]["elevation"]
     const summary = data["findExperienceById"]["summary"]
-    const lat = (data["findExperienceById"]["locations"]["lat"])
-    const lng = (data["findExperienceById"]["locations"]["lng"])
+    const lat = (data["findExperienceById"]["experience_locations"]["lat"])
+    const lng = (data["findExperienceById"]["experience_locations"]["lng"])
 
     return(
         <>

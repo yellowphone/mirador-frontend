@@ -34,8 +34,8 @@ export const BlogExperienceCard: FC<BlogExperienceCardProps> = ({ pkexperience }
         elevation: data["findExperienceById"]["elevation"],
         miles: data["findExperienceById"]["miles"],
         rating: 3,
-        lat: (data["findExperienceById"]["locations"]["lat"]),
-        lng: (data["findExperienceById"]["locations"]["lng"]),
+        lat: (data["findExperienceById"]["experience_locations"]["lat"]),
+        lng: (data["findExperienceById"]["experience_locations"]["lng"]),
         summary: data["findExperienceById"]["summary"],
         difficulty: data["findExperienceById"]["difficulty"]
     }
