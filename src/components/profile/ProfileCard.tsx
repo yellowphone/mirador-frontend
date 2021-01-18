@@ -9,20 +9,20 @@ export const ProfileCard = () => {
         <Box margin='auto' maxW="30em" borderWidth="1px" borderRadius="lg" overflow="hidden" >
             <Stack direction='row'>
                 <Image 
-                    src={user.imageUrl}
+                    src={user?.imageUrl ?? 'image not there'}
                     alt='Profile picture'
                     borderRadius="full"
                     boxSize="150px"
                 />
                 <Box p="6">
                     <Box>
-                        {user.email}
+                        {user?.email ?? 'email not there'}
                     </Box>
                     <Box>
                         100 Followers &bull; 50 Following
                     </Box>
                     <Box>
-                        {user.fullName}
+                        {user?.fullName ?? 'name not their'}
                     </Box>
                     <Stack direction='row' wrap='wrap'>
                         <Badge>Climbing</Badge>

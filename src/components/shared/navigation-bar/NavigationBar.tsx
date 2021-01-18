@@ -8,7 +8,7 @@ import './NavigationBar.css'
 import { MdPerson } from 'react-icons/md'
 import { AddIcon, ChevronDownIcon } from '@chakra-ui/icons';
 import { Login } from '../../login/Login';
-import { getLoginContext, IGoogleProfile, initLoginContext, LoginContext } from '../../../utils/User';
+import { getLoginContext, IGoogleProfile, LoginContext } from '../../../utils/User';
 
 export const NavigationBar: FC = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -22,10 +22,10 @@ export const NavigationBar: FC = () => {
 
     useEffect(() => {
         // if (!user) {
-            console.log('setting')
-            initLoginContext().then(user => setUser(user as IGoogleProfile))
-        // }
-        console.log(getLoginContext())
+        //     console.log('setting')
+        //     initLoginContext().then(user => setUser(user as IGoogleProfile))
+        // // }
+        // console.log(getLoginContext())
     }, [setUser]);
 
     return (
@@ -58,6 +58,8 @@ export const NavigationBar: FC = () => {
                                             <MenuItem onClick={() => onNavigate(Paths.CreateExperience)}>New Experience</MenuItem>
                                             <MenuItem>New Itinerary</MenuItem>
                                             <MenuItem>New Blog</MenuItem>
+                                            { /* This is only temporary */}
+                                            <MenuItem onClick={() => gapi.auth2.getAuthInstance().signOut()}>Logout</MenuItem>
                                         </MenuList>
                                     </Menu>
                                 </GridItem>
