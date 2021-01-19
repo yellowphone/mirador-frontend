@@ -1,5 +1,5 @@
 import { ChakraProvider } from '@chakra-ui/react';
-import React, { useCallback, useEffect, useState } from 'react';
+import React from 'react';
 import { Redirect, Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 import { ConnectedExperience } from '../components/experience/ConnectedExperience';
 import { ConnectedBlog } from '../components/blog/ConnectedBlog';
@@ -14,19 +14,8 @@ import { client } from '../graphql/client';
 
 import { ConnectedSingleExperience } from '../components/experience/single_experience/ConnectedSingleExperience';
 import { ConnectedCreateExperience } from '../components/experience/create_experience/ConnectedCreateExperience';
-import { initFacebookSdk } from '../utils/User';
 
 export const App: React.FC = () => {
-
-  useCallback(() => {
-    // this needs to be here so that our facebook sdk gets
-    // created. For some reason, the npm package errors on
-    // creating the script
-    initFacebookSdk().then(() => {
-      console.log('facebook sdk loaded')
-    });
-}, [initFacebookSdk]);
-
   return (
     <ApolloProvider client={client}>
       <ChakraProvider>

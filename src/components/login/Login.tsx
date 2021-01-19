@@ -4,19 +4,39 @@ import React, { FC, useCallback } from 'react';
 // import GoogleLogin from './GoogleLogin';
 import FacebookLogin from 'react-facebook-login';
 import GoogleLogin from 'react-google-login';
+import { Account, getUserContext, setUserContext } from '../../utils/userContext';
 import { ILoginDataProps } from './Login.types';
 
 export const Login: FC<ILoginDataProps> = ({
     isOpen,
     onClose,
 }) => {
-    const googleSuccess = useCallback((response: any) => {
-        console.log(response);
+    const googleSuccess = useCallback((res: any) => {
+        const { tokenObj, profileObj } = res;
+        console.log(res)
+        setUserContext(
+            profileObj.name,
+            profileObj.email,
+            tokenObj.id_token,
+            profileObj.imageUrl,
+            tokenObj.access_token,
+            Account.Google,
+        );
+        console.log(getUserContext())
         onClose();
     }, []);
 
-    const facebookSuccess = useCallback((response: any) => {
-        console.log(response);
+    const facebookSuccess = useCallback((res: any) => {
+        console.log(res);
+        setUserContext(
+            res.name,
+            res.email,
+            res.userID,
+            res.picture.data.url,
+            res.accessToken,
+            Account.Facebook,
+        );
+        console.log(getUserContext())
         onClose();
     }, []);
     
