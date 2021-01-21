@@ -6,6 +6,7 @@ import { Container, SimpleGrid, Center, Heading, VStack, Text, Image, Box, Texta
 import { BlogExperienceCard } from '../blog-experience-card/BlogExperienceCard';
 import { ExperienceSearch } from '../../shared/search/ExperienceSearch';
 import { Search } from '../../shared/Google/Search'
+import { Upload } from '../../shared/upload/Upload';
 
 
 export const CreateBlog: FC<CreateBlogDataProps> = ({ onSubmit, addContentHelper, addContent, html, setCreateCoords, loader }) => {
@@ -73,11 +74,12 @@ export const CreateBlog: FC<CreateBlogDataProps> = ({ onSubmit, addContentHelper
 
                         { imageButton ? 
                             <>
-                                <Input style={{ visibility: "hidden"}} name="type" defaultValue="image" ref={register}/>
+                                <Upload addContent={addContent} />
+                                {/* <Input style={{ visibility: "hidden"}} name="type" defaultValue="image" ref={register}/>
                                 <Input name="content" placeholder="Put image url here" ref={register}/>
                                 <Center>
                                     <Button type="submit">Add</Button>
-                                </Center>
+                                </Center> */}
                             </> 
                         : null }
 
