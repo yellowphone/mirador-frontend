@@ -1,7 +1,7 @@
-import React, { FC } from "react"
+import React, { FC, FormEvent, useState } from "react"
 import { useMutation } from '@apollo/react-hooks';
 import { CREATE_IMAGE } from '../../../graphql/mutations/imageMutation';
-import { Input } from "@chakra-ui/react";
+import { Input, Spinner } from "@chakra-ui/react";
 
 interface UploadDataProps {
     addContent: Function
@@ -11,7 +11,10 @@ export const Upload: FC<UploadDataProps> = ({ addContent }) => {
 
     const [ uploadPhoto, { data }] = useMutation(CREATE_IMAGE);
 
-    const onChange = (e) => { 
+    const [spin, setSpin] = useState(false);
+
+    const onChange = (e) => {
+        setSpin(true);
         const file = e.target.files[0]
         console.log(file)
         if (!file) console.error("Error with image")
@@ -23,6 +26,7 @@ export const Upload: FC<UploadDataProps> = ({ addContent }) => {
             }
         }).then(data => {
             addContent("image", data.data["createImage"]["url"])
+            setSpin(false);
         })
     }
 
@@ -30,6 +34,7 @@ export const Upload: FC<UploadDataProps> = ({ addContent }) => {
     return (
         <>
             <Input type="file" required onChange={onChange}/>
+            { spin && <Spinner />}
         </>
     )
 }

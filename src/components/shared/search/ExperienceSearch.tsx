@@ -16,18 +16,6 @@ export const ExperienceSearch: FC<ExperienceSearchDataProps> = ({ addContent }) 
         variables: { title: title }
     });
 
-    // const [ data, setData ] = useState([]);
-
-    // const onChange = (value) => {
-
-    // }
-
-    // const debounceOnChange = debounce(searchQuery => {
-    //     onChange(searchQuery)
-    // }, 500)
-
-    // if (called && loading) return <p>Loading ...</p>;
-
     return (
         <>
         <Input type="text" placeholder="Search an experience" onChange={e => setTitle(e.target.value)}></Input>

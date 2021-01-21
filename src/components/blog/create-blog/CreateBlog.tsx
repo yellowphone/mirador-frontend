@@ -75,11 +75,6 @@ export const CreateBlog: FC<CreateBlogDataProps> = ({ onSubmit, addContentHelper
                         { imageButton ? 
                             <>
                                 <Upload addContent={addContent} />
-                                {/* <Input style={{ visibility: "hidden"}} name="type" defaultValue="image" ref={register}/>
-                                <Input name="content" placeholder="Put image url here" ref={register}/>
-                                <Center>
-                                    <Button type="submit">Add</Button>
-                                </Center> */}
                             </> 
                         : null }
 
