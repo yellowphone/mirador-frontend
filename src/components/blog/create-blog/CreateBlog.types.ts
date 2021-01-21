@@ -1,10 +1,11 @@
 import { Loader } from '@googlemaps/js-api-loader';
+import { SubmitHandler } from 'react-hook-form';
 
 export interface CreateBlogDataProps {
-    onSubmit: Function
+    onSubmit: SubmitHandler<Record<string, any>>
     loader: Loader
     setCreateCoords: Function
-    addContentHelper: Function
+    addContentHelper: SubmitHandler<Record<string, any>>
     addContent: Function
-    html: any
+    html: Object
 }

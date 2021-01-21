@@ -6,7 +6,7 @@ import { CreateBlog } from './CreateBlog';
 import { Paths } from '../../../utils/paths';
 import { Loader } from '@googlemaps/js-api-loader';
 import { BlogExperienceCard } from '../blog-experience-card/BlogExperienceCard';
-import { Container, SimpleGrid, Center, Heading, VStack, Text, Image, Box, Textarea, Button, Input, Select } from "@chakra-ui/react"
+import { Container, SimpleGrid, Center, Heading, VStack, Text, Image, Box } from "@chakra-ui/react"
 
 export const ConnectedCreateBlog = () => {
 
@@ -14,8 +14,10 @@ export const ConnectedCreateBlog = () => {
 
     const [ createBlog, { data }] = useMutation(CREATE_BLOG);
 
-    const [ jsonContent, setJsonContent ] = useState([]);
-    const [ html, setHtml ] = useState([]);
+    // JSON state object to store HTML metadata 
+    const [ jsonContent, setJsonContent ] = useState<Object[]>([]);
+    // HTML state object to display as blog is being created
+    const [ html, setHtml ] = useState<Object[]>([]);
 
     const history = useHistory();
 
@@ -39,7 +41,6 @@ export const ConnectedCreateBlog = () => {
                 lng: createCoords["lng"]
             }
         }).then(data => {
-            console.log(data)
             history.push(Paths.SingleBlog, { pkblog: data.data["createBlog"]["pkblog"] })
         })
     }

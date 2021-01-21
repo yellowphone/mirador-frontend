@@ -3,7 +3,6 @@ import { useForm } from "react-hook-form";
 import { NavigationBar } from '../../shared/navigation-bar/NavigationBar';
 import { CreateBlogDataProps } from './CreateBlog.types'
 import { Container, SimpleGrid, Center, Heading, VStack, Text, Image, Box, Textarea, Button, Input, Select } from "@chakra-ui/react"
-import { BlogExperienceCard } from '../blog-experience-card/BlogExperienceCard';
 import { ExperienceSearch } from '../../shared/search/ExperienceSearch';
 import { Search } from '../../shared/Google/Search'
 import { Upload } from '../../shared/upload/Upload';

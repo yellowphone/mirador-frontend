@@ -1,6 +1,6 @@
 export interface SingleBlogDataProps {
-    data: any
-    html: any
+    data: TData
+    html: Object[]
 }
 
 export interface ConnectedSingleBlogDataProps {
