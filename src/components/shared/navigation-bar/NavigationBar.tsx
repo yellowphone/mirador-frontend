@@ -8,25 +8,30 @@ import './NavigationBar.css'
 import { MdPerson } from 'react-icons/md'
 import { AddIcon, ChevronDownIcon } from '@chakra-ui/icons';
 import { Login } from '../../login/Login';
-import { getLoginContext, IGoogleProfile, initLoginContext, LoginContext } from '../../../utils/User';
+import { getUserContext, IUserContext, logout } from '../../../utils/userContext';
 
 export const NavigationBar: FC = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const [user, setUser] = useState<LoginContext>(undefined);
+    const [user, setUser] = useState<IUserContext | undefined>(getUserContext());
     const history = useHistory();
 
     const onNavigate = useCallback((path: Paths) => {
         history.push(path);
     }, [history]);
-    console.log(user)
+
+    const onLogout = useCallback(() => {
+        logout();
+        history.push(Paths.Home);
+        setUser(undefined);
+    }, [logout, history, setUser]);
 
     useEffect(() => {
-        // if (!user) {
-            console.log('setting')
-            initLoginContext().then(user => setUser(user as IGoogleProfile))
-        // }
-        console.log(getLoginContext())
-    }, [setUser]);
+        const currUser = getUserContext();
+        if (!user && currUser) {
+            console.log('setting new user')
+            setUser(currUser);
+        }
+    });
 
     return (
         <Navbar bg="light justify-content-between" sticky='top'>
@@ -58,6 +63,8 @@ export const NavigationBar: FC = () => {
                                             <MenuItem onClick={() => onNavigate(Paths.CreateExperience)}>New Experience</MenuItem>
                                             <MenuItem>New Itinerary</MenuItem>
                                             <MenuItem>New Blog</MenuItem>
+                                            { /* This is only temporary */}
+                                            <MenuItem onClick={onLogout}>Logout</MenuItem>
                                         </MenuList>
                                     </Menu>
                                 </GridItem>
