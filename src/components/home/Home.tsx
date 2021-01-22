@@ -11,9 +11,9 @@ export const Home = () => {
         <>
             <NavigationBar />
             <VStack>
-                <Box width='50%'>
+                <Box className='exploreBar' width='50%'>
                     <Center>Let's Explore</Center>
-                    {/* <Input placeholder={'Type a location to get started'} /> */}
+                    <Input placeholder={'Type a location to get started'} />
                     {/* <SearchWithMap /> */}
                 </Box>
             </VStack>

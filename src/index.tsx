@@ -5,7 +5,7 @@ import { App } from './App/App';
 // Importing the Bootstrap CSS
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-render(<App />, document.body);
+render(<App />, document.getElementById('root'));
 
 // if (module.hot) {
 //     module.hot.accept();

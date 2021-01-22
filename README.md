@@ -22,6 +22,9 @@ Chakra https://chakra-ui.com/docs/getting-started
 
 React bootstrap https://react-bootstrap.github.io/getting-started/introduction
 
+## TODO
+- [ ] Adding lazy loading to our route components
+
 ## Contributors
 
 <table>

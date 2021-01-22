@@ -6,7 +6,7 @@ input {
     text-align: center;
 }
 
-.chakra-stack {
+.exploreBar {
     /* not the best way, but it'll do */
     transform: translate(0%, 300%);
 }
