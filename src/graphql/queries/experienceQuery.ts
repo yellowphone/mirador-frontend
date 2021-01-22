@@ -7,7 +7,7 @@ export const FIND_EXPERIENCE_BY_ID = gql`
             title
             summary
             created_on
-            locations {
+            experience_locations {
                 lat
                 lng
             }
@@ -27,6 +27,15 @@ export const FIND_EXPERIENCE_BY_ID = gql`
                     username
                 }
             }
+        }
+    }
+`;
+
+export const FIND_EXPERIENCE_BY_TITLE = gql`
+    query findExperienceByTitle($title: String!) {
+        findExperienceByTitle(title: $title) {
+            pkexperience
+            title
         }
     }
 `;

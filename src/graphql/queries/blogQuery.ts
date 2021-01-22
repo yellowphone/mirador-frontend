@@ -14,6 +14,10 @@ export const FIND_BLOG_BY_ID = gql`
                     username
                 }
             }
+            blog_locations {
+                lat
+                lng
+            }
         }
     }
 `;
