@@ -19,7 +19,7 @@ export interface IUserContext {
 
 let userContext = new BehaviorSubject<IUserContext | undefined>(undefined);
 
-export const setUserContext = (
+export const userLogin = (
     fullName: string,
     email: string,
     userId: string,

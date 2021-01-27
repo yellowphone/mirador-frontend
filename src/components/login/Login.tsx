@@ -1,10 +1,8 @@
 import { Center, Modal, ModalBody, ModalCloseButton, ModalContent, Image, ModalHeader, ModalOverlay, Stack, Text, useDisclosure } from '@chakra-ui/react';
 import React, { FC, useCallback } from 'react';
-// import { FacebookLogin } from './FacebookLogin';
-// import GoogleLogin from './GoogleLogin';
 import FacebookLogin from 'react-facebook-login';
 import GoogleLogin from 'react-google-login';
-import { Account, getUserContext, setUserContext } from '../../utils/userContext';
+import { Account, getUserContext, userLogin } from '../../utils/userContext';
 import { ILoginDataProps } from './Login.types';
 
 export const Login: FC<ILoginDataProps> = ({
@@ -14,7 +12,7 @@ export const Login: FC<ILoginDataProps> = ({
     const googleSuccess = useCallback((res: any) => {
         const { tokenObj, profileObj } = res;
         console.log(res)
-        setUserContext(
+        userLogin(
             profileObj.name,
             profileObj.email,
             tokenObj.id_token,
@@ -24,11 +22,11 @@ export const Login: FC<ILoginDataProps> = ({
         );
         console.log(getUserContext())
         onClose();
-    }, []);
+    }, [getUserContext, onClose]);
 
     const facebookSuccess = useCallback((res: any) => {
         console.log(res);
-        setUserContext(
+        userLogin(
             res.name,
             res.email,
             res.userID,
@@ -38,7 +36,7 @@ export const Login: FC<ILoginDataProps> = ({
         );
         console.log(getUserContext())
         onClose();
-    }, []);
+    }, [getUserContext, onClose]);
     
     const error = useCallback((response: any) => {
         console.error(response);
