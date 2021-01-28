@@ -61,7 +61,7 @@ export const NavigationBar: FC = () => {
                                         </MenuButton>
                                         <MenuList>
                                             <MenuItem onClick={() => onNavigate(Paths.CreateExperience)}>New Experience</MenuItem>
-                                            <MenuItem>New Itinerary</MenuItem>
+                                            <MenuItem onClick={() => onNavigate(Paths.CreateItinerary)}>New Itinerary</MenuItem>
                                             <MenuItem onClick={() => onNavigate(Paths.CreateBlog)}>New Blog</MenuItem>
         
                                             { /* This is only temporary */}

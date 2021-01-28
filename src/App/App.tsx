@@ -16,6 +16,7 @@ import { ConnectedSingleExperience } from '../components/experience/single-exper
 import { ConnectedCreateExperience } from '../components/experience/create-experience/ConnectedCreateExperience';
 import { ConnectedSingleBlog } from '../components/blog/single-blog/ConnectedSingleBlog';
 import { ConnectedCreateBlog } from '../components/blog/create-blog/ConnectedCreateBlog';
+import { ConnectedCreateItinerary } from '../components/itinerary/create-itinerary/ConnectedCreateItinerary';
 
 export const App: React.FC = () => {
   return (
@@ -31,6 +32,7 @@ export const App: React.FC = () => {
             <Route exact path={Paths.SingleExperience} component={ConnectedSingleExperience} />
             <Route exact path={Paths.CreateExperience} component={ConnectedCreateExperience} />
             <Route exact path={Paths.Itinerary} component={ConnectedItinerary} />
+            <Route exact path={Paths.CreateItinerary} component={ConnectedCreateItinerary} />
             <Route exact path={Paths.Profile} component={ConnectedProfile} />
             <Redirect from='*' to={Paths.Home} />
           </Switch>
