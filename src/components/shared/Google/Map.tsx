@@ -10,10 +10,11 @@ interface IMapDataProps {
     height: number,
     loader: Loader,
     coords: ICoordinates,
-    experiences: Array<IExperience>
+    experiences: Array<IExperience>,
+    infoWindow: boolean,
 }
 
-export const Map: FC<IMapDataProps> = ({ height, width, loader, coords, experiences }) => {
+export const Map: FC<IMapDataProps> = ({ height, width, loader, coords, experiences, infoWindow }) => {
 
     var mapOptions = {
         center: {
@@ -47,15 +48,41 @@ export const Map: FC<IMapDataProps> = ({ height, width, loader, coords, experien
             icon: iconBase
         })
 
-        experiences.map(x => {
-            const newMarker = new google.maps.Marker({
-                position: {lat: x.lat, lng: x.lng},
-                map: map
-            });
-            newMarker.addListener('click', e => {
-                history.push(Paths.SingleExperience, { pkexperience: x.fk_experience_location })
+        if (!infoWindow) {
+            experiences.map(x => {
+                const newMarker = new google.maps.Marker({
+                    position: {lat: x.lat, lng: x.lng},
+                    map: map
+                });
+                newMarker.addListener('click', e => {
+                    history.push(Paths.SingleExperience, { pkexperience: x.fk_experience_location })
+                })
             })
-        })
+        }
+        else {
+            experiences.map(x => {
+                const newMarker = new google.maps.Marker({
+                    position: {lat: x.lat, lng: x.lng},
+                    map: map
+                });
+
+                var div = document.createElement('div')
+                div.textContent = x.title
+                div.draggable = true
+                div.ondragstart= function(e) {
+                    e.dataTransfer.setData("text", x.title)
+                }
+
+                const newInfoWindow = new google.maps.InfoWindow({
+                    content: div
+                });
+
+                newMarker.addListener('click', e => {
+                    newInfoWindow.open(map, newMarker)
+                    // history.push(Paths.SingleExperience, { pkexperience: x.fk_experience_location })
+                })
+            })
+        }
 
     })
     .catch(e => {

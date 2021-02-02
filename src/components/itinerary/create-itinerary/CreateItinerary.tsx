@@ -3,6 +3,11 @@ import React, { useState } from 'react'
 import { Map } from '../../shared/Google/Map'
 import { Loader } from '@googlemaps/js-api-loader';
 import { NavigationBar } from '../../shared/navigation-bar/NavigationBar'
+import { ItineraryBuilder } from './ItineraryBuilder';
+import { IExperience } from '../../experience/Experience.types';
+import { useQuery } from '@apollo/react-hooks';
+import { FIND_EXPERIENCE_BY_COORDINATES } from '../../../graphql/queries/experienceQuery';
+import { Search } from '../../shared/Google/Search';
 
 const leftSideStyle = {
     scroll: 'none'
@@ -15,50 +20,14 @@ const rightSideStyle = {
 
 export const CreateItinerary = () => {
 
-    const [coords, setCoords] = useState({lat: 44.349483, lng: -68.187912});
+    const [coords, setCoords] = useState({lat:37.235961, lng: -80.607775});
 
     const [title, setTitle] = useState("New Itinerary");
 
-    // const [obj, setObj] = useState({
-    //     "March 20, 2020": [],
-    //     "March 21, 2020": [],
-    //     "March 22, 2020": []
-    // });
-
-    const [obj, setObj] = useState([
-        {
-            date: 'March 20, 2020',
-            content: []
-        },
-        {
-            date: 'March 21, 2020',
-            content: []
-        },
-        {
-            date: 'March 22, 2020',
-            content: []
-        },
-    ]);
-
-    const handleDragOver = (e: any) => {
-        e.preventDefault();
-    }
-
-    const handleDragDrop = (e, date) => {
-        console.log(e.dataTransfer.getData("text"))
-        const index = obj.findIndex(element => element.date == date)
-        console.log(index)
-        let newObj = [...obj]
-        newObj[index].content.push(e.dataTransfer.getData("text"))
-        setObj(newObj)
-        // setObj({...x, content: x.content.push(e.dataTransfer.getData("text"))})
-        // setObj(obj => obj[date].push(e.dataTransfer.getData("text")))
-    }
-
-    const handleDragStart = (e, text) => {
-        console.log(text)
-        e.dataTransfer.setData("text", text)
-    }
+    // const handleDragStart = (e, text) => {
+    //     console.log(text)
+    //     e.dataTransfer.setData("text", text)
+    // }
 
     const loader = new Loader({
         apiKey: `${process.env.MAPS_API_KEY}`,
@@ -66,13 +35,41 @@ export const CreateItinerary = () => {
         libraries: ["places", "geometry"]
     });
 
+    const { data: experienceItems, loading, error, refetch } = useQuery(FIND_EXPERIENCE_BY_COORDINATES, {
+        variables: { lat: coords["lat"], lng: coords["lng"] },
+    });
+
+    if (loading) {
+        return <h1>Loading</h1>
+    }
+    if (error) {
+        console.error(error)
+        return <h1>Error!</h1>
+    }
+
+    const experienceList: Array<IExperience> = experienceItems?.findExperienceByCoordinates?.map((item: IExperience) => {
+        return {
+            fk_experience_location: item.fk_experience_location,
+            imageUrl: "http://www.citrusmilo.com/acadia/joebraun_precipice27.jpg",
+            imageAlt: "ok",
+            miles: item.miles,
+            elevation: item.elevation,
+            title: item.title,
+            summary: item.summary,
+            rating: 4,
+            lat: item.lat,
+            lng: item.lng,
+            difficulty: item.difficulty
+        }
+    })
+
     /**
      * TODO for itinerary (one step at a time!)
-     * - Get a drag and drop with components working and saving correctly on json (basic version)
+     * ☑ Get a drag and drop with components working and saving correctly on json (basic version)
      * - Able to save experiences to an itinerary
      * - Pass experiences to map in itinerary and populate map, reset the center!
      *       - (probably create some kind of interface for map, since it's just for many different types)
-     * - Search component for map
+     * ☑ Search component for map
      */
 
     /**
@@ -102,43 +99,14 @@ export const CreateItinerary = () => {
                 </Container> */}
 
                 <Box css={leftSideStyle} maxW='70%' width={7 * (screen.width / 10)}>
-                    <Map width={7 * (screen.width / 10)} height={screen.height - 230} loader={loader} coords={coords} experiences={[]}/>
+                    <Search setCoords={setCoords} loader={loader} refetch={() => {}}/>
+                    <Map width={7 * (screen.width / 10)} height={screen.height - 230} loader={loader} coords={coords} experiences={experienceList} infoWindow={true} />
                 </Box>
                 <Box css={rightSideStyle} maxW='30%' width={3 * (screen.width / 10)}>
-                    <Accordion allowToggle>
-
-                        {/* Build a component for this segment, for the actual itinerary part, keep json on this level */}
-                        
-                        {
-                            obj.map((item) => {
-                                return (
-                                    <AccordionItem>
-                                        <AccordionButton>
-                                            <Box flex="1" textAlign="left">
-                                                {item["date"]}
-                                            </Box>
-                                        </AccordionButton>
-                                        <div pb={4} onDragOver={(e) => handleDragOver(e)}
-                                            onDrop={(e) => handleDragDrop(e, item["date"])}>
-                                                <AccordionPanel>
-                                                    {
-                                                        item.content.map(innerItems => {
-                                                            return (
-                                                                <div>{innerItems}</div>
-                                                            )
-                                                        })
-                                                    }
-                                            </AccordionPanel>
-                                            </div>
-                                    </AccordionItem>
-                                )
-                            })
-                        }
-
-
-                    </Accordion>
-                    <div draggable onDragStart={(e) => {handleDragStart(e, "hello")}}>Hello World</div>
+                    <ItineraryBuilder/>
                 </Box>
+
+                {/* <div draggable onDragStart={(e) => {handleDragStart(e, "hello")}}>Hello World</div> */}
                 
             </Flex>
         </>
