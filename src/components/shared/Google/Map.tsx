@@ -22,7 +22,9 @@ export const Map: FC<IMapDataProps> = ({ height, width, loader, coords, experien
             lng: coords["lng"]
         },
         zoom: 10,
+        mapId: 'f80062b618e0b095',
         options: {
+            mapTypeControl: false,
             gestureHandling: "greedy"
         }
     };
@@ -79,7 +81,6 @@ export const Map: FC<IMapDataProps> = ({ height, width, loader, coords, experien
 
                 newMarker.addListener('click', e => {
                     newInfoWindow.open(map, newMarker)
-                    // history.push(Paths.SingleExperience, { pkexperience: x.fk_experience_location })
                 })
             })
         }

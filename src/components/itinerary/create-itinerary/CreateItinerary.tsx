@@ -24,11 +24,6 @@ export const CreateItinerary = () => {
 
     const [title, setTitle] = useState("New Itinerary");
 
-    // const handleDragStart = (e, text) => {
-    //     console.log(text)
-    //     e.dataTransfer.setData("text", text)
-    // }
-
     const loader = new Loader({
         apiKey: `${process.env.MAPS_API_KEY}`,
         version: "weekly",
@@ -100,7 +95,7 @@ export const CreateItinerary = () => {
 
                 <Box css={leftSideStyle} maxW='70%' width={7 * (screen.width / 10)}>
                     <Search setCoords={setCoords} loader={loader} refetch={() => {}}/>
-                    <Map width={7 * (screen.width / 10)} height={screen.height - 230} loader={loader} coords={coords} experiences={experienceList} infoWindow={true} />
+                    <Map width={7 * (screen.width / 10)} height={screen.height - 270} loader={loader} coords={coords} experiences={experienceList} infoWindow={true} />
                 </Box>
                 <Box css={rightSideStyle} maxW='30%' width={3 * (screen.width / 10)}>
                     <ItineraryBuilder/>
