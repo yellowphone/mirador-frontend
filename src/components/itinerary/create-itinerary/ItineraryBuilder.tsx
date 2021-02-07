@@ -1,10 +1,15 @@
 import React, { useState } from "react"
 import { useForm } from "react-hook-form";
 import { Box, Button, Container, Flex, Accordion, AccordionItem, AccordionButton, AccordionIcon, AccordionPanel, Heading, Center, Input, Text } from '@chakra-ui/react'
+import { useMutation } from "@apollo/client";
+import { CREATE_ITINERARY } from "../../../graphql/mutations/itineraryMutation";
+import { Paths } from "../../../utils/paths";
 
-export const ItineraryBuilder = () => {
+export const ItineraryBuilder = ({ title, history }) => {
 
     const [obj, setObj] = useState([]);
+
+    const [ createItinerary, { data }] = useMutation(CREATE_ITINERARY)
 
     const handleDragOver = (e: any) => {
         e.preventDefault();
@@ -17,12 +22,9 @@ export const ItineraryBuilder = () => {
         let newObj = [...obj]
         newObj[index].content.push(e.dataTransfer.getData("text"))
         setObj(newObj)
-        
-        // setObj({...x, content: x.content.push(e.dataTransfer.getData("text"))})
-        // setObj(obj => obj[date].push(e.dataTransfer.getData("text")))
     }
 
-    const onSubmit = (input: any) => {
+    const onItineraryCreate = (input: any) => {
 
         if (input["start"] <= input["end"]) {
 
@@ -41,13 +43,29 @@ export const ItineraryBuilder = () => {
         console.log(input)
     }
 
+    const onSubmit = () => {
+        createItinerary({
+            variables: {
+                title: title,
+                summary: "",
+                content: {
+                    content: obj
+                },
+                pkuser: 1
+            }
+        }).then(data => {
+            console.log(data)
+            history.push(Paths.SingleItinerary, { pkitinerary: data.data["createItinerary"]["pkitinerary"] })
+        })
+    }
+
     const { register, handleSubmit, errors } = useForm();
 
     if (obj.length == 0) {
         return (
             <>
                 <Center>
-                    <form onSubmit = { handleSubmit(onSubmit) }>
+                    <form onSubmit = { handleSubmit(onItineraryCreate) }>
                         <Center>
                             <Text>Please select your trip start and end date</Text>
                         </Center>
@@ -66,6 +84,12 @@ export const ItineraryBuilder = () => {
                     <Center>
                         <Heading>Your Trip</Heading>
                     </Center>
+                    <Center>
+                        <form onSubmit = { handleSubmit( onSubmit )}>
+                            <Button type="submit">Create Itinerary</Button>
+                        </form>
+                    </Center>
+                    <br></br>
     
                     {
                         obj.map((item) => {

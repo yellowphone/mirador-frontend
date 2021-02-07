@@ -30,3 +30,15 @@ export const FIND_ITINERARY_BY_ID = gql`
         }
     }
 `;
+
+export const FIND_ITINERARIES_FOR_USER = gql`
+    query findUser($pkuser: Int!) {
+        findUser(pkuser: $pkuser) {
+            pkuser
+            itineraries {
+                pkitinerary
+                title
+            }
+        }
+    }
+`;

@@ -8,5 +8,6 @@ export enum Paths {
     CreateExperience = '/createexperience',
     Profile = '/profile',
     Itinerary = '/itinerary',
+    SingleItinerary = '/singleitinerary',
     CreateItinerary = '/createitinerary'
 }
