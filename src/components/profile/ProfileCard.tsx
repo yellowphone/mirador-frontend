@@ -9,7 +9,7 @@ export const ProfileCard = () => {
         <Box margin='auto' maxW="30em" borderWidth="1px" borderRadius="lg" overflow="hidden" >
             <Stack direction='row'>
                 <Image 
-                    src={user?.imageUrl}
+                    src={user?.image_url}
                     alt='Profile picture'
                     borderRadius="full"
                     boxSize="150px"
@@ -22,7 +22,7 @@ export const ProfileCard = () => {
                         100 Followers &bull; 50 Following
                     </Box>
                     <Box>
-                        {user?.fullName}
+                        {user?.fullname}
                     </Box>
                     <Stack direction='row' wrap='wrap'>
                         <Badge>Climbing</Badge>
