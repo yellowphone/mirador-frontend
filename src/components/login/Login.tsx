@@ -1,44 +1,83 @@
-import { Center, Modal, ModalBody, ModalCloseButton, ModalContent, Image, ModalHeader, ModalOverlay, Stack, Text, useDisclosure } from '@chakra-ui/react';
+import { useMutation } from '@apollo/client';
+import { Center, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, } from '@chakra-ui/react';
 import React, { FC, useCallback } from 'react';
-// import { FacebookLogin } from './FacebookLogin';
-// import GoogleLogin from './GoogleLogin';
 import FacebookLogin from 'react-facebook-login';
 import GoogleLogin from 'react-google-login';
-import { Account, getUserContext, setUserContext } from '../../utils/userContext';
+import { CREATE_USER } from '../../graphql/mutations/userMutation';
+import { Account, getUserContext, IUserContext, setUserContext, } from '../../utils/userContext';
 import { ILoginDataProps } from './Login.types';
 
 export const Login: FC<ILoginDataProps> = ({
     isOpen,
     onClose,
 }) => {
-    const googleSuccess = useCallback((res: any) => {
-        const { tokenObj, profileObj } = res;
-        console.log(res)
-        setUserContext(
-            profileObj.name,
-            profileObj.email,
-            tokenObj.id_token,
-            profileObj.imageUrl,
-            tokenObj.access_token,
-            Account.Google,
-        );
-        console.log(getUserContext())
-        onClose();
-    }, []);
+    const [ login, { data: userLoginData, error: mutationError }] = useMutation(CREATE_USER);
+
+    userLoginData && setUserContext(userLoginData.createUser);
+    mutationError && console.log(mutationError)
+
+    const googleSuccess = useCallback( (res: any) => {
+        const func = async () => {
+            const { tokenObj, profileObj } = res;
+            const user: IUserContext = {
+                fullname: profileObj.name,
+                email: profileObj.email,
+                firstname: profileObj.name.split(' ')[0],
+                lastname: profileObj.name.split(' ')[1],
+                user_id: tokenObj.id_token,
+                image_url: profileObj.imageUrl,
+                access_token: tokenObj.access_token,
+                accountType: Account.Google,
+            };
+
+            await login({
+                variables: {
+                    email: user.email,
+                    firstname: user.firstname,
+                    lastname: user.lastname,
+                    access_token: user.access_token,
+                    user_id: user.user_id,
+                    image_url: user.image_url,
+                    account_type: 'GOOGLE',
+                }
+            });
+
+            onClose();
+        }
+
+        func();
+    }, [getUserContext, onClose]);
 
     const facebookSuccess = useCallback((res: any) => {
-        console.log(res);
-        setUserContext(
-            res.name,
-            res.email,
-            res.userID,
-            res.picture.data.url,
-            res.accessToken,
-            Account.Facebook,
-        );
-        console.log(getUserContext())
-        onClose();
-    }, []);
+        const func = async () => {
+            const user: IUserContext = {
+                fullname: res.name,
+                email: res.email,
+                firstname: res.name.split(' ')[0],
+                lastname: res.name.split(' ')[1],
+                user_id: res.userID,
+                image_url: res.picture.data.url,
+                access_token: res.accessToken,
+                accountType: Account.Facebook,
+            };
+
+            await login({
+                variables: {
+                    email: user.email,
+                    firstname: user.firstname,
+                    lastname: user.lastname,
+                    access_token: user.access_token,
+                    user_id: user.user_id,
+                    image_url: user.image_url,
+                    account_type: 'FACEBOOK',
+                }
+            });
+
+            onClose();
+        }
+
+        func();
+    }, [getUserContext, onClose]);
     
     const error = useCallback((response: any) => {
         console.error(response);
@@ -65,6 +104,7 @@ export const Login: FC<ILoginDataProps> = ({
                             appId={process.env.FB_APP_ID ?? ''}
                             // autoLoad
                             callback={facebookSuccess}
+                            onFailure={error}
                             fields='name,email,picture'
                         />
                     </Center>

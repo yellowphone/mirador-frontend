@@ -26,7 +26,7 @@ const link = ApolloLink.from([
 export const client = new ApolloClient({
   uri: 'http://localhost:4000/graphql',
   cache: new InMemoryCache(),
-  link: link
+  // link: link
 });
 
 // <<<<<<< blogs

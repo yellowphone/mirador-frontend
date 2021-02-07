@@ -3,10 +3,6 @@ import { NavigationBar } from '../shared/navigation-bar/NavigationBar';
 import { ActionBar } from './ActionBar';
 import { ProfileCard } from './ProfileCard';
 
-import { useQuery } from '@apollo/react-hooks';
-
-import { FIND_USER } from '../../graphql/queries/userQuery';
-
 export const Profile = () => {
 
     // const { data, loading, error, refetch } = useQuery(FIND_USER, {

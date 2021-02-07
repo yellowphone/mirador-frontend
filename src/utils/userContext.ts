@@ -7,39 +7,30 @@ export enum Account {
 }
 
 export interface IUserContext {
+    pkUser?: string;
     email: string;
-    lastName: string;
-    firstName: string;
-    userId: string;
-    imageUrl: string;
-    fullName: string;
-    accessToken: string;
+    lastname: string;
+    firstname: string;
+    user_id: string;
+    image_url: string;
+    fullname: string;
+    access_token: string;
     accountType: Account;
 }
 
 let userContext = new BehaviorSubject<IUserContext | undefined>(undefined);
 
-export const setUserContext = (
-    fullName: string,
-    email: string,
-    userId: string,
-    imageUrl: string,
-    accessToken: string,
-    accountType: Account
+export const setUserContext = async (
+    user: any,
 ) => {
-    const name = fullName.split(' ');
-    const _userContext = {
-        email: email,
-        firstName: name[0],
-        lastName: name[1],
-        userId: userId,
-        imageUrl: imageUrl,
-        fullName: fullName,
-        accessToken: accessToken,
-        accountType: accountType
-    };
-
-    userContext.next(_userContext);
+    if (user) {
+        userContext.next({
+            ...user,
+            fullname: `${user.firstname} ${user.lastname}`
+        });
+    } else {
+        console.error('user data has not been set yet.')
+    }
 };
 
 export const getUserContext = (): IUserContext | undefined => userContext.getValue();

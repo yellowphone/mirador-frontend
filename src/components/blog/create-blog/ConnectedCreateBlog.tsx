@@ -6,7 +6,7 @@ import { CreateBlog } from './CreateBlog';
 import { Paths } from '../../../utils/paths';
 import { Loader } from '@googlemaps/js-api-loader';
 import { BlogExperienceCard } from '../blog-experience-card/BlogExperienceCard';
-import { Container, SimpleGrid, Center, Heading, VStack, Text, Image, Box } from "@chakra-ui/react"
+import { SimpleGrid, Center, Text, Image, } from "@chakra-ui/react"
 
 export const ConnectedCreateBlog = () => {
 
