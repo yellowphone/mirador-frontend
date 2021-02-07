@@ -22,13 +22,12 @@ import { CardDataProps } from "./Card.types";
 
 import { Paths } from '../../../utils/paths';
 import { useHistory } from 'react-router-dom';
-import { useMutation, useQuery } from "@apollo/client";
-import { FIND_ITINERARIES_FOR_USER } from "../../../graphql/queries/itineraryQuery";
+import { useMutation, useLazyQuery } from "@apollo/client";
 import { ADD_EXPERIENCE_TO_ITINERARY } from "../../../graphql/mutations/itineraryMutation";
+import { FIND_ITINERARIES_FOR_USER } from "../../../graphql/queries/itineraryQuery";
 
 export const Card: FC<CardDataProps> = ({
-    experience,
-    userItineraries
+    experience
 }) => {
 
     const {
@@ -48,44 +47,9 @@ export const Card: FC<CardDataProps> = ({
 
     const [ addExperienceToItinerary, { data }] = useMutation(ADD_EXPERIENCE_TO_ITINERARY);
 
+    const [ getUserItineraries, { loading: loadingUserItineraries, error: errorUserItineraries, data: userItineraries }] = useLazyQuery(FIND_ITINERARIES_FOR_USER);
+
     const { isOpen, onOpen, onClose } = useDisclosure()
-
-    // setItineraryData(itineraryData);
-
-    /**
-     * @issue
-     * IDEA: 
-     * Any time someone clicks "save," it gets the user's itineraries and renders to a table view
-     * buttt there is some wack react hooks issue
-     */
-
-     const getItineraryData = () => {
-        return (
-            <div>
-                <Table>
-                    <Tbody>
-                        {userItineraries && userItineraries["findUser"]["itineraries"].map((item: any) => {
-                            return (
-                                <Tr key={item.pkitinerary} onClick={() => {
-                                    addExperienceToItinerary({
-                                        variables: {
-                                            pkexperience: fk_experience_location,
-                                            pkitinerary: item.pkitinerary
-                                        }
-                                    })
-                                    onClose() 
-                                }}> 
-                                    <Td>
-                                        <AddIcon/>&nbsp;{item.title}
-                                    </Td>
-                                </Tr>
-                            )
-                        })}
-                    </Tbody>
-                </Table>
-            </div>
-        )
-     }
 
     return (
         <Container maxW="20em" borderWidth="1px" borderRadius="lg" overflow="hidden">
@@ -94,7 +58,6 @@ export const Card: FC<CardDataProps> = ({
 
                 <Box p="6">
                     <Box d="flex" alignItems="baseline">
-
                         <Box
                             color="gray.500"
                             fontWeight="semibold"
@@ -124,7 +87,14 @@ export const Card: FC<CardDataProps> = ({
                 <Box d="flex" mt="2" alignItems="center">
                     <Stars rating={rating} />
                     <Spacer />
-                    <Button colorScheme="teal" size="xs" onClick={ onOpen }>
+                    <Button colorScheme="teal" size="xs" onClick={() => {
+                        onOpen()
+                        getUserItineraries({
+                            variables: {
+                                pkuser: 1
+                            }
+                        })
+                    }}>
                         Save
                     </Button>
 
@@ -134,7 +104,32 @@ export const Card: FC<CardDataProps> = ({
                             <ModalHeader>Save this experience to your itinerary</ModalHeader>
                             <ModalCloseButton />
                             <ModalBody>
-                                { userItineraries && getItineraryData() }
+                                { isOpen && loadingUserItineraries && <p>Loading...</p>}
+                                { isOpen && errorUserItineraries && <p>Error!</p>}
+                                { isOpen && userItineraries && (
+                                    <Table>
+                                        <Tbody>
+                                            {userItineraries["findUser"]["itineraries"].map((item: any) => {
+                                                return (
+                                                    <Tr key={item.pkitinerary} onClick={() => {
+                                                        addExperienceToItinerary({
+                                                            variables: {
+                                                                pkexperience: fk_experience_location,
+                                                                pkitinerary: item.pkitinerary
+                                                            }
+                                                        })
+                                                        onClose() 
+                                                    }}> 
+                                                        <Td>
+                                                            <AddIcon/>&nbsp;{item.title}
+                                                        </Td>
+                                                    </Tr>
+                                                )
+                                            })}
+                                        </Tbody>
+                                    </Table>
+                                )}
+
                             </ModalBody>
                             <ModalFooter>
                                 <Button colorScheme="blue" mr={3} onClick={onClose}>
