@@ -13,6 +13,9 @@ const rightSideStyle = {
     // position: 'fixed', // need to get the map to be fixed to the right
 }
 
+/**
+ * This component is to create an itinerary entirely from scratch
+ */
 export const CreateItinerary = ({ history }) => {
 
     const [title, setTitle] = useState("New Itinerary");
@@ -20,10 +23,11 @@ export const CreateItinerary = ({ history }) => {
     /**
      * TODO for itinerary (one step at a time!)
      * ☑ Get a drag and drop with components working and saving correctly on json (basic version)
-     * - Able to save experiences to an itinerary
-     * - Pass experiences to map in itinerary and populate map, reset the center!
+     * ☑ Able to save experiences to an itinerary
+     * - Pass experiences to map in itinerary and populate map, reset the center! (for edit itinerary)
      *       - (probably create some kind of interface for map, since it's just for many different types)
      * ☑ Search component for map
+     * - Able to create itinerary through "save" on card
      */
 
     /**

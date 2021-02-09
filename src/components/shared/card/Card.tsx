@@ -2,6 +2,7 @@ import { Box,
     Button, 
     Container, 
     Image, 
+    Input,
     Spacer, 
     Modal,
     ModalOverlay,
@@ -15,7 +16,7 @@ import { Box,
     Tr,
     Td, 
     useDisclosure} from "@chakra-ui/react"
-import { AddIcon } from '@chakra-ui/icons'
+import { AddIcon, CheckIcon, CloseIcon } from '@chakra-ui/icons'
 import React, { FC, useCallback, useState } from "react"
 import { Stars } from "../media/Stars/Stars";
 import { CardDataProps } from "./Card.types";
@@ -23,8 +24,9 @@ import { CardDataProps } from "./Card.types";
 import { Paths } from '../../../utils/paths';
 import { useHistory } from 'react-router-dom';
 import { useMutation, useLazyQuery } from "@apollo/client";
-import { ADD_EXPERIENCE_TO_ITINERARY } from "../../../graphql/mutations/itineraryMutation";
+import { ADD_EXPERIENCE_TO_ITINERARY, CREATE_ITINERARY } from "../../../graphql/mutations/itineraryMutation";
 import { FIND_ITINERARIES_FOR_USER } from "../../../graphql/queries/itineraryQuery";
+import { useForm } from "react-hook-form";
 
 export const Card: FC<CardDataProps> = ({
     experience
@@ -45,11 +47,36 @@ export const Card: FC<CardDataProps> = ({
         history.push(path, { pkexperience: fk_experience_location });
     }, []);
 
-    const [ addExperienceToItinerary, { data }] = useMutation(ADD_EXPERIENCE_TO_ITINERARY);
+    const [ showCreateItinerary, setShowCreateItinerary ] = useState(false); 
 
-    const [ getUserItineraries, { loading: loadingUserItineraries, error: errorUserItineraries, data: userItineraries }] = useLazyQuery(FIND_ITINERARIES_FOR_USER);
+    const [ loadForCreateItinerary, setLoadForCreateItinerary ] = useState(false);
+
+    const [ addExperienceToItinerary, { data: addExperienceToItineraryData }] = useMutation(ADD_EXPERIENCE_TO_ITINERARY);
+
+    const [ createItinerary, { data: createItineraryData }] = useMutation(CREATE_ITINERARY);
+
+    const [ getUserItineraries, { loading: loadingUserItineraries, error: errorUserItineraries, data: userItineraries, refetch: userItinerariesRefetch }] = useLazyQuery(FIND_ITINERARIES_FOR_USER);
 
     const { isOpen, onOpen, onClose } = useDisclosure()
+
+    const { register, handleSubmit, errors } = useForm();
+
+    const onCreateItinerary = (input: any) => {
+        setLoadForCreateItinerary(true);
+        createItinerary({ variables: {
+            title: input["title"],
+            summary: "",
+            content: {
+                content: []
+            },
+            pkuser: 1
+        }}).then(data => {
+            setLoadForCreateItinerary(false);
+            userItinerariesRefetch && userItinerariesRefetch();
+            setShowCreateItinerary(false);
+        })
+        
+    }
 
     return (
         <Container maxW="20em" borderWidth="1px" borderRadius="lg" overflow="hidden">
@@ -98,7 +125,10 @@ export const Card: FC<CardDataProps> = ({
                         Save
                     </Button>
 
-                    <Modal isOpen={isOpen} onClose={onClose}>
+                    <Modal isOpen={isOpen} onClose={() => {
+                        onClose()
+                        setShowCreateItinerary(false)
+                    }}>
                         <ModalOverlay />
                         <ModalContent>
                             <ModalHeader>Save this experience to your itinerary</ModalHeader>
@@ -121,18 +151,33 @@ export const Card: FC<CardDataProps> = ({
                                                         onClose() 
                                                     }}> 
                                                         <Td>
-                                                            <AddIcon/>&nbsp;{item.title}
+                                                            {item.title}
                                                         </Td>
                                                     </Tr>
                                                 )
                                             })}
+                                            <Tr >
+                                                { !showCreateItinerary && <Td onClick={() => setShowCreateItinerary(true)}><AddIcon/>&nbsp;Create a new Itinerary</Td> }
+                                                { showCreateItinerary && <Td>
+                                                    <form onSubmit = { handleSubmit(onCreateItinerary) }>
+                                                        <Input size="sm" style={{width: "75%"}} name="title" placeholder="Title of your itinerary" ref={register} />
+                                                        &nbsp;
+                                                        { !loadForCreateItinerary && <Button size="sm" type="submit"><CheckIcon/></Button>}
+                                                        { loadForCreateItinerary && <Button isLoading size="sm" type="submit"><CheckIcon/></Button>}
+                                                        <Button size="sm" onClick={() => setShowCreateItinerary(false)}><CloseIcon/></Button>
+                                                    </form>
+                                                </Td> }
+                                            </Tr>
                                         </Tbody>
                                     </Table>
                                 )}
 
                             </ModalBody>
                             <ModalFooter>
-                                <Button colorScheme="blue" mr={3} onClick={onClose}>
+                                <Button colorScheme="blue" mr={3} onClick={() => {
+                                    onClose()
+                                    setShowCreateItinerary(false)
+                                }}>
                                 Close
                                 </Button>
                             </ModalFooter>
