@@ -70,9 +70,10 @@ export const Map: FC<IMapDataProps> = ({ height, width, loader, coords, experien
 
                 var div = document.createElement('div')
                 div.textContent = x.title
+                // Add infowindow content! img, title, etc
                 div.draggable = true
                 div.ondragstart= function(e) {
-                    e.dataTransfer.setData("text", x.title)
+                    e.dataTransfer && e.dataTransfer.setData("text", (x.fk_experience_location).toString())
                 }
 
                 const newInfoWindow = new google.maps.InfoWindow({

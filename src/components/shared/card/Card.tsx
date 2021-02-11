@@ -130,7 +130,7 @@ export const Card: FC<CardDataProps> = ({
                         setShowCreateItinerary(false)
                     }}>
                         <ModalOverlay />
-                        <ModalContent>
+                        <ModalContent styles={{ maxHeight: 500 }}>
                             <ModalHeader>Save this experience to your itinerary</ModalHeader>
                             <ModalCloseButton />
                             <ModalBody>

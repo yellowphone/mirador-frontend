@@ -1,25 +1,27 @@
-import React, { useState } from "react"
+import React, { useState, FC } from "react"
 import { useForm } from "react-hook-form";
 import { Box, Button, Container, Flex, Accordion, AccordionItem, AccordionButton, AccordionIcon, AccordionPanel, Heading, Center, Input, Text } from '@chakra-ui/react'
 import { useMutation } from "@apollo/client";
 import { CREATE_ITINERARY } from "../../../graphql/mutations/itineraryMutation";
 import { Paths } from "../../../utils/paths";
+import { ItineraryBuilderProps } from "./CreateItinerary.types"
 
-export const ItineraryBuilder = ({ title, history }) => {
+export const ItineraryBuilder: FC<ItineraryBuilderProps> = ({ title, history }) => {
 
-    const [obj, setObj] = useState([]);
+    const [obj, setObj] = useState<Object[]>([]);
 
     const [ createItinerary, { data }] = useMutation(CREATE_ITINERARY)
 
-    const handleDragOver = (e: any) => {
+    const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault();
     }
 
-    const handleDragDrop = (e, date) => {
-        console.log(e.dataTransfer.getData("text"))
+    const { register, handleSubmit, errors } = useForm();
+
+    const handleDragDrop = (e: React.DragEvent<HTMLDivElement>, date: String) => {
         const index = obj.findIndex(element => element.date == date)
-        console.log(index)
         let newObj = [...obj]
+        // add css for experience card
         newObj[index].content.push(e.dataTransfer.getData("text"))
         setObj(newObj)
     }
@@ -59,8 +61,6 @@ export const ItineraryBuilder = ({ title, history }) => {
         })
     }
 
-    const { register, handleSubmit, errors } = useForm();
-
     if (obj.length == 0) {
         return (
             <>
@@ -92,7 +92,7 @@ export const ItineraryBuilder = ({ title, history }) => {
                     <br></br>
     
                     {
-                        obj.map((item) => {
+                        obj.map((item: Object) => {
                             return (
                                 <AccordionItem>
                                     <AccordionButton>
@@ -104,6 +104,7 @@ export const ItineraryBuilder = ({ title, history }) => {
                                         onDrop={(e) => handleDragDrop(e, item["date"])}>
                                             <AccordionPanel>
                                                 {
+                                                    // Might need to render with {} in array, so it knows what kind of type it is
                                                     item.content.map(innerItems => {
                                                         return (
                                                             <div>{innerItems}</div>
