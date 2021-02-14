@@ -6,11 +6,38 @@ export const FIND_ITINERARY_BY_ID = gql`
             pkitinerary
             title
             summary
+            content
             created_on
             user_itineraries {
                 users {
                     username
                 }
+            }
+            itinerary_tags {
+                pkitinerary_tag
+                tags {
+                    tag
+                }
+            }
+            users {
+                pkuser
+            }
+            itinerary_experiences {
+                experiences {
+                    pkexperience
+                }
+            }
+        }
+    }
+`;
+
+export const FIND_ITINERARIES_FOR_USER = gql`
+    query findUser($pkuser: Int!) {
+        findUser(pkuser: $pkuser) {
+            pkuser
+            itineraries {
+                pkitinerary
+                title
             }
         }
     }

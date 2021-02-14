@@ -10,10 +10,11 @@ interface IMapDataProps {
     height: number,
     loader: Loader,
     coords: ICoordinates,
-    experiences: Array<IExperience>
+    experiences: Array<IExperience>,
+    infoWindow: boolean,
 }
 
-export const Map: FC<IMapDataProps> = ({ height, width, loader, coords, experiences }) => {
+export const Map: FC<IMapDataProps> = ({ height, width, loader, coords, experiences, infoWindow }) => {
 
     var mapOptions = {
         center: {
@@ -21,7 +22,9 @@ export const Map: FC<IMapDataProps> = ({ height, width, loader, coords, experien
             lng: coords["lng"]
         },
         zoom: 10,
+        mapId: 'f80062b618e0b095',
         options: {
+            mapTypeControl: false,
             gestureHandling: "greedy"
         }
     };
@@ -47,15 +50,53 @@ export const Map: FC<IMapDataProps> = ({ height, width, loader, coords, experien
             icon: iconBase
         })
 
-        experiences.map(x => {
-            const newMarker = new google.maps.Marker({
-                position: {lat: x.lat, lng: x.lng},
-                map: map
-            });
-            newMarker.addListener('click', e => {
-                history.push(Paths.SingleExperience, { pkexperience: x.fk_experience_location })
+        if (!infoWindow) {
+            experiences.map(x => {
+                const newMarker = new google.maps.Marker({
+                    position: {lat: x.lat, lng: x.lng},
+                    map: map
+                });
+                newMarker.addListener('click', e => {
+                    history.push(Paths.SingleExperience, { pkexperience: x.fk_experience_location })
+                })
             })
-        })
+        }
+        else {
+            experiences.map(x => {
+                const newMarker = new google.maps.Marker({
+                    position: {lat: x.lat, lng: x.lng},
+                    map: map
+                });
+
+                var div = document.createElement('div')
+                div.innerHTML = `
+                <div>
+                    <h2 style="font-size: 20px;">${x.title}</h2>
+                    <img src=${x.imageUrl} width="200" />
+                    <p>${x.miles} miles - ${x.elevation} feet</p>
+                </div>
+                `
+                // Add infowindow content! img, title, etc
+                div.draggable = true
+                div.ondragstart= function(e) {
+                    var dataForItineraryElement = {
+                        pkexerience: x.fk_experience_location,
+                        title: x.title,
+                        imgUrl: x.imageUrl,
+                        imgAlt: x.imageAlt
+                    }
+                    e.dataTransfer && e.dataTransfer.setData("element", JSON.stringify(dataForItineraryElement))
+                }
+
+                const newInfoWindow = new google.maps.InfoWindow({
+                    content: div
+                });
+
+                newMarker.addListener('click', e => {
+                    newInfoWindow.open(map, newMarker)
+                })
+            })
+        }
 
     })
     .catch(e => {

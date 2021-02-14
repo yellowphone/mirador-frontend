@@ -7,6 +7,7 @@ import { CardsGridDataProps } from './CardsGrid.types';
 export const CardsGrid: FC<CardsGridDataProps<IExperience>> = ({
     list
 }) => {
+
     return (
         <Grid pt='5' templateColumns="repeat(2, 1fr)" gap={6}>
             {

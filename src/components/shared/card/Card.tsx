@@ -1,10 +1,32 @@
-import { Box, Button, Container, Image, Spacer } from "@chakra-ui/react"
-import React, { FC, useCallback } from "react"
+import { Box, 
+    Button, 
+    Container, 
+    Image, 
+    Input,
+    Spacer, 
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalHeader,
+    ModalFooter,
+    ModalBody,
+    ModalCloseButton,  
+    Table,
+    Tbody, 
+    Tr,
+    Td, 
+    useDisclosure} from "@chakra-ui/react"
+import { AddIcon, CheckIcon, CloseIcon } from '@chakra-ui/icons'
+import React, { FC, useCallback, useState } from "react"
 import { Stars } from "../media/Stars/Stars";
 import { CardDataProps } from "./Card.types";
 
 import { Paths } from '../../../utils/paths';
 import { useHistory } from 'react-router-dom';
+import { useMutation, useLazyQuery } from "@apollo/client";
+import { ADD_EXPERIENCE_TO_ITINERARY, CREATE_ITINERARY } from "../../../graphql/mutations/itineraryMutation";
+import { FIND_ITINERARIES_FOR_USER } from "../../../graphql/queries/itineraryQuery";
+import { useForm } from "react-hook-form";
 
 export const Card: FC<CardDataProps> = ({
     experience
@@ -25,44 +47,146 @@ export const Card: FC<CardDataProps> = ({
         history.push(path, { pkexperience: fk_experience_location });
     }, []);
 
+    const [ showCreateItinerary, setShowCreateItinerary ] = useState(false); 
+
+    const [ loadForCreateItinerary, setLoadForCreateItinerary ] = useState(false);
+
+    const [ addExperienceToItinerary, { data: addExperienceToItineraryData }] = useMutation(ADD_EXPERIENCE_TO_ITINERARY);
+
+    const [ createItinerary, { data: createItineraryData }] = useMutation(CREATE_ITINERARY);
+
+    const [ getUserItineraries, { loading: loadingUserItineraries, error: errorUserItineraries, data: userItineraries, refetch: userItinerariesRefetch }] = useLazyQuery(FIND_ITINERARIES_FOR_USER);
+
+    const { isOpen, onOpen, onClose } = useDisclosure()
+
+    const { register, handleSubmit, errors } = useForm();
+
+    const onCreateItinerary = (input: any) => {
+        setLoadForCreateItinerary(true);
+        createItinerary({ variables: {
+            title: input["title"],
+            summary: "",
+            content: {
+                content: []
+            },
+            pkuser: 1
+        }}).then(data => {
+            setLoadForCreateItinerary(false);
+            userItinerariesRefetch && userItinerariesRefetch();
+            setShowCreateItinerary(false);
+        })
+        
+    }
+
     return (
-        <Container onClick={() => onNavigate(Paths.SingleExperience)} maxW="20em" borderWidth="1px" borderRadius="lg" overflow="hidden">
+        <Container maxW="20em" borderWidth="1px" borderRadius="lg" overflow="hidden">
+            <div onClick={() => onNavigate(Paths.SingleExperience)}>
+                <Image src={imageUrl} alt={imageAlt} />
 
-            <Image src={imageUrl} alt={imageAlt} />
+                <Box p="6">
+                    <Box d="flex" alignItems="baseline">
+                        <Box
+                            color="gray.500"
+                            fontWeight="semibold"
+                            letterSpacing="wide"
+                            fontSize="xs"
+                            textTransform="uppercase"
+                            ml="2"
+                        >
+                            {miles && miles.toFixed(2)} miles &bull; {elevation} feet
+                        </Box>
+                    </Box>
+                
+                    <Box
+                        mt="1"
+                        fontWeight="semibold"
+                        as="h4"
+                        lineHeight="tight"
+                        isTruncated
+                    >
+                        {title}
+                    </Box>
 
-            <Box p="6">
-            <Box d="flex" alignItems="baseline">
+                </Box>
+            </div>
 
-                <Box
-                    color="gray.500"
-                    fontWeight="semibold"
-                    letterSpacing="wide"
-                    fontSize="xs"
-                    textTransform="uppercase"
-                    ml="2"
-                >
-                    {miles && miles.toFixed(2)} miles &bull; {elevation} feet
+            <Box p="4">
+                <Box d="flex" mt="2" alignItems="center">
+                    <Stars rating={rating} />
+                    <Spacer />
+                    <Button colorScheme="teal" size="xs" onClick={() => {
+                        onOpen()
+                        getUserItineraries({
+                            variables: {
+                                pkuser: 1
+                            }
+                        })
+                    }}>
+                        Save
+                    </Button>
+
+                    <Modal isOpen={isOpen} onClose={() => {
+                        onClose()
+                        setShowCreateItinerary(false)
+                    }}>
+                        <ModalOverlay />
+                        <ModalContent styles={{ maxHeight: 500 }}>
+                            <ModalHeader>Save this experience to your itinerary</ModalHeader>
+                            <ModalCloseButton />
+                            <ModalBody>
+                                { isOpen && loadingUserItineraries && <p>Loading...</p>}
+                                { isOpen && errorUserItineraries && <p>Error!</p>}
+                                { isOpen && userItineraries && (
+                                    <Table>
+                                        <Tbody>
+                                            {userItineraries["findUser"]["itineraries"].map((item: any) => {
+                                                return (
+                                                    <Tr key={item.pkitinerary} onClick={() => {
+                                                        addExperienceToItinerary({
+                                                            variables: {
+                                                                pkexperience: fk_experience_location,
+                                                                pkitinerary: item.pkitinerary
+                                                            }
+                                                        })
+                                                        onClose() 
+                                                    }}> 
+                                                        <Td>
+                                                            {item.title}
+                                                        </Td>
+                                                    </Tr>
+                                                )
+                                            })}
+                                            <Tr >
+                                                { !showCreateItinerary && <Td onClick={() => setShowCreateItinerary(true)}><AddIcon/>&nbsp;Create a new Itinerary</Td> }
+                                                { showCreateItinerary && <Td>
+                                                    <form onSubmit = { handleSubmit(onCreateItinerary) }>
+                                                        <Input size="sm" style={{width: "75%"}} name="title" placeholder="Title of your itinerary" ref={register} />
+                                                        &nbsp;
+                                                        { !loadForCreateItinerary && <Button size="sm" type="submit"><CheckIcon/></Button>}
+                                                        { loadForCreateItinerary && <Button isLoading size="sm" type="submit"><CheckIcon/></Button>}
+                                                        <Button size="sm" onClick={() => setShowCreateItinerary(false)}><CloseIcon/></Button>
+                                                    </form>
+                                                </Td> }
+                                            </Tr>
+                                        </Tbody>
+                                    </Table>
+                                )}
+
+                            </ModalBody>
+                            <ModalFooter>
+                                <Button colorScheme="blue" mr={3} onClick={() => {
+                                    onClose()
+                                    setShowCreateItinerary(false)
+                                }}>
+                                Close
+                                </Button>
+                            </ModalFooter>
+                        </ModalContent>
+                    </Modal>
+
                 </Box>
             </Box>
-        
-            <Box
-                mt="1"
-                fontWeight="semibold"
-                as="h4"
-                lineHeight="tight"
-                isTruncated
-            >
-                {title}
-            </Box>
-
-            <Box d="flex" mt="2" alignItems="center">
-                <Stars rating={rating} />
-                <Spacer />
-                <Button colorScheme="teal" size="xs">
-                    Save
-                </Button>
-            </Box>
-            </Box>
+            
         </Container>
     );
 }

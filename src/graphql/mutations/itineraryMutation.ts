@@ -1,8 +1,26 @@
 import { gql } from '@apollo/client';
 
 export const CREATE_ITINERARY = gql`
-    mutation createItinerary($title: String, $summary: String) {
-        createItinerary(title: $title, summary: $summary)
+    mutation createItinerary($title: String, $summary: String, $content: Json, $tags: [Int], $pkuser: Int!) {
+        createItinerary(title: $title, summary: $summary, content: $content, tags: $tags, pkuser: $pkuser) {
+            pkitinerary
+        }
+    }
+`;
+
+export const UPDATE_ITINERARY = gql`
+    mutation updateItinerary($pkitinerary: Int!, $title: String, $content: Json) {
+        updateItinerary(pkitinerary: $pkitinerary, title: $title, content: $content) {
+            pkitinerary
+        }
+    }
+`;
+
+export const ADD_EXPERIENCE_TO_ITINERARY = gql`
+    mutation addExperineceToItinerary($pkexperience: Int!, $pkitinerary: Int!) {
+        addExperienceToItinerary(pkexperience: $pkexperience, pkitinerary: $pkitinerary) {
+            pkitinerary_experience
+        }
     }
 `;
 
