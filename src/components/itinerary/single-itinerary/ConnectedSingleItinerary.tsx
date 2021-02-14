@@ -23,7 +23,7 @@ export const ConnectedSingleItinerary: FC<ConnectedSingleItineraryProps> = ({ hi
 
     return (
         <>
-            <SingleItinerary data={data}/>
+            <SingleItinerary data={data["findItineraryById"]}/>
         </>
     )
 }

@@ -7,8 +7,8 @@ export const SingleItinerary: FC<SingleItineraryProps> = ({ data }) => {
         <>
             <NavigationBar />
             <p>Itinerary!!!</p>
-            <p>pkitinerary: {data["findItineraryById"].pkitinerary}</p>
-            <p>title: {data["findItineraryById"].title}</p>
+            <p>pkitinerary: {data.pkitinerary}</p>
+            <p>title: {data.title}</p>
         </>
     )
 }
