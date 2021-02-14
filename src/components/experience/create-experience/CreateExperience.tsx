@@ -8,6 +8,7 @@ import { Input,
         NumberIncrementStepper,
         NumberDecrementStepper, 
         Select,
+        Center,
         Textarea 
     } from "@chakra-ui/react"
 import { Button } from "@chakra-ui/react"
@@ -23,7 +24,7 @@ export const CreateExperience: FC<CreateExperienceDataProps> = ({ onSubmit, setC
     return (
         <>
             <NavigationBar/>
-            <Box maxW='100%'>
+            <Box maxW='xl'>
                 <form onSubmit={ handleSubmit(onSubmit) }>
                     <Input name="title" placeholder="Title" ref={register} />
                     <Textarea name="summary" placeholder="Summary" ref={register} />

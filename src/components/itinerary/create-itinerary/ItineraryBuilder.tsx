@@ -1,7 +1,7 @@
 import React, { useState, FC } from "react"
 import { useForm } from "react-hook-form";
-import { Box, Button, Container, Flex, Accordion, AccordionItem, AccordionButton, AccordionIcon, AccordionPanel, Heading, Center, Input, Text } from '@chakra-ui/react'
-import { useMutation } from "@apollo/client";
+import { Box, Button, Container, Flex, Image, Accordion, AccordionItem, AccordionButton, AccordionIcon, AccordionPanel, Heading, Center, Input, Text } from '@chakra-ui/react'
+import { useMutation, useQuery } from "@apollo/client";
 import { CREATE_ITINERARY } from "../../../graphql/mutations/itineraryMutation";
 import { Paths } from "../../../utils/paths";
 import { ItineraryBuilderProps } from "./CreateItinerary.types"
@@ -22,7 +22,7 @@ export const ItineraryBuilder: FC<ItineraryBuilderProps> = ({ title, history }) 
         const index = obj.findIndex(element => element.date == date)
         let newObj = [...obj]
         // add css for experience card
-        newObj[index].content.push(e.dataTransfer.getData("text"))
+        newObj[index].content.push(e.dataTransfer.getData("element"))
         setObj(newObj)
     }
 
@@ -105,9 +105,20 @@ export const ItineraryBuilder: FC<ItineraryBuilderProps> = ({ title, history }) 
                                             <AccordionPanel>
                                                 {
                                                     // Might need to render with {} in array, so it knows what kind of type it is
-                                                    item.content.map(innerItems => {
+                                                    item.content.map((innerItems: string) => {
+                                                        var innerItineraryElement = JSON.parse(innerItems);
                                                         return (
-                                                            <div>{innerItems}</div>
+                                                            <Box borderWidth="1px" borderRadius="lg" maxW="sm">
+                                                                <Image src={innerItineraryElement.imgUrl} alt={innerItineraryElement.imgAlt} htmlWidth="50%"/>
+                                                                <Box
+                                                                    mt="1"
+                                                                    fontWeight="semibold"
+                                                                    as="h4"
+                                                                    lineHeight="tight"
+                                                                    >
+                                                                    {innerItineraryElement.title}
+                                                                </Box>
+                                                            </Box>
                                                         )
                                                     })
                                                 }

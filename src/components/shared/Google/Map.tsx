@@ -69,11 +69,23 @@ export const Map: FC<IMapDataProps> = ({ height, width, loader, coords, experien
                 });
 
                 var div = document.createElement('div')
-                div.textContent = x.title
+                div.innerHTML = `
+                <div>
+                    <h2 style="font-size: 20px;">${x.title}</h2>
+                    <img src=${x.imageUrl} width="200" />
+                    <p>${x.miles} miles - ${x.elevation} feet</p>
+                </div>
+                `
                 // Add infowindow content! img, title, etc
                 div.draggable = true
                 div.ondragstart= function(e) {
-                    e.dataTransfer && e.dataTransfer.setData("text", (x.fk_experience_location).toString())
+                    var dataForItineraryElement = {
+                        pkexerience: x.fk_experience_location,
+                        title: x.title,
+                        imgUrl: x.imageUrl,
+                        imgAlt: x.imageAlt
+                    }
+                    e.dataTransfer && e.dataTransfer.setData("element", JSON.stringify(dataForItineraryElement))
                 }
 
                 const newInfoWindow = new google.maps.InfoWindow({
