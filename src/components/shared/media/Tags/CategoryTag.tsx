@@ -1,8 +1,9 @@
 import React, { FC, useCallback } from 'react';
 import { TagDataProps } from './Tag.types';
-import { Badge } from "@chakra-ui/react"
+import { Tag } from "@chakra-ui/react"
 
-export const Tag: FC<TagDataProps> = ({ tag }) => {
+export const CategoryTag: FC<TagDataProps> = ({ tag }) => {
+
     const color = useCallback((tag: string) => {
         switch(tag.toUpperCase()) {
             case "CAMPING":
@@ -21,8 +22,8 @@ export const Tag: FC<TagDataProps> = ({ tag }) => {
     }, [tag]);
 
     return (
-        <Badge borderRadius="full" px="2" colorScheme={color(tag)}>
+        <Tag size={"sm"} colorScheme={color(tag)}>
             {tag.toUpperCase()}
-        </Badge>
+        </Tag>
     )
 }
