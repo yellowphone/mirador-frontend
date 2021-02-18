@@ -1,8 +1,9 @@
 import React, { FC, useCallback } from 'react';
 import { TagDataProps } from './Tag.types';
-import { Tag } from "@chakra-ui/react"
+import { Tag, TagLabel, TagRightIcon, Box } from "@chakra-ui/react"
+import { SmallAddIcon, SmallCloseIcon } from '@chakra-ui/icons'
 
-export const CategoryTag: FC<TagDataProps> = ({ tag }) => {
+export const CategoryTag: FC<TagDataProps> = ({ tag, add, close }) => {
 
     const color = useCallback((tag: string) => {
         switch(tag.toUpperCase()) {
@@ -23,7 +24,19 @@ export const CategoryTag: FC<TagDataProps> = ({ tag }) => {
 
     return (
         <Tag size={"sm"} colorScheme={color(tag)}>
-            {tag.toUpperCase()}
+            { add && <>
+                <TagLabel>{tag.toUpperCase()}</TagLabel>
+                <TagRightIcon as={SmallAddIcon}/>
+            </> }
+            
+            { close && <>
+                <TagLabel>{tag.toUpperCase()}</TagLabel>
+                <TagRightIcon as={SmallCloseIcon}/>
+            </> }
+
+            { !add && !close && <>
+                <TagLabel>{tag.toUpperCase()}</TagLabel>
+            </> }
         </Tag>
     )
 }

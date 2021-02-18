@@ -6,9 +6,10 @@ import { Container, SimpleGrid, Center, Heading, VStack, Text, Image, Box, Texta
 import { ExperienceSearch } from '../../shared/search/ExperienceSearch';
 import { Search } from '../../shared/Google/Search'
 import { Upload } from '../../shared/upload/Upload';
+import { SelectTag } from '../../shared/media/Tags/SelectTag';
 
 
-export const CreateBlog: FC<CreateBlogDataProps> = ({ onSubmit, addContentHelper, addContent, html, setCreateCoords, loader }) => {
+export const CreateBlog: FC<CreateBlogDataProps> = ({ onSubmit, addContentHelper, addContent, html, setCreateCoords, loader, setAddedTags, addedTags }) => {
 
     const [ textButton, setTextButton ] = useState(false)
     const [ imageButton, setImageButton ] = useState(false)
@@ -43,6 +44,7 @@ export const CreateBlog: FC<CreateBlogDataProps> = ({ onSubmit, addContentHelper
                         </Center>
                         <Input name="title" placeholder="Title" ref={register} />
                         <Textarea name="summary" placeholder="Summary" ref={register} />
+                        <SelectTag setAddedTags={setAddedTags} addedTags={addedTags}/>
                         <Search loader={loader} setCoords={setCreateCoords} refetch={() => {}} />
                     </form>
                     <br></br>

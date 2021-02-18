@@ -13,6 +13,8 @@ export const ConnectedCreateExperience = () => {
 
     const [ createExperience, { data }] = useMutation(CREATE_EXPERIENCE);
 
+    const [ addedTags, setAddedTags ] = useState<Object[]>([]);
+
     const history = useHistory();
 
     const loader = new Loader({
@@ -23,6 +25,10 @@ export const ConnectedCreateExperience = () => {
 
     const onSubmit = (input: any) => {   
         console.log(input)
+        var tags: number[] = [];
+        addedTags.map((item: number) => {
+            tags.push(item.pktag)
+        })
         createExperience({
             variables: {
                 title: input["title"],
@@ -32,7 +38,8 @@ export const ConnectedCreateExperience = () => {
                 difficulty: input["difficulty"],
                 pkuser: 1,
                 lat: createCoords["lat"], 
-                lng: createCoords["lng"]
+                lng: createCoords["lng"],
+                tags: tags
             }
         }).then(data => {
             history.push(Paths.SingleExperience, { pkexperience: data.data["createExperience"]["pkexperience"] });
@@ -41,7 +48,7 @@ export const ConnectedCreateExperience = () => {
 
     return (
         <>
-            <CreateExperience onSubmit={onSubmit} setCreateCoords={setCreateCoords} loader={loader} />
+            <CreateExperience onSubmit={onSubmit} setCreateCoords={setCreateCoords} loader={loader} setAddedTags={setAddedTags} addedTags={addedTags}/>
         </>
     )
 }

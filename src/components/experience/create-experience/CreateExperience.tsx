@@ -16,8 +16,9 @@ import { NavigationBar } from '../../shared/navigation-bar/NavigationBar';
 import { Search } from '../../shared/Google/Search'
 import { DifficultyType } from "../../shared/media/Badges/Badges.types";
 import { CreateExperienceDataProps } from './CreateExperience.types'
+import { SelectTag } from "../../shared/media/Tags/SelectTag";
 
-export const CreateExperience: FC<CreateExperienceDataProps> = ({ onSubmit, setCreateCoords, loader }) => {
+export const CreateExperience: FC<CreateExperienceDataProps> = ({ onSubmit, setCreateCoords, setAddedTags, addedTags, loader }) => {
 
     const { register, handleSubmit, errors } = useForm();
 
@@ -28,6 +29,8 @@ export const CreateExperience: FC<CreateExperienceDataProps> = ({ onSubmit, setC
                 <form onSubmit={ handleSubmit(onSubmit) }>
                     <Input name="title" placeholder="Title" ref={register} />
                     <Textarea name="summary" placeholder="Summary" ref={register} />
+
+                    <SelectTag setAddedTags={setAddedTags} addedTags={addedTags}/>
 
                     <NumberInput name="miles" defaultValue={5} precision={1} step={0.1} ref={register}>
                     <NumberInputField name="miles" ref={register}/>

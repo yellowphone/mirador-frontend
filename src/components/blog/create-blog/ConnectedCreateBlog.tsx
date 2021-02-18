@@ -12,6 +12,8 @@ export const ConnectedCreateBlog = () => {
 
     const [createCoords, setCreateCoords] = useState({lat: 0, lng: 0});
 
+    const [ addedTags, setAddedTags ] = useState<Object[]>([]);
+
     const [ createBlog, { data }] = useMutation(CREATE_BLOG);
 
     // JSON state object to store HTML metadata 
@@ -29,6 +31,10 @@ export const ConnectedCreateBlog = () => {
 
     const onSubmit = (input: any) => {
         console.log(input)
+        var tags: number[] = [];
+        addedTags.map((item: number) => {
+            tags.push(item.pktag)
+        })
         createBlog({
             variables: {
                 title: input["title"],
@@ -38,7 +44,8 @@ export const ConnectedCreateBlog = () => {
                 },
                 pkuser: 1,
                 lat: createCoords["lat"], 
-                lng: createCoords["lng"]
+                lng: createCoords["lng"],
+                tags: tags
             }
         }).then(data => {
             history.push(Paths.SingleBlog, { pkblog: data.data["createBlog"]["pkblog"] })
@@ -76,7 +83,7 @@ export const ConnectedCreateBlog = () => {
 
     return (
         <>
-            <CreateBlog onSubmit={onSubmit} addContentHelper={addContentHelper} addContent={addContent} html={html} setCreateCoords={setCreateCoords} loader={loader}/>
+            <CreateBlog onSubmit={onSubmit} addContentHelper={addContentHelper} addContent={addContent} html={html} setCreateCoords={setCreateCoords} loader={loader} setAddedTags={setAddedTags} addedTags={addedTags}/>
         </>
     )
 

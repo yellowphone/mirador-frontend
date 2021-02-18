@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import { Container, SimpleGrid, Center, Heading, VStack, Text, Image, Box } from "@chakra-ui/react"
 import { NavigationBar } from '../../shared/navigation-bar/NavigationBar';
 import { SingleBlogDataProps } from './SingleBlog.types'
+import { TagGrid } from '../../shared/media/Tags/TagGrid';
 
 export const SingleBlog: FC<SingleBlogDataProps> = ({ data, html }) => {
 
@@ -16,6 +17,9 @@ export const SingleBlog: FC<SingleBlogDataProps> = ({ data, html }) => {
                 </Center>
                 <Center>
                     <Text style={{ textAlign: "center" }} fontSize="md" as="em" color="gray.500">{data["findBlogById"]["summary"]}</Text>
+                </Center>
+                <Center>
+                    <TagGrid tags={data["findBlogById"]["blog_tags"]} />
                 </Center>
                 <Center>
                     <Text>lat: {data["findBlogById"]["blog_locations"]["lat"]}, lng: {data["findBlogById"]["blog_locations"]["lng"]}</Text>
