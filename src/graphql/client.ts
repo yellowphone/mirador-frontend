@@ -8,7 +8,7 @@ const uploadLink = createUploadLink({
 })
 
 const authLink = setContext((_, { headers }) => {
-  const token = getUserContext()?.accessToken;
+  const token = getUserContext()?.access_token;
 
   return {
     headers: {
@@ -26,11 +26,5 @@ const link = ApolloLink.from([
 export const client = new ApolloClient({
   uri: 'http://localhost:4000/graphql',
   cache: new InMemoryCache(),
-  // link: link
+  link: link
 });
-
-// <<<<<<< blogs
-//   link: uploadLink
-// =======
-//   link: authLink,
-// >>>>>>> main
