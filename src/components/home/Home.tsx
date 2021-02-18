@@ -15,6 +15,7 @@ export const Home = () => {
                     <Center>Let's Explore</Center>
                     <Input placeholder={'Type a location to get started'} />
                     {/* <SearchWithMap /> */}
+                    
                 </Box>
             </VStack>
         </>

@@ -18,6 +18,12 @@ export const FIND_BLOG_BY_ID = gql`
                 lat
                 lng
             }
+            blog_tags {
+                pkblog_tag
+                tags {
+                  tag
+                }
+            }
         }
     }
 `;

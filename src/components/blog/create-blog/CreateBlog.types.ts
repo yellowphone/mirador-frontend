@@ -8,4 +8,6 @@ export interface CreateBlogDataProps {
     addContentHelper: SubmitHandler<Record<string, any>>
     addContent: Function
     html: Object
+    setAddedTags: Function
+    addedTags: Object[]
 }

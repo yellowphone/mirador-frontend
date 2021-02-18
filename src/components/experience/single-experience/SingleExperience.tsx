@@ -1,4 +1,5 @@
 import React, { FC } from "react";
+import { TagGrid } from "../../shared/media/Tags/TagGrid";
 
 import { NavigationBar } from '../../shared/navigation-bar/NavigationBar';
 
@@ -14,6 +15,7 @@ export const SingleExperience: FC<SingleExperienceProps> = ({ data }) => {
     const summary = data["findExperienceById"]["summary"]
     const lat = (data["findExperienceById"]["experience_locations"]["lat"])
     const lng = (data["findExperienceById"]["experience_locations"]["lng"])
+    const tags = (data["findExperienceById"]["experience_tags"])
 
     return(
         <>
@@ -26,6 +28,7 @@ export const SingleExperience: FC<SingleExperienceProps> = ({ data }) => {
                 <p>summary: {summary}</p>
                 <p>miles: {miles}</p>
                 <p>elevation: {elevation}</p>
+                <TagGrid tags={tags}/>
             </div>
         </>
     )

@@ -27,6 +27,12 @@ export const FIND_EXPERIENCE_BY_ID = gql`
                     username
                 }
             }
+            experience_tags {
+                pkexperience_tag
+                tags {
+                  tag
+                }
+            }
         }
     }
 `;
