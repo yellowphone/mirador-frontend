@@ -7,10 +7,10 @@ export const TagGrid: FC<TagGridDataProps> = ({ tags }) => {
 
     return (
         <>
-        <HStack spacing={2}>
+        <HStack spacing={2} p={2}>
             {tags && tags.map((item, index) => {
                 return(
-                    <CategoryTag key={index} tag={item["tags"]["tag"]} add={false} delete={false}/>
+                    <CategoryTag key={index} tag={item["tags"]["tag"]} add={false} close={false}/>
                 )
                 
             })}

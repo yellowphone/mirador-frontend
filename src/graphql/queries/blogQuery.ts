@@ -27,3 +27,19 @@ export const FIND_BLOG_BY_ID = gql`
         }
     }
 `;
+
+export const FIND_MANY_BLOGS = gql`
+    query findManyBlogs {
+        findManyBlogs {
+            pkblog
+            title
+            summary
+            blog_tags {
+                pkblog_tag
+                tags {
+                  tag
+                }
+            }
+        }
+    }
+`;
