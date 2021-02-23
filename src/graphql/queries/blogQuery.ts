@@ -43,3 +43,9 @@ export const FIND_MANY_BLOGS = gql`
         }
     }
 `;
+
+export const FIND_RANDOM_BLOG = gql`
+    query {
+        findRandomBlog(previousPrimaryKey:1)
+    }
+`;
