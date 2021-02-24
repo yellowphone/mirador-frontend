@@ -5,5 +5,5 @@ export interface TagDataProps {
 }
 
 export interface TagGridDataProps {
-    tags: String[]
+    tags: Object[]
 }
