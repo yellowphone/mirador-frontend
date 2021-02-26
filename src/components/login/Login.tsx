@@ -22,7 +22,7 @@ export const Login: FC<ILoginDataProps> = ({
 
     const [ createUser, { data: userLoginData, error: mutationError }] = useMutation(CREATE_USER);
 
-    const [ findUserByEmail] = useLazyQuery(FIND_USER_BY_EMAIL, {
+    const [ findUserByEmail ] = useLazyQuery(FIND_USER_BY_EMAIL, {
         onCompleted: (data) => {
             console.log(data.findUserByEmail)
             if (data.findUserByEmail) {
