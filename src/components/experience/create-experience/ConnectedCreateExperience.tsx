@@ -5,10 +5,12 @@ import { Paths } from '../../../utils/paths';
 import { useHistory } from 'react-router-dom';
 import { CreateExperience } from './CreateExperience'
 import { Loader } from '@googlemaps/js-api-loader';
-
+import { useCookies } from 'react-cookie';
 
 export const ConnectedCreateExperience = () => {
 
+    const [cookie, setCookie] = useCookies(['user'])
+    console.log(cookie["user"]["pkuser"])
     const [createCoords, setCreateCoords] = useState({lat: 0, lng: 0});
 
     const [ createExperience, { data }] = useMutation(CREATE_EXPERIENCE);
@@ -36,7 +38,7 @@ export const ConnectedCreateExperience = () => {
                 miles: parseFloat(input["miles"]),
                 elevation: parseInt(input["elevation"]),
                 difficulty: input["difficulty"],
-                pkuser: 1,
+                pkuser: cookie["user"]["pkuser"],
                 lat: createCoords["lat"], 
                 lng: createCoords["lng"],
                 tags: tags

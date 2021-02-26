@@ -21,6 +21,7 @@ import { ConnectedCreateItinerary } from '../components/itinerary/create-itinera
 import { ConnectedSingleItinerary } from '../components/itinerary/single-itinerary/ConnectedSingleItinerary';
 
 export const App: React.FC = () => {
+
   return (
     <ApolloProvider client={client}>
       <CookiesProvider>
