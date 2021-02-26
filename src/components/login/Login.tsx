@@ -1,19 +1,63 @@
-import { useMutation } from '@apollo/client';
+import { ApolloError, useMutation, useQuery } from '@apollo/client';
 import { Center, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, } from '@chakra-ui/react';
-import React, { FC, useCallback } from 'react';
+import React, { FC, useCallback, useState } from 'react';
 import FacebookLogin from 'react-facebook-login';
 import GoogleLogin from 'react-google-login';
 import { CREATE_USER } from '../../graphql/mutations/userMutation';
 import { Account, getUserContext, IUserContext, setUserContext, } from '../../utils/userContext';
 import { ILoginDataProps } from './Login.types';
+import { useLazyQuery } from '@apollo/client';
+import { FIND_USER_BY_EMAIL } from '../../graphql/queries/userQuery';
+import { useCookies } from 'react-cookie';
 
 export const Login: FC<ILoginDataProps> = ({
     isOpen,
     onClose,
+    setUser
 }) => {
-    const [ login, { data: userLoginData, error: mutationError }] = useMutation(CREATE_USER);
 
-    userLoginData && setUserContext(userLoginData.createUser);
+    const [cookie, setCookie] = useCookies(['user'])
+
+    const [ incomingUser, setIncomingUser ] = useState<IUserContext>();
+
+    const [ createUser, { data: userLoginData, error: mutationError }] = useMutation(CREATE_USER);
+
+    const [ findUserByEmail ] = useLazyQuery(FIND_USER_BY_EMAIL, {
+        onCompleted: (data) => {
+            console.log(data.findUserByEmail)
+            if (data.findUserByEmail) {
+                setCookie('user', data.findUserByEmail, { path: '/'})
+                setUserContext(data.findUserByEmail)
+                setUser(data.findUserByEmail)
+            }
+        },
+        onError: (e: ApolloError) => {
+            if (e.message == "Cannot return null for non-nullable field Query.findUserByEmail.") {
+                console.log("No user found from DB")
+                console.log("Creating user...")
+                incomingUser && createUser({
+                    variables: {
+                        email: incomingUser.email,
+                        firstname: incomingUser.firstname,
+                        lastname: incomingUser.lastname,
+                        access_token: incomingUser.access_token,
+                        user_id: incomingUser.user_id,
+                        image_url: incomingUser.image_url,
+                        account_type: 'GOOGLE',
+                    }
+                }).then(() => {
+                    setCookie('user', incomingUser, { path: '/'})
+                    setUserContext(incomingUser)
+                    setUser(incomingUser);
+                })
+            }
+            else {
+                console.error(e)
+            }
+        }
+    });
+
+    cookie.user && setUserContext(cookie.user)
     mutationError && console.log(mutationError)
 
     const googleSuccess = useCallback( (res: any) => {
@@ -30,17 +74,13 @@ export const Login: FC<ILoginDataProps> = ({
                 accountType: Account.Google,
             };
 
-            await login({
+            setIncomingUser(user)
+
+            findUserByEmail({
                 variables: {
-                    email: user.email,
-                    firstname: user.firstname,
-                    lastname: user.lastname,
-                    access_token: user.access_token,
-                    user_id: user.user_id,
-                    image_url: user.image_url,
-                    account_type: 'GOOGLE',
+                    email: user.email
                 }
-            });
+            })
 
             onClose();
         }
@@ -61,7 +101,7 @@ export const Login: FC<ILoginDataProps> = ({
                 accountType: Account.Facebook,
             };
 
-            await login({
+            await createUser({
                 variables: {
                     email: user.email,
                     firstname: user.firstname,
@@ -99,7 +139,7 @@ export const Login: FC<ILoginDataProps> = ({
                         />
                     </Center>
                     <br />
-                    <Center>
+                    {/* <Center>
                         <FacebookLogin
                             appId={process.env.FB_APP_ID ?? ''}
                             // autoLoad
@@ -107,7 +147,7 @@ export const Login: FC<ILoginDataProps> = ({
                             onFailure={error}
                             fields='name,email,picture'
                         />
-                    </Center>
+                    </Center> */}
                 </ModalBody>
               </ModalContent>
             </Modal>

@@ -27,7 +27,8 @@ import { useMutation, useLazyQuery } from "@apollo/client";
 import { ADD_EXPERIENCE_TO_ITINERARY, CREATE_ITINERARY } from "../../../graphql/mutations/itineraryMutation";
 import { FIND_ITINERARIES_FOR_USER } from "../../../graphql/queries/itineraryQuery";
 import { useForm } from "react-hook-form";
-
+import { useCookies } from 'react-cookie';
+    
 export const Card: FC<CardDataProps> = ({
     experience
 }) => {
@@ -41,6 +42,8 @@ export const Card: FC<CardDataProps> = ({
         miles,
         rating,
     } = experience
+    
+    const [cookie, setCookie] = useCookies(['user'])
 
     const history = useHistory();
     const onNavigate = useCallback((path: Paths) => {
@@ -69,7 +72,7 @@ export const Card: FC<CardDataProps> = ({
             content: {
                 content: []
             },
-            pkuser: 1
+            pkuser: cookie["user"]["pkuser"]
         }}).then(data => {
             setLoadForCreateItinerary(false);
             userItinerariesRefetch && userItinerariesRefetch();
@@ -118,7 +121,7 @@ export const Card: FC<CardDataProps> = ({
                         onOpen()
                         getUserItineraries({
                             variables: {
-                                pkuser: 1
+                                pkuser: cookie["user"]["pkuser"]
                             }
                         })
                     }}>

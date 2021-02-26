@@ -2,12 +2,15 @@ import React, { FC, FormEvent, useState } from "react"
 import { useMutation } from '@apollo/react-hooks';
 import { CREATE_IMAGE } from '../../../graphql/mutations/imageMutation';
 import { Input, Spinner } from "@chakra-ui/react";
+import { useCookies } from 'react-cookie';
 
 interface UploadDataProps {
     addContent: Function
 }
 
 export const Upload: FC<UploadDataProps> = ({ addContent }) => {
+
+    const [cookie, setCookie] = useCookies(['user'])
 
     const [ uploadPhoto, { data }] = useMutation(CREATE_IMAGE);
 
@@ -28,7 +31,7 @@ export const Upload: FC<UploadDataProps> = ({ addContent }) => {
         uploadPhoto({
             variables: {
                 file: file,
-                pkuser: 1, 
+                pkuser: cookie["user"]["pkuser"], 
                 caption: ""
             }
         }).then(data => {

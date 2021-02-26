@@ -9,8 +9,10 @@ import { MdPerson } from 'react-icons/md'
 import { AddIcon, ChevronDownIcon } from '@chakra-ui/icons';
 import { Login } from '../../login/Login';
 import { getUserContext, IUserContext, logout } from '../../../utils/userContext';
+import { useCookies } from 'react-cookie';
 
 export const NavigationBar: FC = () => {
+    const [ cookies, setCookie, removeCookie ] = useCookies(['user']);
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [user, setUser] = useState<IUserContext | undefined>(getUserContext());
     const history = useHistory();
@@ -21,9 +23,10 @@ export const NavigationBar: FC = () => {
 
     const onLogout = useCallback(() => {
         logout();
-        history.push(Paths.Home);
+        removeCookie('user', { path: '/' })
         setUser(undefined);
-    }, [logout, history, setUser]);
+        history.push(Paths.Home);
+    }, [logout, history, setUser, removeCookie]);
 
     useEffect(() => {
         const currUser = getUserContext();
@@ -31,7 +34,7 @@ export const NavigationBar: FC = () => {
             console.log('setting new user')
             setUser(currUser);
         }
-    });
+    }, []);
 
     return (
         <Navbar bg="light justify-content-between" sticky='top'>
@@ -86,7 +89,7 @@ export const NavigationBar: FC = () => {
                     }
                     </Nav>
                 </GridItem>
-                { !user && <Login onClose={onClose} isOpen={isOpen} /> }
+                { !user && <Login onClose={onClose} isOpen={isOpen} setUser={setUser}/> }
             </Grid>
         </Navbar>
     )

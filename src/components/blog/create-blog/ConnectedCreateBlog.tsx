@@ -7,8 +7,12 @@ import { Paths } from '../../../utils/paths';
 import { Loader } from '@googlemaps/js-api-loader';
 import { BlogExperienceCard } from '../blog-experience-card/BlogExperienceCard';
 import { SimpleGrid, Center, Text, Image, } from "@chakra-ui/react"
+import { useCookies } from 'react-cookie';
 
 export const ConnectedCreateBlog = () => {
+    
+    const [cookie, setCookie] = useCookies(['user'])
+    console.log(cookie["user"]["pkuser"])
 
     const [createCoords, setCreateCoords] = useState({lat: 0, lng: 0});
 
@@ -42,7 +46,7 @@ export const ConnectedCreateBlog = () => {
                 content: {
                     content: jsonContent
                 },
-                pkuser: 1,
+                pkuser: cookie["user"]["pkuser"],
                 lat: createCoords["lat"], 
                 lng: createCoords["lng"],
                 tags: tags

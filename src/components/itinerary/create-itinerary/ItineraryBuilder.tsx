@@ -5,9 +5,12 @@ import { useMutation, useQuery } from "@apollo/client";
 import { CREATE_ITINERARY } from "../../../graphql/mutations/itineraryMutation";
 import { Paths } from "../../../utils/paths";
 import { ItineraryBuilderProps } from "./CreateItinerary.types"
+import { useCookies } from 'react-cookie';
 
 export const ItineraryBuilder: FC<ItineraryBuilderProps> = ({ title, history }) => {
 
+    const [cookie, setCookie] = useCookies(['user'])
+    
     const [obj, setObj] = useState<Object[]>([]);
 
     const [ createItinerary, { data }] = useMutation(CREATE_ITINERARY)
@@ -53,7 +56,7 @@ export const ItineraryBuilder: FC<ItineraryBuilderProps> = ({ title, history }) 
                 content: {
                     content: obj
                 },
-                pkuser: 1
+                pkuser: cookie["user"]["pkuser"]
             }
         }).then(data => {
             console.log(data)
