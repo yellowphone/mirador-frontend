@@ -21,6 +21,7 @@ module.exports = () => {
     output: {
       path: resolve(__dirname, "dist"),
       filename: "mirador.bundle.js",
+      publicPath: '/'
     },
     resolve: {
       extensions: [".js", ".jsx", ".ts", ".tsx"],
@@ -57,6 +58,7 @@ module.exports = () => {
       compress: true,
       stats: 'errors-only',
       overlay: true,
+      historyApiFallback: true,
     }
   }
 };
