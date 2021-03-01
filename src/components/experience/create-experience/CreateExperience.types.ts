@@ -6,4 +6,5 @@ export interface CreateExperienceDataProps {
     setAddedTags: Function
     addedTags: Object[]
     loader: Loader
+    onUploadInputChange: Function
 }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { FormEvent, useState } from "react";
 import { useMutation } from '@apollo/react-hooks';
 import { CREATE_EXPERIENCE } from '../../../graphql/mutations/experienceMutation';
 import { Paths } from '../../../utils/paths';
@@ -13,6 +13,8 @@ export const ConnectedCreateExperience = () => {
     console.log(cookie["user"]["pkuser"])
     const [createCoords, setCreateCoords] = useState({lat: 0, lng: 0});
 
+    const [ files, setFiles ] = useState([]);
+
     const [ createExperience, { data }] = useMutation(CREATE_EXPERIENCE);
 
     const [ addedTags, setAddedTags ] = useState<Object[]>([]);
@@ -24,6 +26,10 @@ export const ConnectedCreateExperience = () => {
         version: "weekly",
         libraries: ["places", "geometry"]
     });
+
+    const onUploadInputChange = (e: FormEvent<HTMLInputElement>) => {
+        setFiles(files => [...files, e.target.files])
+    }
 
     const onSubmit = (input: any) => {   
         console.log(input)
@@ -41,7 +47,8 @@ export const ConnectedCreateExperience = () => {
                 pkuser: cookie["user"]["pkuser"],
                 lat: createCoords["lat"], 
                 lng: createCoords["lng"],
-                tags: tags
+                tags: tags,
+                images: files
             }
         }).then(data => {
             history.push(Paths.SingleExperience, { pkexperience: data.data["createExperience"]["pkexperience"] });
@@ -50,7 +57,7 @@ export const ConnectedCreateExperience = () => {
 
     return (
         <>
-            <CreateExperience onSubmit={onSubmit} setCreateCoords={setCreateCoords} loader={loader} setAddedTags={setAddedTags} addedTags={addedTags}/>
+            <CreateExperience onSubmit={onSubmit} setCreateCoords={setCreateCoords} loader={loader} setAddedTags={setAddedTags} addedTags={addedTags} onUploadInputChange={onUploadInputChange} />
         </>
     )
 }
