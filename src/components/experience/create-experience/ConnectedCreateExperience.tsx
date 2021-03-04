@@ -13,7 +13,7 @@ export const ConnectedCreateExperience = () => {
     console.log(cookie["user"]["pkuser"])
     const [createCoords, setCreateCoords] = useState({lat: 0, lng: 0});
 
-    const [ files, setFiles ] = useState([]);
+    const [ files, setFiles ] = useState<Object[]>([]);
 
     const [ createExperience, { data }] = useMutation(CREATE_EXPERIENCE);
 
@@ -34,7 +34,7 @@ export const ConnectedCreateExperience = () => {
     const onSubmit = (input: any) => {   
         console.log(input)
         var tags: number[] = [];
-        addedTags.map((item: number) => {
+        addedTags.map((item: Object) => {
             tags.push(item.pktag)
         })
         createExperience({
