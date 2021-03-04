@@ -1,3 +1,4 @@
+import { Stack, Image, Container, Box } from "@chakra-ui/react";
 import React, { FC } from "react";
 import { TagGrid } from "../../shared/media/Tags/TagGrid";
 
@@ -30,6 +31,19 @@ export const SingleExperience: FC<SingleExperienceProps> = ({ data }) => {
                 <p>elevation: {elevation}</p>
                 <TagGrid tags={tags}/>
             </div>
+            <Container height="200px">
+                <Stack direction="row">
+                    { data["findExperienceById"]["experience_images"] && data["findExperienceById"]["experience_images"].map((image: Object, index: number) => {
+                        return(
+                            <Box p="2" size="md">
+                                <Image key={index} src={image["images"]["url"]} />
+                            </Box>   
+                        )
+                        
+                    }) }
+                </Stack>
+            </Container>
+            
         </>
     )
 }

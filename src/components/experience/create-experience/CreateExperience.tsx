@@ -8,8 +8,9 @@ import { Input,
         NumberIncrementStepper,
         NumberDecrementStepper, 
         Select,
-        Center,
-        Textarea 
+        Spinner,
+        Textarea,
+        Text
     } from "@chakra-ui/react"
 import { Button } from "@chakra-ui/react"
 import { NavigationBar } from '../../shared/navigation-bar/NavigationBar';
@@ -18,7 +19,7 @@ import { DifficultyType } from "../../shared/media/Badges/Badges.types";
 import { CreateExperienceDataProps } from './CreateExperience.types'
 import { SelectTag } from "../../shared/media/Tags/SelectTag";
 
-export const CreateExperience: FC<CreateExperienceDataProps> = ({ onSubmit, setCreateCoords, setAddedTags, addedTags, loader }) => {
+export const CreateExperience: FC<CreateExperienceDataProps> = ({ onSubmit, setCreateCoords, setAddedTags, addedTags, loader, onUploadInputChange, spin }) => {
 
     const { register, handleSubmit, errors } = useForm();
 
@@ -54,8 +55,12 @@ export const CreateExperience: FC<CreateExperienceDataProps> = ({ onSubmit, setC
                         <option value={DifficultyType.HARD}>Hard</option>
                     </Select>
 
+                    <Text>Add photos to your experience</Text>
+                    <Input type="file" required onChange={onUploadInputChange} multiple />
+
                     <Search loader={loader} setCoords={setCreateCoords} refetch={() => {}} />
                     <Button type="submit">Create</Button>
+                    { spin && <Spinner /> }
                 </form>
             </Box> 
         </>
