@@ -7,4 +7,5 @@ export interface CreateExperienceDataProps {
     addedTags: Object[]
     loader: Loader
     onUploadInputChange: Function
+    spin: Object
 }

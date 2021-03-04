@@ -8,7 +8,7 @@ import { Input,
         NumberIncrementStepper,
         NumberDecrementStepper, 
         Select,
-        Center,
+        Spinner,
         Textarea,
         Text
     } from "@chakra-ui/react"
@@ -19,7 +19,7 @@ import { DifficultyType } from "../../shared/media/Badges/Badges.types";
 import { CreateExperienceDataProps } from './CreateExperience.types'
 import { SelectTag } from "../../shared/media/Tags/SelectTag";
 
-export const CreateExperience: FC<CreateExperienceDataProps> = ({ onSubmit, setCreateCoords, setAddedTags, addedTags, loader, onUploadInputChange }) => {
+export const CreateExperience: FC<CreateExperienceDataProps> = ({ onSubmit, setCreateCoords, setAddedTags, addedTags, loader, onUploadInputChange, spin }) => {
 
     const { register, handleSubmit, errors } = useForm();
 
@@ -60,6 +60,7 @@ export const CreateExperience: FC<CreateExperienceDataProps> = ({ onSubmit, setC
 
                     <Search loader={loader} setCoords={setCreateCoords} refetch={() => {}} />
                     <Button type="submit">Create</Button>
+                    { spin && <Spinner /> }
                 </form>
             </Box> 
         </>

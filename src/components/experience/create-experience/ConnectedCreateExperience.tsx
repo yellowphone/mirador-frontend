@@ -13,6 +13,8 @@ export const ConnectedCreateExperience = () => {
     console.log(cookie["user"]["pkuser"])
     const [createCoords, setCreateCoords] = useState({lat: 0, lng: 0});
 
+    const [spin, setSpin] = useState(false);
+
     const [ files, setFiles ] = useState<Object[]>([]);
 
     const [ createExperience, { data }] = useMutation(CREATE_EXPERIENCE);
@@ -32,32 +34,41 @@ export const ConnectedCreateExperience = () => {
     }
 
     const onSubmit = (input: any) => {   
+        setSpin(true);
         console.log(input)
         var tags: number[] = [];
         addedTags.map((item: Object) => {
             tags.push(item.pktag)
         })
-        createExperience({
-            variables: {
-                title: input["title"],
-                summary: input["summary"],
-                miles: parseFloat(input["miles"]),
-                elevation: parseInt(input["elevation"]),
-                difficulty: input["difficulty"],
-                pkuser: cookie["user"]["pkuser"],
-                lat: createCoords["lat"], 
-                lng: createCoords["lng"],
-                tags: tags,
-                images: files
-            }
-        }).then(data => {
-            history.push(Paths.SingleExperience, { pkexperience: data.data["createExperience"]["pkexperience"] });
-        })
+        try {
+            createExperience({
+                variables: {
+                    title: input["title"],
+                    summary: input["summary"],
+                    miles: parseFloat(input["miles"]),
+                    elevation: parseInt(input["elevation"]),
+                    difficulty: input["difficulty"],
+                    pkuser: cookie["user"]["pkuser"],
+                    lat: createCoords["lat"], 
+                    lng: createCoords["lng"],
+                    tags: tags,
+                    images: files
+                }
+            }).then(data => {
+                setSpin(false);
+                history.push(Paths.SingleExperience, { pkexperience: data.data["createExperience"]["pkexperience"] });
+            })
+        }
+        catch(err) {
+            setSpin(false);
+            console.error(err);
+        }
+        
     };
 
     return (
         <>
-            <CreateExperience onSubmit={onSubmit} setCreateCoords={setCreateCoords} loader={loader} setAddedTags={setAddedTags} addedTags={addedTags} onUploadInputChange={onUploadInputChange} />
+            <CreateExperience onSubmit={onSubmit} setCreateCoords={setCreateCoords} loader={loader} setAddedTags={setAddedTags} addedTags={addedTags} onUploadInputChange={onUploadInputChange} spin={spin} />
         </>
     )
 }
