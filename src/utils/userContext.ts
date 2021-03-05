@@ -28,6 +28,10 @@ export const setUserContext = async (
             ...user,
             fullname: `${user.firstname} ${user.lastname}`
         });
+    } 
+    else if (user == undefined) {
+        console.log("User logout")
+        userContext.next(undefined)
     } else {
         console.error('user data has not been set yet.')
     }
