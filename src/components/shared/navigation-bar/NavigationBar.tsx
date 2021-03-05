@@ -8,11 +8,11 @@ import './NavigationBar.css'
 import { MdPerson } from 'react-icons/md'
 import { AddIcon, ChevronDownIcon } from '@chakra-ui/icons';
 import { Login } from '../../login/Login';
-import { getUserContext, IUserContext, logout } from '../../../utils/userContext';
+import { getUserContext, IUserContext, setUserContext, logout } from '../../../utils/userContext';
 import { useCookies } from 'react-cookie';
 
 export const NavigationBar: FC = () => {
-    const [ cookies, setCookie, removeCookie ] = useCookies(['user']);
+    const [ cookie, setCookie, removeCookie ] = useCookies(['user']);
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [user, setUser] = useState<IUserContext | undefined>(getUserContext());
     const history = useHistory();
@@ -25,14 +25,18 @@ export const NavigationBar: FC = () => {
         logout();
         removeCookie('user', { path: '/' })
         setUser(undefined);
+        setUserContext(undefined);
         history.push(Paths.Home);
     }, [logout, history, setUser, removeCookie]);
 
     useEffect(() => {
         const currUser = getUserContext();
-        if (!user && currUser) {
+        if (!user && currUser && cookie["user"]) {
             console.log('setting new user')
             setUser(currUser);
+        }
+        else if (user && !currUser && !cookie["user"]) {
+            setUser(undefined);
         }
     }, []);
 
