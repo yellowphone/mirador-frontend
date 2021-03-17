@@ -60,6 +60,7 @@ export const FIND_EXPERIENCE_BY_COORDINATES = gql`
             elevation
             climbing
             difficulty
+            url
         }
     }
 `;
