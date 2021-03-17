@@ -85,8 +85,7 @@ export const Card: FC<CardDataProps> = ({
         <Container maxW="20em" borderWidth="1px" borderRadius="lg" overflow="hidden">
             <div onClick={() => onNavigate(Paths.SingleExperience)}>
                 { imageUrl && <Image objectFit="cover" height="200px" width="100%" src={imageUrl} alt={imageAlt} loading="lazy" /> }
-                { !imageUrl && <Image src="https://cdn-5fcbf5c4c1ac1a221c18568d.closte.com/wp-content/themes/ryse/assets/images/no-image/No-Image-Found-400x264.png" alt="photo not found"/> }
-                {/* <Image src={imageUrl} alt={imageAlt} /> */}
+                { !imageUrl && <Image objectFit="cover" height="200px" width="100%" src="https://cdn-5fcbf5c4c1ac1a221c18568d.closte.com/wp-content/themes/ryse/assets/images/no-image/No-Image-Found-400x264.png" alt="photo not found"/> }
 
                 <Box p="6">
                     <Box d="flex" alignItems="baseline">
