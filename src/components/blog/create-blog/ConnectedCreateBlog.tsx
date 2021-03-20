@@ -8,11 +8,11 @@ import { Loader } from '@googlemaps/js-api-loader';
 import { BlogExperienceCard } from '../blog-experience-card/BlogExperienceCard';
 import { SimpleGrid, Center, Text, Image, } from "@chakra-ui/react"
 import { useCookies } from 'react-cookie';
+import { NoLogin } from '../../shared/no-login/NoLogin';
 
 export const ConnectedCreateBlog = () => {
     
     const [cookie, setCookie] = useCookies(['user'])
-    console.log(cookie["user"]["pkuser"])
 
     const [createCoords, setCreateCoords] = useState({lat: 0, lng: 0});
 
@@ -87,7 +87,12 @@ export const ConnectedCreateBlog = () => {
 
     return (
         <>
-            <CreateBlog onSubmit={onSubmit} addContentHelper={addContentHelper} addContent={addContent} html={html} setCreateCoords={setCreateCoords} loader={loader} setAddedTags={setAddedTags} addedTags={addedTags}/>
+            { !cookie["user"] && 
+                <NoLogin />
+            }
+            { cookie["user"] &&
+                <CreateBlog onSubmit={onSubmit} addContentHelper={addContentHelper} addContent={addContent} html={html} setCreateCoords={setCreateCoords} loader={loader} setAddedTags={setAddedTags} addedTags={addedTags}/>
+            }
         </>
     )
 
