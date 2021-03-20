@@ -6,11 +6,13 @@ import { useHistory } from 'react-router-dom';
 import { CreateExperience } from './CreateExperience'
 import { Loader } from '@googlemaps/js-api-loader';
 import { useCookies } from 'react-cookie';
+import { NoLogin } from "../../shared/no-login/NoLogin";
+
 
 export const ConnectedCreateExperience = () => {
 
     const [cookie, setCookie] = useCookies(['user'])
-    console.log(cookie["user"]["pkuser"])
+
     const [createCoords, setCreateCoords] = useState({lat: 0, lng: 0});
 
     const [spin, setSpin] = useState(false);
@@ -68,7 +70,10 @@ export const ConnectedCreateExperience = () => {
 
     return (
         <>
-            <CreateExperience onSubmit={onSubmit} setCreateCoords={setCreateCoords} loader={loader} setAddedTags={setAddedTags} addedTags={addedTags} onUploadInputChange={onUploadInputChange} spin={spin} />
+            { !cookie["user"] && 
+                <NoLogin />
+            }
+            { cookie["user"] && <CreateExperience onSubmit={onSubmit} setCreateCoords={setCreateCoords} loader={loader} setAddedTags={setAddedTags} addedTags={addedTags} onUploadInputChange={onUploadInputChange} spin={spin} />}
         </>
     )
 }
