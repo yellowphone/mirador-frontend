@@ -57,7 +57,7 @@ export const Map: FC<IMapDataProps> = ({ height, width, loader, coords, experien
                     map: map
                 });
                 newMarker.addListener('click', e => {
-                    history.push(Paths.SingleExperience, { pkexperience: x.fk_experience_location })
+                    history.push(Paths.SingleExperience + "/" + x.public_identifier);
                 })
             })
         }

@@ -37,7 +37,8 @@ export const ConnectedExperience = () => {
             rating: 4,
             lat: item.lat,
             lng: item.lng,
-            difficulty: item.difficulty
+            difficulty: item.difficulty,
+            public_identifier: item.public_identifier
         }
     })
 

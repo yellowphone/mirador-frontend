@@ -46,6 +46,7 @@ export const Login: FC<ILoginDataProps> = ({
                         account_type: 'GOOGLE',
                     }
                 }).then(() => {
+                    console.log(incomingUser)
                     setCookie('user', incomingUser, { path: '/'})
                     setUserContext(incomingUser)
                     setUser(incomingUser);

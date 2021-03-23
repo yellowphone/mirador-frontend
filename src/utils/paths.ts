@@ -4,7 +4,7 @@ export enum Paths {
     SingleBlog = '/singleblog',
     CreateBlog = '/create/blog',
     Experience = '/experience',
-    SingleExperience = '/singleexperience',
+    SingleExperience = '/experience',
     CreateExperience = '/create/experience',
     Profile = '/profile',
     Itinerary = '/itinerary',

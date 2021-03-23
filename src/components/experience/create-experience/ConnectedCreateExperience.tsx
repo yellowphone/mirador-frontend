@@ -12,6 +12,7 @@ import { NoLogin } from "../../shared/no-login/NoLogin";
 export const ConnectedCreateExperience = () => {
 
     const [cookie, setCookie] = useCookies(['user'])
+    console.log(cookie)
 
     const [createCoords, setCreateCoords] = useState({lat: 0, lng: 0});
 
@@ -57,8 +58,9 @@ export const ConnectedCreateExperience = () => {
                     images: files
                 }
             }).then(data => {
+                console.log(data);
                 setSpin(false);
-                history.push(Paths.SingleExperience, { pkexperience: data.data["createExperience"]["pkexperience"] });
+                history.push(Paths.SingleExperience + "/" + data.data["createExperience"]["public_identifier"]);
             })
         }
         catch(err) {

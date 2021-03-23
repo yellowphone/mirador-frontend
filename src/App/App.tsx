@@ -33,7 +33,7 @@ export const App: React.FC = () => {
               <Route exact path={Paths.CreateBlog} component={ConnectedCreateBlog} />
               <Route exact path={Paths.Home} component={ConnectedHome} />
               <Route exact path={Paths.Experience} component={ConnectedExperience} />
-              <Route exact path={Paths.SingleExperience} component={ConnectedSingleExperience} />
+              <Route exact path={Paths.SingleExperience + "/:id"} component={ConnectedSingleExperience} />
               <Route exact path={Paths.CreateExperience} component={ConnectedCreateExperience} />
               <Route exact path={Paths.Itinerary} component={ConnectedItinerary} />
               <Route exact path={Paths.SingleItinerary} component={ConnectedSingleItinerary} />
