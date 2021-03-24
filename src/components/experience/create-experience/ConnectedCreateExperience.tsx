@@ -12,7 +12,6 @@ import { NoLogin } from "../../shared/no-login/NoLogin";
 export const ConnectedCreateExperience = () => {
 
     const [cookie, setCookie] = useCookies(['user'])
-    console.log(cookie)
 
     const [createCoords, setCreateCoords] = useState({lat: 0, lng: 0});
 

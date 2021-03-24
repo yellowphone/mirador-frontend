@@ -13,7 +13,6 @@ import { NoLogin } from '../../shared/no-login/NoLogin';
 export const ConnectedCreateBlog = () => {
     
     const [cookie, setCookie] = useCookies(['user'])
-    console.log(cookie)
 
     const [createCoords, setCreateCoords] = useState({lat: 0, lng: 0});
 
