@@ -41,13 +41,14 @@ export const Card: FC<CardDataProps> = ({
         elevation,
         miles,
         rating,
+        public_identifier
     } = experience
     
     const [cookie, setCookie] = useCookies(['user'])
 
     const history = useHistory();
     const onNavigate = useCallback((path: Paths) => {
-        history.push(path, { pkexperience: fk_experience_location });
+        history.push(path + "/" + public_identifier);
     }, []);
 
     const [ showCreateItinerary, setShowCreateItinerary ] = useState(false); 

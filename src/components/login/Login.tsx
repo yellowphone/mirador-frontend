@@ -45,10 +45,12 @@ export const Login: FC<ILoginDataProps> = ({
                         image_url: incomingUser.image_url,
                         account_type: 'GOOGLE',
                     }
-                }).then(() => {
+                }).then((data) => {
+                    incomingUser.pkuser = data.data.createUser.pkuser
+                    console.log(incomingUser)
                     setCookie('user', incomingUser, { path: '/'})
                     setUserContext(incomingUser)
-                    setUser(incomingUser);
+                    setUser(incomingUser)
                 })
             }
             else {

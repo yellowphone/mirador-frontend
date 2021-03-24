@@ -4,6 +4,7 @@ export const CREATE_EXPERIENCE = gql`
     mutation createExperience($title: String, $pkuser: Int!, $summary: String, $miles: Float, $elevation: Int, $climbing: String, $difficulty: Difficulty_Level, $lat: Float!, $lng: Float!, $images: [Upload!], $caption: String, $tags: [Int]) {
         createExperience(title: $title, pkuser: $pkuser, summary: $summary, miles: $miles, elevation: $elevation, climbing: $climbing, difficulty: $difficulty, lat: $lat, lng: $lng, images: $images, caption: $caption, tags: $tags) {
             pkexperience
+            public_identifier
         }
     }
 `;

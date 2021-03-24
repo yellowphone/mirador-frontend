@@ -57,8 +57,9 @@ export const ConnectedCreateExperience = () => {
                     images: files
                 }
             }).then(data => {
+                console.log(data);
                 setSpin(false);
-                history.push(Paths.SingleExperience, { pkexperience: data.data["createExperience"]["pkexperience"] });
+                history.push(Paths.SingleExperience + "/" + data.data["createExperience"]["public_identifier"]);
             })
         }
         catch(err) {

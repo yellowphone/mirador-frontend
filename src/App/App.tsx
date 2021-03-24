@@ -29,14 +29,14 @@ export const App: React.FC = () => {
           <Router>
             <Switch>
               <Route exact path={Paths.Blog} component={ConnectedBlog} />
-              <Route exact path={Paths.SingleBlog} component={ConnectedSingleBlog} />
+              <Route exact path={Paths.SingleBlog + "/:id"} component={ConnectedSingleBlog} />
               <Route exact path={Paths.CreateBlog} component={ConnectedCreateBlog} />
               <Route exact path={Paths.Home} component={ConnectedHome} />
               <Route exact path={Paths.Experience} component={ConnectedExperience} />
-              <Route exact path={Paths.SingleExperience} component={ConnectedSingleExperience} />
+              <Route exact path={Paths.SingleExperience + "/:id"} component={ConnectedSingleExperience} />
               <Route exact path={Paths.CreateExperience} component={ConnectedCreateExperience} />
               <Route exact path={Paths.Itinerary} component={ConnectedItinerary} />
-              <Route exact path={Paths.SingleItinerary} component={ConnectedSingleItinerary} />
+              <Route exact path={Paths.SingleItinerary + "/:id"} component={ConnectedSingleItinerary} />
               <Route exact path={Paths.CreateItinerary} component={ConnectedCreateItinerary} />
               <Route exact path={Paths.Profile} component={ConnectedProfile} />
               <Redirect from='*' to={Paths.Home} />

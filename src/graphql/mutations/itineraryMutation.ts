@@ -4,6 +4,7 @@ export const CREATE_ITINERARY = gql`
     mutation createItinerary($title: String, $summary: String, $content: Json, $tags: [Int], $pkuser: Int!) {
         createItinerary(title: $title, summary: $summary, content: $content, tags: $tags, pkuser: $pkuser) {
             pkitinerary
+            public_identifier
         }
     }
 `;

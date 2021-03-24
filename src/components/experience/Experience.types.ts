@@ -12,6 +12,7 @@ export interface IExperience {
     lat: number
     lng: number
     difficulty: DifficultyType
+    public_identifier: string
     url: [String]
 }
 

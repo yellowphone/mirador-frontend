@@ -9,14 +9,14 @@ import { SingleExperienceProps } from './SingleExperience.type'
 export const SingleExperience: FC<SingleExperienceProps> = ({ data }) => {
 
     console.log(data)
-    const id = data["findExperienceById"]["pkexperience"]
-    const title = data["findExperienceById"]["title"]
-    const miles = data["findExperienceById"]["miles"]
-    const elevation = data["findExperienceById"]["elevation"]
-    const summary = data["findExperienceById"]["summary"]
-    const lat = (data["findExperienceById"]["experience_locations"]["lat"])
-    const lng = (data["findExperienceById"]["experience_locations"]["lng"])
-    const tags = (data["findExperienceById"]["experience_tags"])
+    const id = data["findExperienceByPublicIdentifier"]["pkexperience"]
+    const title = data["findExperienceByPublicIdentifier"]["title"]
+    const miles = data["findExperienceByPublicIdentifier"]["miles"]
+    const elevation = data["findExperienceByPublicIdentifier"]["elevation"]
+    const summary = data["findExperienceByPublicIdentifier"]["summary"]
+    const lat = (data["findExperienceByPublicIdentifier"]["experience_locations"]["lat"])
+    const lng = (data["findExperienceByPublicIdentifier"]["experience_locations"]["lng"])
+    const tags = (data["findExperienceByPublicIdentifier"]["experience_tags"])
 
     return(
         <>
@@ -33,7 +33,7 @@ export const SingleExperience: FC<SingleExperienceProps> = ({ data }) => {
             </div>
             <Container height="200px">
                 <Stack direction="row">
-                    { data["findExperienceById"]["experience_images"] && data["findExperienceById"]["experience_images"].map((image: Object, index: number) => {
+                    { data["findExperienceByPublicIdentifier"]["experience_images"] && data["findExperienceByPublicIdentifier"]["experience_images"].map((image: Object, index: number) => {
                         return(
                             <Box p="2" size="md">
                                 <Image key={index} src={image["images"]["url"]} />

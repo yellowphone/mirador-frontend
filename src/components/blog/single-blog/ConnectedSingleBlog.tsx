@@ -1,15 +1,18 @@
 import React, { FC } from "react"
-import { ConnectedSingleBlogDataProps } from './SingleBlog.types'
 import { useQuery, useLazyQuery } from '@apollo/client';
-import { FIND_BLOG_BY_ID, FIND_RANDOM_BLOG } from '../../../graphql/queries/blogQuery';
+import { FIND_BLOG_BY_PUBLIC_IDENTIFIER} from '../../../graphql/queries/blogQuery';
 import { Container, SimpleGrid, Center, Heading, VStack, Text, Image, Box } from "@chakra-ui/react"
 import { BlogExperienceCard } from '../blog-experience-card/BlogExperienceCard'
 import { SingleBlog } from "./SingleBlog";
+import { useLocation } from "react-router-dom";
+import { Page404 } from "../../shared/404/404";
 
-export const ConnectedSingleBlog: FC<ConnectedSingleBlogDataProps> = ({ history }) => {
+export const ConnectedSingleBlog = () => {
 
-    const { data, loading, error, refetch } = useQuery(FIND_BLOG_BY_ID, {
-        variables: { pkblog: history.location.state.pkblog }
+    const location = useLocation();
+
+    const { data, loading, error, refetch } = useQuery(FIND_BLOG_BY_PUBLIC_IDENTIFIER, {
+        variables: { public_identifier: location.pathname.split('/')[2] }
     })
 
     if (loading) {
@@ -29,14 +32,14 @@ export const ConnectedSingleBlog: FC<ConnectedSingleBlogDataProps> = ({ history 
             case 'text':
                 return <Text>{content}</Text>
             case 'experience':
-                return <Center><BlogExperienceCard pkexperience={content}/></Center>
+                return <Center><BlogExperienceCard public_identifier={content}/></Center>
         }
     }
 
     console.log(data)
 
     var html: Object[] = []
-    data["findBlogById"]["content"]["content"].map((elem: Object, index: number) => {
+    data["findBlogByPublicIdentifier"]["content"]["content"].map((elem: Object, index: number) => {
         console.log(elem);
         if (elem["type"] == "two_col") {
             html.push(
@@ -56,8 +59,11 @@ export const ConnectedSingleBlog: FC<ConnectedSingleBlogDataProps> = ({ history 
         }
     })
 
-    return(
-        <SingleBlog data={data} html={html} />
+    return (
+        <>
+            { !data.findBlogByPublicIdentifier && <Page404/> }
+            { data.findBlogByPublicIdentifier && <SingleBlog data={data} html={html} /> }
+        </>
     )
 
 }

@@ -11,12 +11,13 @@ export const BlogCard: FC<BlogCardProps> = ({ blog }) => {
         pkblog,
         title,
         summary,
-        blog_tags
+        blog_tags,
+        public_identifier
     } = blog
 
     const history = useHistory();
     const onNavigate = useCallback((path: Paths) => {
-        history.push(path, { pkblog: pkblog });
+        history.push(path + "/" + public_identifier);
     }, []);
 
 

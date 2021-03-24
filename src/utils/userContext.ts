@@ -7,7 +7,7 @@ export enum Account {
 }
 
 export interface IUserContext {
-    pkUser?: string;
+    pkuser?: string;
     email: string;
     lastname: string;
     firstname: string;

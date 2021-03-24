@@ -17,14 +17,14 @@ export const SingleBlog: FC<SingleBlogDataProps> = ({ data, html }) => {
 
     const [ findRandomBlog, { data: randomBlog }] = useLazyQuery(FIND_RANDOM_BLOG, {
         variables: {
-            previousPrimaryKey: data["findBlogById"]["pkblog"]
+            previousPrimaryKey: data["findBlogByPublicIdentifier"]["pkblog"]
         },
         fetchPolicy: "no-cache"
     });
 
     const history = useHistory();
-    const onNavigate = useCallback((path: Paths, pkblog: number) => {
-        history.push(path, { pkblog: pkblog });
+    const onNavigate = useCallback((path: Paths, public_identifier: string) => {
+        history.push(path + "/" + public_identifier);
     }, []);
 
     return(
@@ -33,16 +33,16 @@ export const SingleBlog: FC<SingleBlogDataProps> = ({ data, html }) => {
         <Container maxW="lg" p={2}>
             <VStack spacing='40px'>
                 <Center>
-                    <Heading>{data["findBlogById"]["title"]}</Heading>
+                    <Heading>{data["findBlogByPublicIdentifier"]["title"]}</Heading>
                 </Center>
                 <Center>
-                    <Text style={{ textAlign: "center" }} fontSize="md" as="em" color="gray.500">{data["findBlogById"]["summary"]}</Text>
+                    <Text style={{ textAlign: "center" }} fontSize="md" as="em" color="gray.500">{data["findBlogByPublicIdentifier"]["summary"]}</Text>
                 </Center>
                 <Center>
-                    <TagGrid tags={data["findBlogById"]["blog_tags"]} />
+                    <TagGrid tags={data["findBlogByPublicIdentifier"]["blog_tags"]} />
                 </Center>
                 <Center>
-                    <Text>lat: {data["findBlogById"]["blog_locations"]["lat"]}, lng: {data["findBlogById"]["blog_locations"]["lng"]}</Text>
+                    <Text>lat: {data["findBlogByPublicIdentifier"]["blog_locations"]["lat"]}, lng: {data["findBlogByPublicIdentifier"]["blog_locations"]["lng"]}</Text>
                 </Center>
                 { html }
             </VStack>
@@ -56,8 +56,8 @@ export const SingleBlog: FC<SingleBlogDataProps> = ({ data, html }) => {
                     onClick={() => {
                         findRandomBlog()
                         if (randomBlog) {
-                            console.log(randomBlog["findRandomBlog"][0]["pkblog"])
-                            onNavigate(Paths.SingleBlog, randomBlog["findRandomBlog"][0]["pkblog"])
+                            console.log(randomBlog["findRandomBlog"][0]["public_identifier"])
+                            onNavigate(Paths.SingleBlog, randomBlog["findRandomBlog"][0]["public_identifier"])
                         }
                     }}
                     d="flex" alignItems="center"
@@ -71,8 +71,8 @@ export const SingleBlog: FC<SingleBlogDataProps> = ({ data, html }) => {
                     onClick={() => {
                         findRandomBlog()
                         if (randomBlog) {
-                            console.log(randomBlog["findRandomBlog"][0]["pkblog"])
-                            onNavigate(Paths.SingleBlog, randomBlog["findRandomBlog"][0]["pkblog"])
+                            console.log(randomBlog["findRandomBlog"][0]["public_identifier"])
+                            onNavigate(Paths.SingleBlog, randomBlog["findRandomBlog"][0]["public_identifier"])
                         }
                     }}
                     d="flex" alignItems="center"

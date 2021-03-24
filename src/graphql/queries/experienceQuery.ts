@@ -42,6 +42,7 @@ export const FIND_EXPERIENCE_BY_TITLE = gql`
         findExperienceByTitle(title: $title) {
             pkexperience
             title
+            public_identifier
         }
     }
 `;
@@ -60,7 +61,46 @@ export const FIND_EXPERIENCE_BY_COORDINATES = gql`
             elevation
             climbing
             difficulty
+            public_identifier
             url
+        }
+    }
+`;
+
+export const FIND_EXPERIENCE_BY_PUBLIC_IDENTIFIER = gql`
+    query findExperienceByPublicIdentifier($public_identifier: String!) {
+        findExperienceByPublicIdentifier(public_identifier: $public_identifier) {
+            pkexperience
+            title
+            summary
+            created_on
+            experience_locations {
+                lat
+                lng
+            }
+            miles
+            elevation
+            climbing
+            public_identifier
+            difficulty
+            experience_images {
+                images {
+                    url
+                }
+            }
+            review_experiences {
+                rating
+                content
+                users {
+                    username
+                }
+            }
+            experience_tags {
+                pkexperience_tag
+                tags {
+                  tag
+                }
+            }
         }
     }
 `;
