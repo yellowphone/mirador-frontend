@@ -13,6 +13,7 @@ import { NoLogin } from '../../shared/no-login/NoLogin';
 export const ConnectedCreateBlog = () => {
     
     const [cookie, setCookie] = useCookies(['user'])
+    console.log(cookie)
 
     const [createCoords, setCreateCoords] = useState({lat: 0, lng: 0});
 
@@ -52,7 +53,7 @@ export const ConnectedCreateBlog = () => {
                 tags: tags
             }
         }).then(data => {
-            history.push(Paths.SingleBlog, { pkblog: data.data["createBlog"]["pkblog"] })
+            history.push(Paths.SingleBlog + "/" + data.data["createBlog"]["public_identifier"]) 
         })
     }
 
@@ -63,17 +64,12 @@ export const ConnectedCreateBlog = () => {
             case 'text':
                 return <Text>{content}</Text>
             case 'experience':
-                return <Center><BlogExperienceCard pkexperience={parseInt(content)}/></Center>
+                return <Center><BlogExperienceCard public_identifier={content}/></Center>
         }
     }
 
     const addContent = (type: string, content: any) => {
-        if (type == "experience") {
-            setJsonContent(jsonContent => [...jsonContent, {type: type, content: parseInt(content)}])
-        }
-        else {
-            setJsonContent(jsonContent => [...jsonContent, {type: type, content: content}])
-        }
+        setJsonContent(jsonContent => [...jsonContent, {type: type, content: content}])
         setHtml(html => [...html, <SimpleGrid columns={1}>{renderBlogComponents(type, content)}</SimpleGrid>])
         console.log(jsonContent)
     }

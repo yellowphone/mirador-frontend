@@ -1,17 +1,18 @@
 import React, { FC } from "react"
 import { useQuery } from "@apollo/client"
-import { FIND_EXPERIENCE_BY_ID } from "../../../graphql/queries/experienceQuery"
+import { FIND_EXPERIENCE_BY_ID, FIND_EXPERIENCE_BY_PUBLIC_IDENTIFIER } from "../../../graphql/queries/experienceQuery"
 import { Card } from "../../shared/card/Card"
 import { IExperience } from "../../experience/Experience.types"
+import { FIND_BLOG_BY_PUBLIC_IDENTIFIER } from "../../../graphql/queries/blogQuery"
 
 interface BlogExperienceCardProps {
-    pkexperience: number
+    public_identifier: string
 }
 
-export const BlogExperienceCard: FC<BlogExperienceCardProps> = ({ pkexperience }) => {
-    const { data, loading, error, refetch } = useQuery(FIND_EXPERIENCE_BY_ID, {
+export const BlogExperienceCard: FC<BlogExperienceCardProps> = ({ public_identifier }) => {
+    const { data, loading, error, refetch } = useQuery(FIND_EXPERIENCE_BY_PUBLIC_IDENTIFIER, {
         variables: {
-            pkexperience: pkexperience
+            public_identifier: public_identifier
         }
     })
 
@@ -27,17 +28,18 @@ export const BlogExperienceCard: FC<BlogExperienceCardProps> = ({ pkexperience }
     console.log(data)
 
     const experience: IExperience = {
-        fk_experience_location: data["findExperienceById"]["pkexperience"],
+        fk_experience_location: data["findExperienceByPublicIdentifier"]["pkexperience"],
         imageUrl: "http://www.citrusmilo.com/acadia/joebraun_precipice27.jpg",
         imageAlt: "ok",
-        title: data["findExperienceById"]["title"],
-        elevation: data["findExperienceById"]["elevation"],
-        miles: data["findExperienceById"]["miles"],
+        title: data["findExperienceByPublicIdentifier"]["title"],
+        elevation: data["findExperienceByPublicIdentifier"]["elevation"],
+        miles: data["findExperienceByPublicIdentifier"]["miles"],
         rating: 3,
-        lat: (data["findExperienceById"]["experience_locations"]["lat"]),
-        lng: (data["findExperienceById"]["experience_locations"]["lng"]),
-        summary: data["findExperienceById"]["summary"],
-        difficulty: data["findExperienceById"]["difficulty"]
+        lat: (data["findExperienceByPublicIdentifier"]["experience_locations"]["lat"]),
+        lng: (data["findExperienceByPublicIdentifier"]["experience_locations"]["lng"]),
+        summary: data["findExperienceByPublicIdentifier"]["summary"],
+        difficulty: data["findExperienceByPublicIdentifier"]["difficulty"],
+        public_identifier: data["findExperienceByPublicIdentifier"]["public_identifier"]
     }
 
     return (

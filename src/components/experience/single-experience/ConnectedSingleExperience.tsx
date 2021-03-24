@@ -1,25 +1,17 @@
 import React, { FC, useEffect, useState } from "react";
 import { useQuery } from '@apollo/react-hooks';
 
-import { FIND_EXPERIENCE_BY_ID, FIND_EXPERIENCE_BY_PUBLIC_IDENTIFIER } from '../../../graphql/queries/experienceQuery';
+import { FIND_EXPERIENCE_BY_PUBLIC_IDENTIFIER } from '../../../graphql/queries/experienceQuery';
 
-import { ConnectedSingleExperienceProps } from './SingleExperience.type'
 import { SingleExperience } from './SingleExperience'
 
 import { useLocation } from "react-router-dom";
+import { Page404 } from "../../shared/404/404";
 
-export const ConnectedSingleExperience: FC<ConnectedSingleExperienceProps> = ({ history }) => {
+export const ConnectedSingleExperience = () => {
 
     const location = useLocation();
 
-    const [ identifier, setIdentifier ] = useState("");
-
-    useEffect(() => {
-        console.log(location.pathname)
-        console.log(location.pathname.split('/')[2])
-        setIdentifier(location.pathname.split('/')[2]);
-    }, [])
-    
     const { data, loading, error, refetch } = useQuery(FIND_EXPERIENCE_BY_PUBLIC_IDENTIFIER, {
         variables: { public_identifier: location.pathname.split('/')[2] }
     })
@@ -35,7 +27,8 @@ export const ConnectedSingleExperience: FC<ConnectedSingleExperienceProps> = ({ 
 
     return(
         <>
-            <SingleExperience data={data} />
+            { !data.findExperienceByPublicIdentifier && <Page404/> }
+            { data.findExperienceByPublicIdentifier && <SingleExperience data={data} /> }
         </>
     )
 }

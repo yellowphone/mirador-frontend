@@ -29,7 +29,7 @@ export const App: React.FC = () => {
           <Router>
             <Switch>
               <Route exact path={Paths.Blog} component={ConnectedBlog} />
-              <Route exact path={Paths.SingleBlog} component={ConnectedSingleBlog} />
+              <Route exact path={Paths.SingleBlog + "/:id"} component={ConnectedSingleBlog} />
               <Route exact path={Paths.CreateBlog} component={ConnectedCreateBlog} />
               <Route exact path={Paths.Home} component={ConnectedHome} />
               <Route exact path={Paths.Experience} component={ConnectedExperience} />

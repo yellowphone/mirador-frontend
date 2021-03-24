@@ -19,7 +19,7 @@ export const ExperienceSearch: FC<ExperienceSearchDataProps> = ({ addContent }) 
     return (
         <>
         <Input type="text" placeholder="Search an experience" onChange={e => setTitle(e.target.value)}></Input>
-        { data && data["findExperienceByTitle"].map((c: any, i: number) => <div onClick={() => addContent("experience", c["pkexperience"])} key={i}>{c["title"]}</div>)}
+        { data && data["findExperienceByTitle"].map((c: any, i: number) => <div onClick={() => addContent("experience", c["public_identifier"])} key={i}>{c["title"]}</div>)}
         <Button onClick={() => findExperienceByTitle()} >Search</Button>
         </>
     )

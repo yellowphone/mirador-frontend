@@ -10,6 +10,7 @@ export const CREATE_USER = gql`
             username
             image_url
             access_token
+            account_type
         }
     }
 `;

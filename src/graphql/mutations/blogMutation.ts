@@ -4,6 +4,7 @@ export const CREATE_BLOG = gql`
     mutation createBlog($title: String, $pkuser: Int!, $summary: String, $content: Json, $lat: Float!, $lng: Float!, $tags: [Int]) {
         createBlog(title: $title, pkuser: $pkuser, summary: $summary, content: $content, lat: $lat, lng: $lng, tags: $tags) {
             pkblog
+            public_identifier
         }
     }
 `;

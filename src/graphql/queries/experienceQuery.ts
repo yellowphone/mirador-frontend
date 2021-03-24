@@ -42,6 +42,7 @@ export const FIND_EXPERIENCE_BY_TITLE = gql`
         findExperienceByTitle(title: $title) {
             pkexperience
             title
+            public_identifier
         }
     }
 `;
@@ -80,6 +81,7 @@ export const FIND_EXPERIENCE_BY_PUBLIC_IDENTIFIER = gql`
             miles
             elevation
             climbing
+            public_identifier
             difficulty
             experience_images {
                 images {
