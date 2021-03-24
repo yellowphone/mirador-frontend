@@ -1,7 +1,3 @@
-export interface ConnectedSingleItineraryProps {
-    history: History
-}
-
 export interface SingleItineraryProps {
     data: FindItineraryByIdObject
 }

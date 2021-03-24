@@ -60,7 +60,7 @@ export const ItineraryBuilder: FC<ItineraryBuilderProps> = ({ title, history }) 
             }
         }).then(data => {
             console.log(data)
-            history.push(Paths.SingleItinerary, { pkitinerary: data.data["createItinerary"]["pkitinerary"] })
+            history.push(Paths.SingleItinerary + "/" + data.data["createItinerary"]["public_identifier"])
         })
     }
 

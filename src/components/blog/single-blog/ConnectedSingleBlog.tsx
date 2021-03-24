@@ -1,6 +1,6 @@
 import React, { FC } from "react"
 import { useQuery, useLazyQuery } from '@apollo/client';
-import { FIND_BLOG_BY_ID, FIND_BLOG_BY_PUBLIC_IDENTIFIER, FIND_RANDOM_BLOG } from '../../../graphql/queries/blogQuery';
+import { FIND_BLOG_BY_PUBLIC_IDENTIFIER} from '../../../graphql/queries/blogQuery';
 import { Container, SimpleGrid, Center, Heading, VStack, Text, Image, Box } from "@chakra-ui/react"
 import { BlogExperienceCard } from '../blog-experience-card/BlogExperienceCard'
 import { SingleBlog } from "./SingleBlog";

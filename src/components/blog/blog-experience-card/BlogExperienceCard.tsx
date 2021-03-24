@@ -1,6 +1,6 @@
 import React, { FC } from "react"
 import { useQuery } from "@apollo/client"
-import { FIND_EXPERIENCE_BY_ID, FIND_EXPERIENCE_BY_PUBLIC_IDENTIFIER } from "../../../graphql/queries/experienceQuery"
+import { FIND_EXPERIENCE_BY_PUBLIC_IDENTIFIER } from "../../../graphql/queries/experienceQuery"
 import { Card } from "../../shared/card/Card"
 import { IExperience } from "../../experience/Experience.types"
 import { FIND_BLOG_BY_PUBLIC_IDENTIFIER } from "../../../graphql/queries/blogQuery"

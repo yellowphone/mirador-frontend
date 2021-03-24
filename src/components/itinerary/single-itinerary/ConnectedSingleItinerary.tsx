@@ -1,13 +1,16 @@
 import { useQuery } from "@apollo/client"
 import React, { FC } from "react"
-import { FIND_ITINERARY_BY_ID } from "../../../graphql/queries/itineraryQuery"
+import { FIND_ITINERARY_BY_PUBLIC_IDENTIFIER } from "../../../graphql/queries/itineraryQuery"
 import { SingleItinerary } from "./SingleItinerary"
-import { ConnectedSingleItineraryProps } from "./SingleItinerary.types"
+import { useLocation } from "react-router-dom";
+import { Page404 } from "../../shared/404/404";
 
-export const ConnectedSingleItinerary: FC<ConnectedSingleItineraryProps> = ({ history }) => {
+export const ConnectedSingleItinerary= () => {
 
-    const { data, loading, error, refetch } = useQuery(FIND_ITINERARY_BY_ID, {
-        variables: { pkitinerary: history.location.state.pkitinerary }
+    const location = useLocation();
+
+    const { data, loading, error, refetch } = useQuery(FIND_ITINERARY_BY_PUBLIC_IDENTIFIER, {
+        variables: { public_identifier: location.pathname.split('/')[2] }
     })
 
     if (loading) {
@@ -23,7 +26,9 @@ export const ConnectedSingleItinerary: FC<ConnectedSingleItineraryProps> = ({ hi
 
     return (
         <>
-            <SingleItinerary data={data["findItineraryById"]}/>
+            { !data.findItineraryByPublicIdentifier && <Page404/> }
+            { data.findItineraryByPublicIdentifier && <SingleItinerary data={data["findItineraryByPublicIdentifier"]}/> }
+            
         </>
     )
 }
