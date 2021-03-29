@@ -1,11 +1,6 @@
 import { ChakraProvider } from '@chakra-ui/react';
 import React from 'react';
 import { Redirect, Route, BrowserRouter as Router, Switch } from 'react-router-dom';
-import { ConnectedExperience } from '../components/experience/ConnectedExperience';
-import { ConnectedBlog } from '../components/blog/ConnectedBlog';
-import { ConnectedHome } from '../components/home/ConnectedHome';
-import { ConnectedItinerary } from '../components/itinerary/ConnectedItinerary';
-import { ConnectedProfile } from '../components/profile/ConnectedProfile';
 import { Paths } from '../utils/paths';
 import { CookiesProvider } from 'react-cookie';
 
@@ -13,6 +8,12 @@ import { CookiesProvider } from 'react-cookie';
 import { ApolloProvider } from '@apollo/client';
 import { client } from '../graphql/client';
 
+// Page imports
+import { ConnectedExperience } from '../components/experience/ConnectedExperience';
+import { ConnectedBlog } from '../components/blog/ConnectedBlog';
+import { ConnectedHome } from '../components/home/ConnectedHome';
+import { ConnectedItinerary } from '../components/itinerary/ConnectedItinerary';
+import { ConnectedProfile } from '../components/profile/ConnectedProfile';
 import { ConnectedSingleExperience } from '../components/experience/single-experience/ConnectedSingleExperience';
 import { ConnectedCreateExperience } from '../components/experience/create-experience/ConnectedCreateExperience';
 import { ConnectedSingleBlog } from '../components/blog/single-blog/ConnectedSingleBlog';
