@@ -5,44 +5,53 @@ import './Experience.css';
 import { ExperienceDataProps } from './Experience.types';
 import { CardsGrid } from '../shared/cards-grid/CardsGrid';
 
-import { Search } from '../shared/Google/Search'
+import { Search } from '../shared/Google/Search';
 import { Map } from '../shared/Google/Map';
 import { Loader } from '@googlemaps/js-api-loader';
 
 const leftSideStyle = {
-    scroll: 'auto',
-}
+  scroll: 'auto',
+};
 
 const rightSideStyle = {
-    scroll: 'none',
-    // position: 'fixed', // need to get the map to be fixed to the right
-}
+  scroll: 'none',
+  // position: 'fixed', // need to get the map to be fixed to the right
+};
 
-export const Experience: FC<ExperienceDataProps> = ({ experiences, coords, setCoords, refetch }) => {
+export const Experience: FC<ExperienceDataProps> = ({
+  experiences,
+  coords,
+  setCoords,
+  refetch,
+}) => {
+  const loader = new Loader({
+    apiKey: `${process.env.MAPS_API_KEY}`,
+    version: 'weekly',
+    libraries: ['places', 'geometry'],
+  });
 
-    const loader = new Loader({
-        apiKey: `${process.env.MAPS_API_KEY}`,
-        version: "weekly",
-        libraries: ["places", "geometry"]
-    });
+  return (
+    <>
+      <NavigationBar />
+      <Flex>
+        <Box css={leftSideStyle} maxW="50%" width={screen.width / 2}>
+          <Center pt="5">
+            <Search loader={loader} setCoords={setCoords} refetch={refetch} />
+          </Center>
 
-    return (
-        <>
-            <NavigationBar />
-             <Flex>
-                <Box css={leftSideStyle} maxW='50%' width={screen.width / 2}>
-                    <Center 
-                        pt='5'
-                    >
-                        <Search loader={loader} setCoords={setCoords} refetch={refetch} />
-                    </Center>
-
-                    <CardsGrid list={experiences} />
-                </Box>
-                <Box css={rightSideStyle} maxW='50%' width={screen.width / 2}>
-                    <Map width={screen.width / 2} height={screen.height - 230} loader={loader} coords={coords} experiences={experiences} infoWindow={false}/>
-                </Box>
-            </Flex> 
-        </>
-    )
-}
+          <CardsGrid list={experiences} />
+        </Box>
+        <Box css={rightSideStyle} maxW="50%" width={screen.width / 2}>
+          <Map
+            width={screen.width / 2}
+            height={screen.height - 230}
+            loader={loader}
+            coords={coords}
+            experiences={experiences}
+            infoWindow={false}
+          />
+        </Box>
+      </Flex>
+    </>
+  );
+};
