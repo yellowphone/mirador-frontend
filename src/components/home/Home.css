@@ -1,12 +1,12 @@
 ::-webkit-input-placeholder {
-    text-align: center;
+  text-align: center;
 }
 
 input {
-    text-align: center;
+  text-align: center;
 }
 
 .exploreBar {
-    /* not the best way, but it'll do */
-    transform: translate(0%, 300%);
+  /* not the best way, but it'll do */
+  transform: translate(0%, 300%);
 }

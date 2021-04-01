@@ -2,7 +2,7 @@ import React from 'react';
 import { NavigationBar } from '../navigation-bar/NavigationBar';
 import { Image } from '@chakra-ui/react';
 
-export const Page404 = (): React.ReactNode => {
+export const Page404 = (): React.ReactElement => {
   return (
     <>
       <NavigationBar />

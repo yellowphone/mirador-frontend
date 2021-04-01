@@ -1,12 +1,13 @@
-import React, { useState } from 'react'
-import PropTypes from 'prop-types'
-import useGoogleLogin from './useGoogleLogin'
-import ButtonContent from './ButtonContent'
-import Icon from './googleIcon'
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import useGoogleLogin from './useGoogleLogin';
+import ButtonContent from './ButtonContent';
+import Icon from './googleIcon';
+import { TSFixMe } from '../../types/global';
 
-const GoogleLogin = (props: any) => {
-  const [hovered, setHovered] = useState(false)
-  const [active, setActive] = useState(false)
+const GoogleLogin = (props: TSFixMe): React.ReactElement => {
+  const [hovered, setHovered] = useState(false);
+  const [active, setActive] = useState(false);
   const {
     onSuccess,
     onAutoLoadFinished,
@@ -36,8 +37,8 @@ const GoogleLogin = (props: any) => {
     accessType,
     responseType,
     jsSrc,
-    prompt
-  } = props
+    prompt,
+  } = props;
 
   const { signIn, loaded } = useGoogleLogin({
     onSuccess,
@@ -58,12 +59,12 @@ const GoogleLogin = (props: any) => {
     accessType,
     responseType,
     jsSrc,
-    prompt
-  })
-  const disabled = disabledProp || !loaded
+    prompt,
+  });
+  const disabled = disabledProp || !loaded;
 
   if (render) {
-    return render({ onClick: signIn, disabled })
+    return render({ onClick: signIn, disabled });
   }
 
   const initialStyle = {
@@ -77,47 +78,47 @@ const GoogleLogin = (props: any) => {
     border: '1px solid transparent',
     fontSize: 14,
     fontWeight: '500',
-    fontFamily: 'Roboto, sans-serif'
-  }
+    fontFamily: 'Roboto, sans-serif',
+  };
 
   const hoveredStyle = {
     cursor: 'pointer',
-    opacity: 0.9
-  }
+    opacity: 0.9,
+  };
 
   const activeStyle = {
     cursor: 'pointer',
     backgroundColor: theme === 'dark' ? '#3367D6' : '#eee',
     color: theme === 'dark' ? '#fff' : 'rgba(0, 0, 0, .54)',
-    opacity: 1
-  }
+    opacity: 1,
+  };
 
   const defaultStyle = (() => {
     if (disabled) {
-      return Object.assign({}, initialStyle, disabledStyle)
+      return Object.assign({}, initialStyle, disabledStyle);
     }
 
     if (active) {
       if (theme === 'dark') {
-        return Object.assign({}, initialStyle, activeStyle)
+        return Object.assign({}, initialStyle, activeStyle);
       }
 
-      return Object.assign({}, initialStyle, activeStyle)
+      return Object.assign({}, initialStyle, activeStyle);
     }
 
     if (hovered) {
-      return Object.assign({}, initialStyle, hoveredStyle)
+      return Object.assign({}, initialStyle, hoveredStyle);
     }
 
-    return initialStyle
-  })()
+    return initialStyle;
+  })();
   const googleLoginButton = React.createElement(
     tag,
     {
       onMouseEnter: () => setHovered(true),
       onMouseLeave: () => {
-        setHovered(false)
-        setActive(false)
+        setHovered(false);
+        setActive(false);
       },
       onMouseDown: () => setActive(true),
       onMouseUp: () => setActive(false),
@@ -125,18 +126,18 @@ const GoogleLogin = (props: any) => {
       style: defaultStyle,
       type,
       disabled,
-      className
+      className,
     },
     [
       icon && <Icon key={1} active={active} />,
       <ButtonContent icon={icon} key={2}>
         {children || buttonText}
-      </ButtonContent>
+      </ButtonContent>,
     ]
-  )
+  );
 
-  return googleLoginButton
-}
+  return googleLoginButton;
+};
 
 GoogleLogin.propTypes = {
   onSuccess: PropTypes.func.isRequired,
@@ -166,8 +167,8 @@ GoogleLogin.propTypes = {
   accessType: PropTypes.string,
   render: PropTypes.func,
   theme: PropTypes.string,
-  icon: PropTypes.bool
-}
+  icon: PropTypes.bool,
+};
 
 GoogleLogin.defaultProps = {
   type: 'button',
@@ -181,11 +182,12 @@ GoogleLogin.defaultProps = {
   isSignedIn: false,
   uxMode: 'popup',
   disabledStyle: {
-    opacity: 0.6
+    opacity: 0.6,
   },
   icon: true,
   theme: 'light',
-  onRequest: () => {}
-}
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  onRequest: () => {},
+};
 
-export default GoogleLogin
+export default GoogleLogin;
