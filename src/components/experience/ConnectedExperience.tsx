@@ -6,7 +6,7 @@ import { useQuery } from '@apollo/react-hooks';
 
 import { FIND_EXPERIENCE_BY_COORDINATES } from '../../graphql/queries/experienceQuery';
 
-export const ConnectedExperience = (): React.ReactNode => {
+export const ConnectedExperience = (): React.ReactElement => {
   const [coords, setCoords] = useState({ lat: 44.349483, lng: -68.187912 });
 
   const { data: experienceItems, loading, error, refetch } = useQuery(

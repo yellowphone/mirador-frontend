@@ -4,7 +4,7 @@ import { CreateItinerary } from './CreateItinerary';
 import { useCookies } from 'react-cookie';
 import { NoLogin } from '../../shared/no-login/NoLogin';
 
-export const ConnectedCreateItinerary = (): React.ReactNode => {
+export const ConnectedCreateItinerary = (): React.ReactElement => {
   const history = useHistory();
 
   const [cookie] = useCookies(['user']);

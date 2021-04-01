@@ -9,7 +9,7 @@ import { NoLogin } from '../../shared/no-login/NoLogin';
 import { TSFixMe } from '../../../types/global';
 import { useCookies } from 'react-cookie';
 
-export const ConnectedCreateExperience = (): React.ReactNode => {
+export const ConnectedCreateExperience = (): React.ReactElement => {
   const [cookie] = useCookies(['user']);
 
   const [createCoords, setCreateCoords] = useState({ lat: 0, lng: 0 });
