@@ -2013,7 +2013,7 @@
   resolved "https://registry.yarnpkg.com/@types/googlemaps/-/googlemaps-3.40.5.tgz#520e0e5526b295a86c493473c97c07f678ec41be"
   integrity sha512-xYqO51dgJsZ+xgNUzYHW4zy/jII2RE0HU87bqMgggkp3nCGw/w7MYoQrUKyxIf0022XQ+iQwDua39wM30MG4MA==
 
-"@types/history@*":
+"@types/history@*", "@types/history@^4.7.8":
   version "4.7.8"
   resolved "https://registry.yarnpkg.com/@types/history/-/history-4.7.8.tgz#49348387983075705fe8f4e02fb67f7daaec4934"
   integrity sha512-S78QIYirQcUoo6UJZx9CSP0O2ix9IaeAXwQi26Rhr/+mg7qqPy8TzaxHSUut7eGjL8WmLccT7/MXf304WjqHcA==
