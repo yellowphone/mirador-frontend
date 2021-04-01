@@ -1,5 +1,5 @@
-import { IExperience } from "../../experience/Experience.types";
+import { IExperience } from '../../experience/Experience.types';
 
 export interface CardDataProps {
-    experience: IExperience;
+  experience: IExperience;
 }
