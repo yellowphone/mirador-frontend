@@ -46,42 +46,7 @@ export const SingleBlog: FC<SingleBlogDataProps> = ({ data, html }) => {
                 </Center>
                 { html }
             </VStack>
-        </Container> 
-        <br></br>
-        <Container maxW="sm" centerContent p={5}>
-            <SimpleGrid columns={2} spacing={10}>
-                <Box 
-                    onMouseEnter={() => { setLeftArrowHover(true) }}
-                    onMouseLeave={() => { setLeftArrowHover(false) }}
-                    onClick={() => {
-                        findRandomBlog()
-                        if (randomBlog) {
-                            console.log(randomBlog["findRandomBlog"][0]["public_identifier"])
-                            onNavigate(Paths.SingleBlog, randomBlog["findRandomBlog"][0]["public_identifier"])
-                        }
-                    }}
-                    d="flex" alignItems="center"
-                >
-                    <ChevronLeftIcon/>
-                    { leftArrowHover && <Text>Previous blog</Text> }
-                </Box>
-                <Box 
-                    onMouseEnter={() => { setRightArrowHover(true) }}
-                    onMouseLeave={() => { setRightArrowHover(false) }}
-                    onClick={() => {
-                        findRandomBlog()
-                        if (randomBlog) {
-                            console.log(randomBlog["findRandomBlog"][0]["public_identifier"])
-                            onNavigate(Paths.SingleBlog, randomBlog["findRandomBlog"][0]["public_identifier"])
-                        }
-                    }}
-                    d="flex" alignItems="center"
-                >
-                    { rightArrowHover && <Text >Next blog</Text>}
-                    <ChevronRightIcon />
-                </Box>
-            </SimpleGrid>
-        </Container>        
+        </Container>     
         </>
     )
 }
