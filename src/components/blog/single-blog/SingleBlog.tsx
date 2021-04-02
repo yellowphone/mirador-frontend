@@ -5,7 +5,6 @@ import { SingleBlogDataProps } from './SingleBlog.types'
 import { TagGrid } from '../../shared/media/Tags/TagGrid';
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons"
 import { useLazyQuery } from '@apollo/client';
-import { FIND_RANDOM_BLOG } from '../../../graphql/queries/blogQuery';
 import { useHistory } from 'react-router-dom';
 import { Paths } from '../../../utils/paths';
 
@@ -14,13 +13,6 @@ export const SingleBlog: FC<SingleBlogDataProps> = ({ data, html }) => {
 
     const [ leftArrowHover, setLeftArrowHover ] = useState(false);
     const [ rightArrowHover, setRightArrowHover ] = useState(false);
-
-    const [ findRandomBlog, { data: randomBlog }] = useLazyQuery(FIND_RANDOM_BLOG, {
-        variables: {
-            previousPrimaryKey: data["findBlogByPublicIdentifier"]["pkblog"]
-        },
-        fetchPolicy: "no-cache"
-    });
 
     const history = useHistory();
     const onNavigate = useCallback((path: Paths, public_identifier: string) => {
