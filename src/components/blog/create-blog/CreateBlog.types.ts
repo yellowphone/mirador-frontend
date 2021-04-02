@@ -5,9 +5,13 @@ export interface CreateBlogDataProps {
     onSubmit: SubmitHandler<Record<string, any>>
     loader: Loader
     setCreateCoords: Function
-    addContentHelper: SubmitHandler<Record<string, any>>
-    addContent: Function
-    html: Object
+    addElement: Function
+    renderElements: Function
     setAddedTags: Function
     addedTags: Object[]
+}
+
+export interface ElementDataProps {
+    type: string
+    content: string
 }

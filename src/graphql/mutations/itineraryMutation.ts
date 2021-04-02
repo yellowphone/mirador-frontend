@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 export const CREATE_ITINERARY = gql`
-    mutation createItinerary($title: String, $summary: String, $content: Json, $tags: [Int], $pkuser: Int!) {
-        createItinerary(title: $title, summary: $summary, content: $content, tags: $tags, pkuser: $pkuser) {
+    mutation createItinerary($title: String, $summary: String, $mongoID: String, $tags: [Int], $pkuser: Int!) {
+        createItinerary(title: $title, summary: $summary, mongoID: $mongoID, tags: $tags, pkuser: $pkuser) {
             pkitinerary
             public_identifier
         }
@@ -10,8 +10,8 @@ export const CREATE_ITINERARY = gql`
 `;
 
 export const UPDATE_ITINERARY = gql`
-    mutation updateItinerary($pkitinerary: Int!, $title: String, $content: Json) {
-        updateItinerary(pkitinerary: $pkitinerary, title: $title, content: $content) {
+    mutation updateItinerary($pkitinerary: Int!, $title: String) {
+        updateItinerary(pkitinerary: $pkitinerary, title: $title) {
             pkitinerary
         }
     }

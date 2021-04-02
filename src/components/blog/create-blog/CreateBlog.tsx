@@ -9,7 +9,7 @@ import { Upload } from '../../shared/upload/Upload';
 import { SelectTag } from '../../shared/media/Tags/SelectTag';
 
 
-export const CreateBlog: FC<CreateBlogDataProps> = ({ onSubmit, addContentHelper, addContent, html, setCreateCoords, loader, setAddedTags, addedTags }) => {
+export const CreateBlog: FC<CreateBlogDataProps> = ({ onSubmit, addElement, renderElements, setCreateCoords, loader, setAddedTags, addedTags }) => {
 
     const [ textButton, setTextButton ] = useState(false)
     const [ imageButton, setImageButton ] = useState(false)
@@ -33,6 +33,11 @@ export const CreateBlog: FC<CreateBlogDataProps> = ({ onSubmit, addContentHelper
 
     const { register, handleSubmit, errors } = useForm();
 
+    const submitElement = (input: any) => {
+        console.log(input)
+        addElement(input["type"], input["content"]);
+    }
+
     return(
         <>
             <NavigationBar/>
@@ -51,11 +56,12 @@ export const CreateBlog: FC<CreateBlogDataProps> = ({ onSubmit, addContentHelper
 
                     <Container maxW="lg">
                         <VStack spacing='40px'>
-                            { html }
+                            {/* { html } */}
+                            { renderElements() }
                         </VStack>
                     </Container>     
 
-                    <form onSubmit = { handleSubmit(addContentHelper) }>
+                    <form onSubmit = { handleSubmit(submitElement) }>
                         <Center>
                             <Button onClick={textOnClick}>Add text</Button>
                             <Button onClick={imageOnClick}>Add image</Button>
@@ -75,13 +81,13 @@ export const CreateBlog: FC<CreateBlogDataProps> = ({ onSubmit, addContentHelper
 
                         { imageButton ? 
                             <>
-                                <Upload addContent={addContent} />
+                                <Upload addContent={addElement} />
                             </> 
                         : null }
 
                         { experienceButton ? 
                             <>
-                                <ExperienceSearch addContent={addContent}/>
+                                <ExperienceSearch addContent={addElement}/>
                             </> 
                         : null }
 
