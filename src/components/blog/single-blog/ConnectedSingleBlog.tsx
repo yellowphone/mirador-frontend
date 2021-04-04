@@ -12,7 +12,7 @@ import { mongodbClient } from "../../../graphql/mongodbClient";
 
 export const ConnectedSingleBlog = () => {
 
-    const [ data, setData ] = useState({});
+    const [ data, setData ] = useState<Object>({});
     const [ elements, setElements ] = useState<Object[]>([]);
     const [ mongoid, setMongoid ] = useState<String>("");
 
