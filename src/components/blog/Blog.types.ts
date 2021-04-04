@@ -9,3 +9,8 @@ export interface IBlog {
 export interface BlogCardProps {
     blog: IBlog
 }
+
+export interface ElementDataProps {
+    type: string
+    content: string
+}

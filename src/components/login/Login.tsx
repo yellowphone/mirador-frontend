@@ -26,6 +26,7 @@ export const Login: FC<ILoginDataProps> = ({
         onCompleted: (data) => {
             console.log(data.findUserByEmail)
             if (data.findUserByEmail) {
+                console.log("setting cookie")
                 setCookie('user', data.findUserByEmail, { path: '/'})
                 setUserContext(data.findUserByEmail)
                 setUser(data.findUserByEmail)
@@ -48,6 +49,7 @@ export const Login: FC<ILoginDataProps> = ({
                 }).then((data) => {
                     incomingUser.pkuser = data.data.createUser.pkuser
                     console.log(incomingUser)
+                    console.log("setting cookie")
                     setCookie('user', incomingUser, { path: '/'})
                     setUserContext(incomingUser)
                     setUser(incomingUser)

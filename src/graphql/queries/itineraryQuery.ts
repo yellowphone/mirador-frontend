@@ -49,7 +49,7 @@ export const FIND_ITINERARY_BY_PUBLIC_IDENTIFIER = gql`
             pkitinerary
             title
             summary
-            mongoID
+            mongoid
             created_on
             user_itineraries {
                 users {

@@ -10,8 +10,3 @@ export interface CreateBlogDataProps {
     setAddedTags: Function
     addedTags: Object[]
 }
-
-export interface ElementDataProps {
-    type: string
-    content: string
-}

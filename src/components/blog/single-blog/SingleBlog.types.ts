@@ -1,4 +1,4 @@
 export interface SingleBlogDataProps {
     data: TData
-    html: Object[]
+    renderElements: Function
 }

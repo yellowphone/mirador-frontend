@@ -10,7 +10,7 @@ import { SimpleGrid, Center, Text, Image, } from "@chakra-ui/react"
 import { useCookies } from 'react-cookie';
 import { NoLogin } from '../../shared/no-login/NoLogin';
 import { CREATE_MONGODB_BLOG, INSERT_ELEMENT_INTO_BLOG } from '../../../graphql/mutations/mongodbMutation';
-import { ElementDataProps } from './CreateBlog.types';
+import { ElementDataProps } from '../Blog.types';
 import { mongodbClient } from '../../../graphql/mongodbClient';
 
 export const ConnectedCreateBlog = () => {
@@ -91,7 +91,7 @@ export const ConnectedCreateBlog = () => {
             variables: {
                 title: input["title"],
                 summary: input["summary"],
-                mongoID: mongoData["createBlog"],
+                mongoid: mongoID,
                 pkuser: cookie["user"]["pkuser"],
                 lat: createCoords["lat"], 
                 lng: createCoords["lng"],

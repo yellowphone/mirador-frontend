@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 export const CREATE_ITINERARY = gql`
-    mutation createItinerary($title: String, $summary: String, $mongoID: String, $tags: [Int], $pkuser: Int!) {
-        createItinerary(title: $title, summary: $summary, mongoID: $mongoID, tags: $tags, pkuser: $pkuser) {
+    mutation createItinerary($title: String, $summary: String, $mongoid: String, $tags: [Int], $pkuser: Int!) {
+        createItinerary(title: $title, summary: $summary, mongoID: $mongoid, tags: $tags, pkuser: $pkuser) {
             pkitinerary
             public_identifier
         }

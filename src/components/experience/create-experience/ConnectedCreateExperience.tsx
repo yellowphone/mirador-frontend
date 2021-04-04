@@ -9,7 +9,7 @@ import { useCookies } from 'react-cookie';
 import { NoLogin } from '../../shared/no-login/NoLogin';
 
 export const ConnectedCreateExperience = (): React.ReactNode => {
-  // const [cookie, setCookie] = useCookies(['user'])
+  const [cookie, setCookie] = useCookies(['user'])
 
   const [createCoords, setCreateCoords] = useState({ lat: 0, lng: 0 });
 

@@ -5,3 +5,9 @@ export const FIND_MONGODB_ITINERARY = gql`
         findItinerary(id: $id)
     }
 `;
+
+export const FIND_MONGODB_BLOG = gql`
+    query findBlog($id: String) {
+        findBlog(id: $id)
+    }
+`;

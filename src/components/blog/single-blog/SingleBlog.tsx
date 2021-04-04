@@ -9,15 +9,9 @@ import { useHistory } from 'react-router-dom';
 import { Paths } from '../../../utils/paths';
 
 
-export const SingleBlog: FC<SingleBlogDataProps> = ({ data, html }) => {
-
-    const [ leftArrowHover, setLeftArrowHover ] = useState(false);
-    const [ rightArrowHover, setRightArrowHover ] = useState(false);
+export const SingleBlog: FC<SingleBlogDataProps> = ({ data, renderElements }) => {
 
     const history = useHistory();
-    const onNavigate = useCallback((path: Paths, public_identifier: string) => {
-        history.push(path + "/" + public_identifier);
-    }, []);
 
     return(
         <>
@@ -36,7 +30,7 @@ export const SingleBlog: FC<SingleBlogDataProps> = ({ data, html }) => {
                 <Center>
                     <Text>lat: {data["findBlogByPublicIdentifier"]["blog_locations"]["lat"]}, lng: {data["findBlogByPublicIdentifier"]["blog_locations"]["lng"]}</Text>
                 </Center>
-                { html }
+                { renderElements() }
             </VStack>
         </Container>     
         </>

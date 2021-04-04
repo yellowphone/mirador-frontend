@@ -6,7 +6,7 @@ export const FIND_BLOG_BY_ID = gql`
             pkblog
             title
             summary
-            mongoID
+            mongoid
             created_on
             comment_blogs {
                 comment
@@ -51,7 +51,7 @@ export const FIND_BLOG_BY_PUBLIC_IDENTIFIER = gql`
             pkblog
             title
             summary
-            mongoID
+            mongoid
             created_on
             comment_blogs {
                 comment
