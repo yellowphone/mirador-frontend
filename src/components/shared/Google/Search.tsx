@@ -8,8 +8,8 @@ import { TSFixMe } from '../../../types/global';
 interface ISearchDataProps {
   setCoords: Dispatch<
     SetStateAction<{
-      lat: number | undefined;
-      lng: number | undefined;
+      lat: number;
+      lng: number;
     }>
   >;
   refetch: TSFixMe;
@@ -33,8 +33,8 @@ export const Search = ({
       autocomplete.addListener('place_changed', () => {
         const place = autocomplete.getPlace();
         setCoords({
-          lat: place.geometry?.location.lat(),
-          lng: place.geometry?.location.lng(),
+          lat: place.geometry?.location.lat() || 0,
+          lng: place.geometry?.location.lng() || 0,
         });
         // Refetch potentially new data anytime a search occurs
         refetch();

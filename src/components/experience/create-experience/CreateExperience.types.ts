@@ -1,11 +1,12 @@
 import { Loader } from '@googlemaps/js-api-loader';
+import { TSFixMe } from '../../../types/global';
 
 export interface CreateExperienceDataProps {
-    onSubmit: Function
-    setCreateCoords: Function
-    setAddedTags: Function
-    addedTags: Object[]
-    loader: Loader
-    onUploadInputChange: Function
-    spin: Object
+  onSubmit: TSFixMe;
+  setCreateCoords: TSFixMe;
+  setAddedTags: TSFixMe;
+  addedTags: TSFixMe[];
+  loader: Loader;
+  onUploadInputChange: TSFixMe;
+  spin: TSFixMe;
 }

@@ -1,21 +1,18 @@
-import React from 'react'
+import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { CreateItinerary } from './CreateItinerary'
+import { CreateItinerary } from './CreateItinerary';
 import { useCookies } from 'react-cookie';
 import { NoLogin } from '../../shared/no-login/NoLogin';
 
-export const ConnectedCreateItinerary = () => {
+export const ConnectedCreateItinerary = (): React.ReactNode => {
+  const history = useHistory();
 
-    const history = useHistory();
+  const [cookie] = useCookies(['user']);
 
-    const [cookie, setCookie] = useCookies(['user'])
-
-    return (
-        <>
-            { !cookie["user"] && 
-                <NoLogin />
-            }
-            { cookie["user"] && <CreateItinerary history={history}/> }
-        </>
-    )
-}
+  return (
+    <>
+      {!cookie['user'] && <NoLogin />}
+      {cookie['user'] && <CreateItinerary history={history} />}
+    </>
+  );
+};
