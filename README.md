@@ -41,5 +41,11 @@ React bootstrap https://react-bootstrap.github.io/getting-started/introduction
             <sub><b text-align="center">Geo Min</b></sub>
         </a>
     </td>
+    <td align="center">
+        <a href="https://github.com/kaityhallman" target="_blank"><img src="https://avatars2.githubusercontent.com/u/10733854?s=460&v=4" width="100px;" alt=""/>
+            <br />
+            <sub><b text-align="center">Kaity Hallman</b></sub>
+        </a>
+    </td>
   </tr>
 </table>
