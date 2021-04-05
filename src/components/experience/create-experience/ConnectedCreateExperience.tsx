@@ -6,8 +6,9 @@ import { useHistory } from 'react-router-dom';
 import { CreateExperience } from './CreateExperience';
 import { Loader } from '@googlemaps/js-api-loader';
 import { NoLogin } from '../../shared/no-login/NoLogin';
-import { TSFixMe } from '../../../types/global';
 import { useCookies } from 'react-cookie';
+import { Tag } from '../../shared/media/Tags/Tag.types';
+import { ExperienceInput } from './CreateExperience.types';
 
 export const ConnectedCreateExperience = (): React.ReactElement => {
   const [cookie] = useCookies(['user']);
@@ -16,13 +17,11 @@ export const ConnectedCreateExperience = (): React.ReactElement => {
 
   const [spin, setSpin] = useState(false);
 
-  // TODO: fix this type
-  const [files, setFiles] = useState<TSFixMe>([]);
+  const [files, setFiles] = useState<FileList[]>([]);
 
   const [createExperience] = useMutation(CREATE_EXPERIENCE);
 
-  // TODO: fix this type
-  const [addedTags, setAddedTags] = useState([]);
+  const [addedTags, setAddedTags] = useState<Tag[]>([]);
 
   const history = useHistory();
 
@@ -33,19 +32,15 @@ export const ConnectedCreateExperience = (): React.ReactElement => {
   });
 
   const onUploadInputChange = (e: FormEvent<HTMLInputElement>) => {
-    setFiles((files: TSFixMe) => [
-      ...files,
-      (e.target as HTMLInputElement).files,
-    ]);
+    const newFiles = (e.target as HTMLInputElement).files as FileList;
+    setFiles((files: FileList[]) => [...files, newFiles]);
   };
 
-  const onSubmit = (input: TSFixMe) => {
+  const onSubmit = (input: ExperienceInput) => {
     setSpin(true);
     console.log(input);
     const tags: number[] = [];
-    // TODO: fix this type
-    // eslint-disable-next-line prettier/prettier
-        addedTags.map((item: TSFixMe) => {
+    addedTags.map((item: Tag) => {
       tags.push(item.pktag);
     });
     try {

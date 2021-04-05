@@ -10,18 +10,25 @@ import { SimpleGrid, Center, Text, Image } from '@chakra-ui/react';
 import { useCookies } from 'react-cookie';
 import { NoLogin } from '../../shared/no-login/NoLogin';
 import { TSFixMe } from '../../../types/global';
+import { Tag } from '../../shared/media/Tags/Tag.types';
+
+// @TODO: Geo look at this!
+export type JsonContent = {
+  type: string;
+  content: string;
+};
 
 export const ConnectedCreateBlog = (): React.ReactElement => {
   const [cookie] = useCookies(['user']);
 
   const [createCoords, setCreateCoords] = useState({ lat: 0, lng: 0 });
 
-  const [addedTags, setAddedTags] = useState<TSFixMe[]>([]);
+  const [addedTags, setAddedTags] = useState<Tag[]>([]);
 
   const [createBlog] = useMutation(CREATE_BLOG);
 
   // JSON state object to store HTML metadata
-  const [jsonContent, setJsonContent] = useState<TSFixMe[]>([]);
+  const [jsonContent, setJsonContent] = useState<JsonContent[]>([]);
   // HTML state object to display as blog is being created
   const [html, setHtml] = useState<TSFixMe[]>([]);
 
@@ -33,10 +40,10 @@ export const ConnectedCreateBlog = (): React.ReactElement => {
     libraries: ['places', 'geometry'],
   });
 
-  const onSubmit = (input: TSFixMe) => {
-    console.log(input);
+  const onSubmit = (input: { summary: string; title: string }) => {
+    console.log({ input });
     const tags: number[] = [];
-    addedTags.map((item: TSFixMe) => {
+    addedTags.map((item: Tag) => {
       tags.push(item.pktag);
     });
     createBlog({
@@ -58,6 +65,7 @@ export const ConnectedCreateBlog = (): React.ReactElement => {
     });
   };
 
+  // TODO: Geo!
   const renderBlogComponents = (type: string, content: TSFixMe) => {
     switch (type) {
       case 'image':
@@ -73,6 +81,7 @@ export const ConnectedCreateBlog = (): React.ReactElement => {
     }
   };
 
+  // TODO: Geo!
   const addContent = (type: string, content: TSFixMe) => {
     setJsonContent(jsonContent => [
       ...jsonContent,
@@ -87,6 +96,7 @@ export const ConnectedCreateBlog = (): React.ReactElement => {
     console.log(jsonContent);
   };
 
+  // TODO Geo!
   const addContentHelper = (input: TSFixMe) => {
     console.log(input);
     if (input['type'] != 'two_col') {

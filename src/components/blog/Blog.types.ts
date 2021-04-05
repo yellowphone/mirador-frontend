@@ -1,11 +1,9 @@
-import { TSFixMe } from '../../types/global';
-
 export interface IBlog {
   pkblog: number;
   title: string;
   summary: string;
   public_identifier: string;
-  blog_tags: TSFixMe[];
+  blog_tags: string[];
 }
 
 export interface BlogCardProps {
