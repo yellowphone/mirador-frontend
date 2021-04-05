@@ -1,6 +1,11 @@
 import { ChakraProvider } from '@chakra-ui/react';
 import React from 'react';
-import { Redirect, Route, BrowserRouter as Router, Switch } from 'react-router-dom';
+import {
+  Redirect,
+  Route,
+  BrowserRouter as Router,
+  Switch,
+} from 'react-router-dom';
 import { Paths } from '../utils/paths';
 import { CookiesProvider } from 'react-cookie';
 
@@ -22,7 +27,6 @@ import { ConnectedCreateItinerary } from '../components/itinerary/create-itinera
 import { ConnectedSingleItinerary } from '../components/itinerary/single-itinerary/ConnectedSingleItinerary';
 
 export const App: React.FC = () => {
-
   return (
     <ApolloProvider client={client}>
       <CookiesProvider>
@@ -30,24 +34,55 @@ export const App: React.FC = () => {
           <Router>
             <Switch>
               <Route exact path={Paths.Blog} component={ConnectedBlog} />
-              <Route exact path={Paths.SingleBlog + "/:id"} component={ConnectedSingleBlog} />
-              <Route exact path={Paths.CreateBlog} component={ConnectedCreateBlog} />
+              <Route
+                exact
+                path={Paths.SingleBlog + '/:id'}
+                component={ConnectedSingleBlog}
+              />
+              <Route
+                exact
+                path={Paths.CreateBlog}
+                component={ConnectedCreateBlog}
+              />
               <Route exact path={Paths.Home} component={ConnectedHome} />
-              <Route exact path={Paths.Experience} component={ConnectedExperience} />
-              <Route exact path={Paths.SingleExperience + "/:id"} component={ConnectedSingleExperience} />
-              <Route exact path={Paths.CreateExperience} component={ConnectedCreateExperience} />
-              <Route exact path={Paths.Itinerary} component={ConnectedItinerary} />
-              <Route exact path={Paths.SingleItinerary + "/:id"} component={ConnectedSingleItinerary} />
-              <Route exact path={Paths.CreateItinerary} component={ConnectedCreateItinerary} />
+              <Route
+                exact
+                path={Paths.Experience}
+                component={ConnectedExperience}
+              />
+              <Route
+                exact
+                path={Paths.SingleExperience + '/:id'}
+                component={ConnectedSingleExperience}
+              />
+              <Route
+                exact
+                path={Paths.CreateExperience}
+                component={ConnectedCreateExperience}
+              />
+              <Route
+                exact
+                path={Paths.Itinerary}
+                component={ConnectedItinerary}
+              />
+              <Route
+                exact
+                path={Paths.SingleItinerary + '/:id'}
+                component={ConnectedSingleItinerary}
+              />
+              <Route
+                exact
+                path={Paths.CreateItinerary}
+                component={ConnectedCreateItinerary}
+              />
               <Route exact path={Paths.Profile} component={ConnectedProfile} />
-              <Redirect from='*' to={Paths.Home} />
+              <Redirect from="*" to={Paths.Home} />
             </Switch>
           </Router>
         </ChakraProvider>
       </CookiesProvider>
-      
     </ApolloProvider>
   );
-}
+};
 
 export default App;

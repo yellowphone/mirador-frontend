@@ -1,9 +1,9 @@
 export enum DifficultyType {
-    EASY = "EASY",
-    MODERATE = "MODERATE",
-    HARD = "HARD",
+  EASY = 'EASY',
+  MODERATE = 'MODERATE',
+  HARD = 'HARD',
 }
 
 export interface DifficultyBadgeDataProps {
-    difficulty: DifficultyType,
+  difficulty: DifficultyType;
 }

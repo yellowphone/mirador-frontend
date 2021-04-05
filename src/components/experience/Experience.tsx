@@ -1,5 +1,5 @@
-import { Box, Center, Flex, Input } from '@chakra-ui/react';
-import React, { FC, useEffect, useState, useRef } from 'react';
+import { Box, Center, Flex } from '@chakra-ui/react';
+import React, { FC } from 'react';
 import { NavigationBar } from '../shared/navigation-bar/NavigationBar';
 import './Experience.css';
 import { ExperienceDataProps } from './Experience.types';
