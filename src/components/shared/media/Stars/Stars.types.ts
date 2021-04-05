@@ -1,3 +1,3 @@
 export interface StarsDataProps {
-    rating: number; 
+  rating: number;
 }
