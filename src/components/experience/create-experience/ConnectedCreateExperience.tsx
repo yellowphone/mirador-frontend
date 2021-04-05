@@ -1,80 +1,92 @@
-import React, { FormEvent, useState } from "react";
+import React, { FormEvent, useState } from 'react';
 import { useMutation } from '@apollo/react-hooks';
 import { CREATE_EXPERIENCE } from '../../../graphql/mutations/experienceMutation';
 import { Paths } from '../../../utils/paths';
 import { useHistory } from 'react-router-dom';
-import { CreateExperience } from './CreateExperience'
+import { CreateExperience } from './CreateExperience';
 import { Loader } from '@googlemaps/js-api-loader';
 import { useCookies } from 'react-cookie';
-import { NoLogin } from "../../shared/no-login/NoLogin";
+import { NoLogin } from '../../shared/no-login/NoLogin';
 
+export const ConnectedCreateExperience = (): React.ReactNode => {
+  // const [cookie, setCookie] = useCookies(['user'])
 
-export const ConnectedCreateExperience = () => {
+  const [createCoords, setCreateCoords] = useState({ lat: 0, lng: 0 });
 
-    const [cookie, setCookie] = useCookies(['user'])
+  const [spin, setSpin] = useState(false);
 
-    const [createCoords, setCreateCoords] = useState({lat: 0, lng: 0});
+  // TODO: fix this type
+  const [files, setFiles] = useState([]);
 
-    const [spin, setSpin] = useState(false);
+  const [createExperience, { data }] = useMutation(CREATE_EXPERIENCE);
 
-    const [ files, setFiles ] = useState<Object[]>([]);
+  // TODO: fix this type
+  const [addedTags, setAddedTags] = useState([]);
 
-    const [ createExperience, { data }] = useMutation(CREATE_EXPERIENCE);
+  const history = useHistory();
 
-    const [ addedTags, setAddedTags ] = useState<Object[]>([]);
+  const loader = new Loader({
+    apiKey: `${process.env.MAPS_API_KEY}`,
+    version: 'weekly',
+    libraries: ['places', 'geometry'],
+  });
 
-    const history = useHistory();
+  const onUploadInputChange = (e: FormEvent<HTMLInputElement>) => {
+    setFiles(files => [...files, e.target.files]);
+  };
 
-    const loader = new Loader({
-        apiKey: `${process.env.MAPS_API_KEY}`,
-        version: "weekly",
-        libraries: ["places", "geometry"]
+  const onSubmit = (input: any) => {
+    setSpin(true);
+    console.log(input);
+    const tags: number[] = [];
+    // TODO: fix this type
+    // eslint-disable-next-line prettier/prettier
+        addedTags.map((item: any) => {
+      tags.push(item.pktag);
     });
-
-    const onUploadInputChange = (e: FormEvent<HTMLInputElement>) => {
-        setFiles(files => [...files, e.target.files])
+    try {
+      createExperience({
+        variables: {
+          title: input['title'],
+          summary: input['summary'],
+          miles: parseFloat(input['miles']),
+          elevation: parseInt(input['elevation']),
+          difficulty: input['difficulty'],
+          pkuser: cookie['user']['pkuser'],
+          lat: createCoords['lat'],
+          lng: createCoords['lng'],
+          tags: tags,
+          images: files,
+        },
+      }).then(data => {
+        console.log(data);
+        setSpin(false);
+        history.push(
+          Paths.SingleExperience +
+            '/' +
+            data.data['createExperience']['public_identifier']
+        );
+      });
+    } catch (err) {
+      setSpin(false);
+      console.error(err);
     }
+  };
 
-    const onSubmit = (input: any) => {   
-        setSpin(true);
-        console.log(input)
-        var tags: number[] = [];
-        addedTags.map((item: Object) => {
-            tags.push(item.pktag)
-        })
-        try {
-            createExperience({
-                variables: {
-                    title: input["title"],
-                    summary: input["summary"],
-                    miles: parseFloat(input["miles"]),
-                    elevation: parseInt(input["elevation"]),
-                    difficulty: input["difficulty"],
-                    pkuser: cookie["user"]["pkuser"],
-                    lat: createCoords["lat"], 
-                    lng: createCoords["lng"],
-                    tags: tags,
-                    images: files
-                }
-            }).then(data => {
-                console.log(data);
-                setSpin(false);
-                history.push(Paths.SingleExperience + "/" + data.data["createExperience"]["public_identifier"]);
-            })
-        }
-        catch(err) {
-            setSpin(false);
-            console.error(err);
-        }
-        
-    };
-
-    return (
-        <>
-            { !cookie["user"] && 
-                <NoLogin />
-            }
-            { cookie["user"] && <CreateExperience onSubmit={onSubmit} setCreateCoords={setCreateCoords} loader={loader} setAddedTags={setAddedTags} addedTags={addedTags} onUploadInputChange={onUploadInputChange} spin={spin} />}
-        </>
-    )
-}
+  return (
+    <>
+      {!cookie['user'] && <NoLogin />}
+      {cookie['user'] && (
+        <CreateExperience
+          onSubmit={onSubmit}
+          setCreateCoords={setCreateCoords}
+          loader={loader}
+          setAddedTags={setAddedTags}
+          addedTags={addedTags}
+          onUploadInputChange={onUploadInputChange}
+          spin={spin}
+        />
+      )}
+    </>
+  );
+};
