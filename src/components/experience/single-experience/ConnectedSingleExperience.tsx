@@ -8,7 +8,7 @@ import { SingleExperience } from './SingleExperience';
 import { useLocation } from 'react-router-dom';
 import { Page404 } from '../../shared/404/404';
 
-export const ConnectedSingleExperience = (): React.ReactNode => {
+export const ConnectedSingleExperience = (): React.ReactElement => {
   const location = useLocation();
 
   const { data, loading, error } = useQuery(

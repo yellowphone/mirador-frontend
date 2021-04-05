@@ -1,6 +1,6 @@
 import React from 'react';
 import { Itinerary } from './Itinerary';
 
-export const ConnectedItinerary = (): React.ReactNode => {
+export const ConnectedItinerary = (): React.ReactElement => {
   return <Itinerary />;
 };

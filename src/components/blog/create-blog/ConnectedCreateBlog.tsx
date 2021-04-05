@@ -11,7 +11,7 @@ import { useCookies } from 'react-cookie';
 import { NoLogin } from '../../shared/no-login/NoLogin';
 import { TSFixMe } from '../../../types/global';
 
-export const ConnectedCreateBlog = (): React.ReactFragment => {
+export const ConnectedCreateBlog = (): React.ReactElement => {
   const [cookie] = useCookies(['user']);
 
   const [createCoords, setCreateCoords] = useState({ lat: 0, lng: 0 });

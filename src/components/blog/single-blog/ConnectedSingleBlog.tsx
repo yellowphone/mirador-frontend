@@ -8,7 +8,7 @@ import { useLocation } from 'react-router-dom';
 import { Page404 } from '../../shared/404/404';
 import { TSFixMe } from '../../../types/global';
 
-export const ConnectedSingleBlog = (): React.ReactNode => {
+export const ConnectedSingleBlog = (): React.ReactElement => {
   const location = useLocation();
 
   const { data, loading, error } = useQuery(FIND_BLOG_BY_PUBLIC_IDENTIFIER, {
