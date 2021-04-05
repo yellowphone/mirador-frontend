@@ -1,4 +1,6 @@
+import { TSFixMe } from '../../../types/global';
+
 export interface SingleBlogDataProps {
-    data: TData
-    html: Object[]
+  data: TSFixMe;
+  html: TSFixMe[];
 }
