@@ -20,13 +20,13 @@ export interface IUserContext {
 
 const userContext = new BehaviorSubject<IUserContext | undefined>(undefined);
 
-export const setUserContext = (user: IUserContext): void => {
+export const setUserContext = (user?: IUserContext): void => {
   if (user) {
     userContext.next({
       ...user,
       fullname: `${user.firstname} ${user.lastname}`,
     });
-  } else if (user == undefined) {
+  } else if (typeof user === 'undefined') {
     console.log('User logout');
     userContext.next(undefined);
   } else {
