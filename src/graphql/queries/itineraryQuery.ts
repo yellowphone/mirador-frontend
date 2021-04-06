@@ -6,7 +6,7 @@ export const FIND_ITINERARY_BY_ID = gql`
       pkitinerary
       title
       summary
-      content
+      mongoid
       created_on
       user_itineraries {
         users {
@@ -49,7 +49,7 @@ export const FIND_ITINERARY_BY_PUBLIC_IDENTIFIER = gql`
       pkitinerary
       title
       summary
-      content
+      mongoid
       created_on
       user_itineraries {
         users {

@@ -4,31 +4,19 @@ export const CREATE_ITINERARY = gql`
   mutation createItinerary(
     $title: String
     $summary: String
-    $content: Json
+    $mongoid: String
     $tags: [Int]
     $pkuser: Int!
   ) {
     createItinerary(
       title: $title
       summary: $summary
-      content: $content
+      mongoid: $mongoid
       tags: $tags
       pkuser: $pkuser
     ) {
       pkitinerary
       public_identifier
-    }
-  }
-`;
-
-export const UPDATE_ITINERARY = gql`
-  mutation updateItinerary($pkitinerary: Int!, $title: String, $content: Json) {
-    updateItinerary(
-      pkitinerary: $pkitinerary
-      title: $title
-      content: $content
-    ) {
-      pkitinerary
     }
   }
 `;
