@@ -56,7 +56,6 @@ export const CreateBlog: FC<CreateBlogDataProps> = ({ onSubmit, addElement, rend
 
                     <Container maxW="lg">
                         <VStack spacing='40px'>
-                            {/* { html } */}
                             { renderElements() }
                         </VStack>
                     </Container>     
