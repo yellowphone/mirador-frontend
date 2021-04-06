@@ -6,7 +6,7 @@ export const FIND_ITINERARY_BY_ID = gql`
             pkitinerary
             title
             summary
-            mongoID
+            mongoid
             created_on
             user_itineraries {
                 users {
@@ -44,32 +44,30 @@ export const FIND_ITINERARIES_FOR_USER = gql`
 `;
 
 export const FIND_ITINERARY_BY_PUBLIC_IDENTIFIER = gql`
-    query findItineraryByPublicIdentifier($public_identifier: String!) {
-        findItineraryByPublicIdentifier(public_identifier: $public_identifier) {
-            pkitinerary
-            title
-            summary
-            mongoid
-            created_on
-            user_itineraries {
-                users {
-                    username
-                }
-            }
-            itinerary_tags {
-                pkitinerary_tag
-                tags {
-                    tag
-                }
-            }
-            users {
-                pkuser
-            }
-            itinerary_experiences {
-                experiences {
-                    pkexperience
-                }
-            }
+  query findItineraryByPublicIdentifier($public_identifier: String!) {
+    findItineraryByPublicIdentifier(public_identifier: $public_identifier) {
+      pkitinerary
+      title
+      summary
+      mongoid
+      created_on
+      user_itineraries {
+        users {
+          username
+        }
+      }
+      itinerary_tags {
+        pkitinerary_tag
+        tags {
+          tag
+        }
+      }
+      users {
+        pkuser
+      }
+      itinerary_experiences {
+        experiences {
+          pkexperience
         }
     }
 `;
