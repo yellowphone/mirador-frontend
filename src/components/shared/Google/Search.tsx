@@ -3,16 +3,12 @@ import { Input, Box } from '@chakra-ui/react';
 import debounce from 'lodash/debounce';
 import { Loader } from '@googlemaps/js-api-loader';
 import './Search.css';
-import { TSFixMe } from '../../../types/global';
+import { LatLng } from '../../../types/global';
+import { ApolloQueryResult } from '@apollo/client';
 
 interface ISearchDataProps {
-  setCoords: Dispatch<
-    SetStateAction<{
-      lat: number;
-      lng: number;
-    }>
-  >;
-  refetch: TSFixMe;
+  setCoords: Dispatch<SetStateAction<LatLng>>;
+  refetch: (variables?: Partial<LatLng>) => Promise<ApolloQueryResult<never>>;
   loader: Loader;
 }
 

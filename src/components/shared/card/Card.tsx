@@ -79,7 +79,7 @@ export const Card: FC<CardDataProps> = ({ experience }) => {
 
   const { register, handleSubmit } = useForm();
 
-  const onCreateItinerary = (input: TSFixMe) => {
+  const onCreateItinerary = (input: { title: string }) => {
     setLoadForCreateItinerary(true);
     createItinerary({
       variables: {
