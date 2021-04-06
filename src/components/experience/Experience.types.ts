@@ -1,4 +1,6 @@
-import { TSFixMe } from '../../types/global';
+import { ApolloQueryResult } from '@apollo/client';
+import { Dispatch, SetStateAction } from 'react';
+import { LatLng } from '../../types/global';
 import { DifficultyType } from '../shared/media/Badges/Badges.types';
 
 export interface IExperience {
@@ -25,6 +27,6 @@ export interface ICoordinates {
 export interface ExperienceDataProps {
   experiences: Array<IExperience>;
   coords: ICoordinates;
-  setCoords: TSFixMe;
-  refetch: TSFixMe;
+  setCoords: Dispatch<SetStateAction<LatLng>>;
+  refetch: (variables?: Partial<LatLng>) => Promise<ApolloQueryResult<never>>;
 }
