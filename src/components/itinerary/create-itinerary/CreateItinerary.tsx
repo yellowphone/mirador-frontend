@@ -28,10 +28,10 @@ export const CreateItinerary: FC<CreateItineraryDataProps> = ({ history }) => {
                     <Heading>{title}</Heading>
                 </Box> */}
 
-        <Box css={leftSideStyle} maxW="70%" width={7 * (screen.width / 10)}>
+        <Box css={leftSideStyle} maxW="50%" width={0.5 * screen.width}>
           <ItinerarySearcher />
         </Box>
-        <Box css={rightSideStyle} maxW="30%" width={3 * (screen.width / 10)}>
+        <Box css={rightSideStyle} maxW="50%" width={0.5 * screen.width}>
           <ItineraryBuilder title={title} history={history} />
         </Box>
       </Flex>
