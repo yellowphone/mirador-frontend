@@ -3,7 +3,7 @@ export interface IBlog {
     title: string,
     summary: string,
     public_identifier: string,
-    blog_tags: Object[]
+    blog_tags: string[]
 }
 
 export interface BlogCardProps {

@@ -1,14 +1,22 @@
-import { ApolloError, useMutation, useQuery } from '@apollo/client';
-import { Center, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, } from '@chakra-ui/react';
+import { ApolloError, useMutation } from '@apollo/client';
+import {
+  Center,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalHeader,
+  ModalOverlay,
+} from '@chakra-ui/react';
 import React, { FC, useCallback, useState } from 'react';
-import FacebookLogin from 'react-facebook-login';
 import GoogleLogin from 'react-google-login';
 import { CREATE_USER } from '../../graphql/mutations/userMutation';
-import { Account, getUserContext, IUserContext, setUserContext, } from '../../utils/userContext';
+import { Account, IUserContext, setUserContext } from '../../utils/userContext';
 import { ILoginDataProps } from './Login.types';
 import { useLazyQuery } from '@apollo/client';
 import { FIND_USER_BY_EMAIL } from '../../graphql/queries/userQuery';
 import { useCookies } from 'react-cookie';
+import { TSFixMe } from '../../types/global';
 
 export const Login: FC<ILoginDataProps> = ({
     isOpen,
@@ -64,7 +72,7 @@ export const Login: FC<ILoginDataProps> = ({
     cookie.user && setUserContext(cookie.user)
     mutationError && console.log(mutationError)
 
-    const googleSuccess = useCallback( (res: any) => {
+    const googleSuccess = useCallback( (res: TSFixMe) => {
         const func = async () => {
             const { tokenObj, profileObj } = res;
             const user: IUserContext = {
@@ -123,7 +131,7 @@ export const Login: FC<ILoginDataProps> = ({
         func();
     }, [getUserContext, onClose]);
     
-    const error = useCallback((response: any) => {
+    const error = useCallback((response: TSFixMe) => {
         console.error(response);
     }, []);
 
@@ -152,9 +160,9 @@ export const Login: FC<ILoginDataProps> = ({
                             fields='name,email,picture'
                         />
                     </Center> */}
-                </ModalBody>
-              </ModalContent>
-            </Modal>
-          </>
-    );
-}
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+    </>
+  );
+};

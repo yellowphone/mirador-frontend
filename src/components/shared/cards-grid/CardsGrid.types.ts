@@ -1,3 +1,3 @@
 export interface CardsGridDataProps<T> {
-    list: Array<T>;
+  list: Array<T>;
 }

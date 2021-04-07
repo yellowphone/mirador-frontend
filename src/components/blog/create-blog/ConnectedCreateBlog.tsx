@@ -11,7 +11,9 @@ import { useCookies } from 'react-cookie';
 import { NoLogin } from '../../shared/no-login/NoLogin';
 import { CREATE_MONGODB_BLOG, INSERT_ELEMENT_INTO_BLOG } from '../../../graphql/mutations/mongodbMutation';
 import { ElementDataProps } from '../Blog.types';
+import { TSFixMe } from '../../../types/global';
 import { mongodbClient } from '../../../graphql/mongodbClient';
+import { Tag } from '../../shared/media/Tags/Tag.types';
 
 export const ConnectedCreateBlog = () => {
     
@@ -21,7 +23,7 @@ export const ConnectedCreateBlog = () => {
 
     const [mongoID, setMongoID] = useState("");
 
-    const [ addedTags, setAddedTags ] = useState<Object[]>([]);
+    const [ addedTags, setAddedTags ] = useState<Tag[]>([]);
 
     const [ createBlog, { data }] = useMutation(CREATE_BLOG);
 
@@ -33,7 +35,7 @@ export const ConnectedCreateBlog = () => {
         client: mongodbClient
     });
 
-    const [ elements, setElements ] = useState<Object[]>([]);
+    const [ elements, setElements ] = useState<TSFixMe[]>([]);
 
     const history = useHistory();
 
@@ -80,10 +82,10 @@ export const ConnectedCreateBlog = () => {
         })
     }
 
-    const onSubmit = (input: any) => {
+    const onSubmit = (input: { summary: string; title: string }) => {
         console.log(input)
         var tags: number[] = [];
-        addedTags.map((item: number) => {
+        addedTags.map((item: Tag) => {
             tags.push(item.pktag)
         })
 
@@ -114,3 +116,4 @@ export const ConnectedCreateBlog = () => {
     )
 
 }
+

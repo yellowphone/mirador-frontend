@@ -1,15 +1,17 @@
+import { TSFixMe } from '../../../types/global';
+
 export interface SingleItineraryProps {
-    data: FindItineraryByIdObject
+  data: FindItineraryByIdObject;
 }
 
 export interface FindItineraryByIdObject {
-    pkitinerary: number
-    title: string
-    summary: string
-    content: Object[]
-    created_on: Date
-    user_itineraries: Object[]
-    users: Object
-    itinerary_tags: Object[]
-    itinerary_experiences: Object[]
+  pkitinerary: number;
+  title: string;
+  summary: string;
+  content: TSFixMe[];
+  created_on: Date;
+  user_itineraries: TSFixMe[];
+  users: TSFixMe;
+  itinerary_tags: TSFixMe[];
+  itinerary_experiences: TSFixMe[];
 }
