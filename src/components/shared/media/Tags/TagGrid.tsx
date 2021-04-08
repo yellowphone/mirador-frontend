@@ -1,13 +1,12 @@
 import React, { FC } from 'react';
-import { TagGridDataProps } from './Tag.types';
 import { CategoryTag } from './CategoryTag';
 import { HStack } from '@chakra-ui/react';
-import { TSFixMe } from '../../../../types/global';
+import { ExperienceTag, TagGridDataProps } from './Tag.types';
 
 export const TagGrid: FC<TagGridDataProps> = ({
   tags,
 }: {
-  tags: TSFixMe[];
+  tags: ExperienceTag[];
 }) => {
   return (
     <>

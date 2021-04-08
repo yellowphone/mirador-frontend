@@ -5,7 +5,7 @@ import { Input, Spinner } from '@chakra-ui/react';
 import { useCookies } from 'react-cookie';
 
 interface UploadDataProps {
-  addContent: (type: string, content: Record<string, unknown>) => void;
+  addContent: (type: string, content: string) => void;
 }
 
 export const Upload: FC<UploadDataProps> = ({ addContent }) => {

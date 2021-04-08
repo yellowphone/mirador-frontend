@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
 
 interface IButtonContent {
-  children: JSX.Element;
-  icon: JSX.Element;
+  children?: React.ReactNode;
+  icon?: boolean;
 }
 
 const ButtonContent: FC<IButtonContent> = ({ children, icon }) => (

@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import useGoogleLogin from './useGoogleLogin';
 import ButtonContent from './ButtonContent';
 import Icon from './googleIcon';
-import { TSFixMe } from '../../types/global';
+import { GoogleLoginProps } from 'react-google-login';
 
-const GoogleLogin = (props: TSFixMe): React.ReactElement => {
+const GoogleLogin = (props: Partial<GoogleLoginProps>): React.ReactElement => {
   const [hovered, setHovered] = useState(false);
   const [active, setActive] = useState(false);
   const {
@@ -31,7 +31,6 @@ const GoogleLogin = (props: TSFixMe): React.ReactElement => {
     isSignedIn,
     fetchBasicProfile,
     redirectUri,
-    discoveryDocs,
     uxMode,
     scope,
     accessType,
@@ -53,7 +52,6 @@ const GoogleLogin = (props: TSFixMe): React.ReactElement => {
     isSignedIn,
     fetchBasicProfile,
     redirectUri,
-    discoveryDocs,
     uxMode,
     scope,
     accessType,
@@ -113,7 +111,7 @@ const GoogleLogin = (props: TSFixMe): React.ReactElement => {
     return initialStyle;
   })();
   const googleLoginButton = React.createElement(
-    tag,
+    tag as 'input',
     {
       onMouseEnter: () => setHovered(true),
       onMouseLeave: () => {

@@ -5,3 +5,9 @@ export type LatLng = {
   lat: number;
   lng: number;
 };
+
+declare global {
+  interface Window {
+    gapi: TSFixMe;
+  }
+}

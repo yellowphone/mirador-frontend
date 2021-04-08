@@ -1,6 +1,11 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { useState, useEffect, useCallback } from 'react';
+import {
+  GoogleLoginProps,
+  GoogleLoginResponse,
+  GoogleLoginResponseOffline,
+} from 'react-google-login';
 import loadScript from '../../utils/loadScript';
 import removeScript from '../../utils/removeScript';
 
@@ -17,14 +22,13 @@ const useGoogleLogin = ({
   isSignedIn,
   fetchBasicProfile,
   redirectUri,
-  discoveryDocs,
   uxMode,
   scope,
   accessType,
   responseType,
   jsSrc = 'https://apis.google.com/js/api.js',
   prompt,
-}) => {
+}: Partial<GoogleLoginProps>) => {
   const [loaded, setLoaded] = useState(false);
 
   const handleSigninSuccess = useCallback(
@@ -52,7 +56,7 @@ const useGoogleLogin = ({
   );
 
   const signIn = useCallback(
-    e => {
+    (e?: Event) => {
       if (e) {
         e.preventDefault(); // to prevent submit if used within form
       }
@@ -65,13 +69,13 @@ const useGoogleLogin = ({
         onRequest();
         if (responseType === 'code') {
           GoogleAuth.grantOfflineAccess(options).then(
-            res => onSuccess(res),
-            err => onFailure(err)
+            (res: GoogleLoginResponseOffline) => onSuccess(res),
+            (err: unknown) => onFailure(err)
           );
         } else {
           GoogleAuth.signIn(options).then(
-            res => handleSigninSuccess(res),
-            err => onFailure(err)
+            (res: GoogleLoginResponse) => handleSigninSuccess(res),
+            (err: unknown) => onFailure(err)
           );
         }
       }
@@ -101,7 +105,6 @@ const useGoogleLogin = ({
           login_hint: loginHint,
           hosted_domain: hostedDomain,
           fetch_basic_profile: fetchBasicProfile,
-          discoveryDocs,
           ux_mode: uxMode,
           redirect_uri: redirectUri,
           scope,
@@ -116,17 +119,20 @@ const useGoogleLogin = ({
           const GoogleAuth = window.gapi.auth2.getAuthInstance();
           if (!GoogleAuth) {
             window.gapi.auth2.init(params).then(
-              res => {
+              (res: {
+                isSignedIn: { get: () => boolean };
+                currentUser: { get: () => boolean };
+              }) => {
                 if (!unmounted) {
                   setLoaded(true);
-                  const signedIn = isSignedIn && res.isSignedIn.get();
+                  const signedIn = !!isSignedIn && res.isSignedIn.get();
                   onAutoLoadFinished(signedIn);
                   if (signedIn) {
                     handleSigninSuccess(res.currentUser.get());
                   }
                 }
               },
-              err => {
+              (err: unknown) => {
                 setLoaded(true);
                 onAutoLoadFinished(false);
                 onFailure(err);
@@ -147,7 +153,7 @@ const useGoogleLogin = ({
                   onAutoLoadFinished(false);
                 }
               },
-              err => {
+              (err: unknown) => {
                 onFailure(err);
               }
             );
@@ -167,7 +173,6 @@ const useGoogleLogin = ({
     accessType,
     clientId,
     cookiePolicy,
-    discoveryDocs,
     fetchBasicProfile,
     handleSigninSuccess,
     hostedDomain,
