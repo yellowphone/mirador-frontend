@@ -10,3 +10,10 @@ export interface ItineraryBuilderProps {
   title: string;
   history: History;
 }
+
+export interface ExperienceContentDataProps {
+  pkexperience: number;
+  title: string;
+  imgUrl: string;
+  imgAlt: string;
+}

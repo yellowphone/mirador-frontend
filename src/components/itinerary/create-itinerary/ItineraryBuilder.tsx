@@ -15,7 +15,11 @@ import {
 import { useMutation } from '@apollo/client';
 import { CREATE_ITINERARY } from '../../../graphql/mutations/itineraryMutation';
 import { Paths } from '../../../utils/paths';
-import { ItineraryBuilderProps } from './CreateItinerary.types';
+import {
+  ElementProps,
+  ExperienceContentDataProps,
+  ItineraryBuilderProps,
+} from './CreateItinerary.types';
 import { useCookies } from 'react-cookie';
 import { TSFixMe } from '../../../types/global';
 import {
@@ -30,7 +34,10 @@ export const ItineraryBuilder: FC<ItineraryBuilderProps> = ({
 }) => {
   const [cookie] = useCookies(['user']);
 
-  const [elements, setElements] = useState<TSFixMe[]>([]);
+  // this is confusing for me, elements will always
+  // differ in type since it is a date range object
+  // SO how would I create a type for a dynamic object?
+  const [elements, setElements] = useState<TSFixMe>([]);
 
   const [mongoid, setMongoid] = useState('');
 
@@ -57,7 +64,11 @@ export const ItineraryBuilder: FC<ItineraryBuilderProps> = ({
   };
 
   // Add helper for mongodb and json object
-  const addElement = (type: string, content: TSFixMe, date: string) => {
+  const addElement = (
+    type: string,
+    content: ExperienceContentDataProps,
+    date: string
+  ) => {
     const newElem = { ...elements };
     newElem[date].push({ type: type, content: content });
     setElements(newElem);
@@ -76,17 +87,25 @@ export const ItineraryBuilder: FC<ItineraryBuilderProps> = ({
 
   // render elements
   const renderElements = (date: string) => {
-    return elements[date].map((element: TSFixMe, index: number) => {
+    return elements[date].map((element: ElementProps, index: number) => {
       console.log(element);
       switch (element['type']) {
         case 'experience':
+          /**
+           * Data being passed in for experience is
+           * - pkexperience
+           * - title
+           * - imgUrl (image link)
+           * - imgAlt (alt for image)
+           */
+
           return <h1>pkexperience: {element['content']['pkexperience']}</h1>;
       }
     });
   };
 
   // Itinerary creates
-  const onItineraryCreate = (input: TSFixMe) => {
+  const onItineraryCreate = (input: { start: string; end: string }) => {
     if (input['start'] <= input['end']) {
       createMongoItinerary({
         variables: {
