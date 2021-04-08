@@ -1,3 +1,10 @@
+export interface ExperienceTag {
+  tags: Tag;
+}
+export interface TagGridDataProps {
+  tags: ExperienceTag[];
+}
+
 export interface TagDataProps {
   tag: string;
   add: boolean;
@@ -7,8 +14,4 @@ export interface TagDataProps {
 export interface Tag {
   pktag: number;
   tag: string;
-}
-
-export interface TagGridDataProps {
-  tags: Tag[];
 }

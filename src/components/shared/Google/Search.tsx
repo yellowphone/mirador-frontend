@@ -8,7 +8,7 @@ import { ApolloQueryResult } from '@apollo/client';
 
 interface ISearchDataProps {
   setCoords: Dispatch<SetStateAction<LatLng>>;
-  refetch: (variables?: Partial<LatLng>) => Promise<ApolloQueryResult<never>>;
+  refetch?: (variables?: Partial<LatLng>) => Promise<ApolloQueryResult<never>>;
   loader: Loader;
 }
 
@@ -33,7 +33,9 @@ export const Search = ({
           lng: place.geometry?.location.lng() || 0,
         });
         // Refetch potentially new data anytime a search occurs
-        refetch();
+        if (refetch) {
+          refetch();
+        }
       });
     });
   };

@@ -1,99 +1,117 @@
 import React, { FC, useState } from 'react';
-import { useForm } from "react-hook-form";
+import { useForm } from 'react-hook-form';
 import { NavigationBar } from '../../shared/navigation-bar/NavigationBar';
-import { CreateBlogDataProps } from './CreateBlog.types'
-import { Container, SimpleGrid, Center, Heading, VStack, Text, Image, Box, Textarea, Button, Input, Select } from "@chakra-ui/react"
+import { CreateBlogDataProps } from './CreateBlog.types';
+import {
+  Container,
+  Center,
+  VStack,
+  Box,
+  Textarea,
+  Button,
+  Input,
+} from '@chakra-ui/react';
 import { ExperienceSearch } from '../../shared/search/ExperienceSearch';
-import { Search } from '../../shared/Google/Search'
+import { Search } from '../../shared/Google/Search';
 import { Upload } from '../../shared/upload/Upload';
 import { SelectTag } from '../../shared/media/Tags/SelectTag';
 
+export const CreateBlog: FC<CreateBlogDataProps> = ({
+  onSubmit,
+  addElement,
+  renderElements,
+  setCreateCoords,
+  loader,
+  setAddedTags,
+  addedTags,
+}) => {
+  const [textButton, setTextButton] = useState(false);
+  const [imageButton, setImageButton] = useState(false);
+  const [experienceButton, setExperienceButton] = useState(false);
 
-export const CreateBlog: FC<CreateBlogDataProps> = ({ onSubmit, addElement, renderElements, setCreateCoords, loader, setAddedTags, addedTags }) => {
+  const textOnClick = () => {
+    setTextButton(true);
+    setImageButton(false);
+    setExperienceButton(false);
+  };
+  const imageOnClick = () => {
+    setTextButton(false);
+    setImageButton(true);
+    setExperienceButton(false);
+  };
+  const experienceOnClick = () => {
+    setTextButton(false);
+    setImageButton(false);
+    setExperienceButton(true);
+  };
 
-    const [ textButton, setTextButton ] = useState(false)
-    const [ imageButton, setImageButton ] = useState(false)
-    const [ experienceButton, setExperienceButton ] = useState(false)
+  const { register, handleSubmit } = useForm();
 
-    const textOnClick = () => { 
-        setTextButton(true)
-        setImageButton(false)
-        setExperienceButton(false)
-    }
-    const imageOnClick = () => {
-        setTextButton(false)
-        setImageButton(true)
-        setExperienceButton(false)
-    }
-    const experienceOnClick = () => {
-        setTextButton(false)
-        setImageButton(false)
-        setExperienceButton(true)
-    }
+  const submitElement = (input: { type: string; content: string }) => {
+    console.log(input);
+    addElement(input['type'], input['content']);
+  };
 
-    const { register, handleSubmit, errors } = useForm();
+  return (
+    <>
+      <NavigationBar />
+      <Container maxW="xl">
+        <Box maxW="100%">
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <Center>
+              <Button type="submit">Create</Button>
+            </Center>
+            <Input name="title" placeholder="Title" ref={register} />
+            <Textarea name="summary" placeholder="Summary" ref={register} />
+            <SelectTag setAddedTags={setAddedTags} addedTags={addedTags} />
+            <Search loader={loader} setCoords={setCreateCoords} />
+          </form>
+          <br></br>
 
-    const submitElement = (input: any) => {
-        console.log(input)
-        addElement(input["type"], input["content"]);
-    }
+          <Container maxW="lg">
+            <VStack spacing="40px">{renderElements()}</VStack>
+          </Container>
 
-    return(
-        <>
-            <NavigationBar/>
-            <Container maxW='xl'>
-                <Box maxW='100%'>
-                    <form onSubmit = { handleSubmit(onSubmit) }>
-                        <Center>
-                            <Button type="submit">Create</Button>
-                        </Center>
-                        <Input name="title" placeholder="Title" ref={register} />
-                        <Textarea name="summary" placeholder="Summary" ref={register} />
-                        <SelectTag setAddedTags={setAddedTags} addedTags={addedTags}/>
-                        <Search loader={loader} setCoords={setCreateCoords} refetch={() => {}} />
-                    </form>
-                    <br></br>
+          <form onSubmit={handleSubmit(submitElement)}>
+            <Center>
+              <Button onClick={textOnClick}>Add text</Button>
+              <Button onClick={imageOnClick}>Add image</Button>
+              <Button onClick={experienceOnClick}>Add experience</Button>
+            </Center>
 
-                    <Container maxW="lg">
-                        <VStack spacing='40px'>
-                            { renderElements() }
-                        </VStack>
-                    </Container>     
+            {textButton ? (
+              <>
+                <Input
+                  style={{ visibility: 'hidden' }}
+                  name="type"
+                  defaultValue="text"
+                  ref={register}
+                />
+                <Textarea
+                  name="content"
+                  placeholder="Type text here"
+                  ref={register}
+                />
+                <Center>
+                  <Button type="submit">Add</Button>
+                </Center>
+              </>
+            ) : null}
 
-                    <form onSubmit = { handleSubmit(submitElement) }>
-                        <Center>
-                            <Button onClick={textOnClick}>Add text</Button>
-                            <Button onClick={imageOnClick}>Add image</Button>
-                            <Button onClick={experienceOnClick}>Add experience</Button>
-                        </Center>
-                        
+            {imageButton ? (
+              <>
+                <Upload addContent={addElement} />
+              </>
+            ) : null}
 
-                        { textButton ? 
-                            <>
-                                <Input style={{ visibility: "hidden"}} name="type" defaultValue="text" ref={register}/>
-                                <Textarea name="content" placeholder="Type text here" ref={register}/>
-                                <Center>
-                                    <Button type="submit">Add</Button>
-                                </Center>
-                            </> 
-                        : null }
-
-                        { imageButton ? 
-                            <>
-                                <Upload addContent={addElement} />
-                            </> 
-                        : null }
-
-                        { experienceButton ? 
-                            <>
-                                <ExperienceSearch addContent={addElement}/>
-                            </> 
-                        : null }
-
-                    </form>
-                </Box>
-            </Container>
-            
-        </>
-    )
-}
+            {experienceButton ? (
+              <>
+                <ExperienceSearch addContent={addElement} />
+              </>
+            ) : null}
+          </form>
+        </Box>
+      </Container>
+    </>
+  );
+};

@@ -1,11 +1,13 @@
 import { Stack, Image, Container, Box } from '@chakra-ui/react';
 import React, { FC } from 'react';
-import { TSFixMe } from '../../../types/global';
 import { TagGrid } from '../../shared/media/Tags/TagGrid';
 
 import { NavigationBar } from '../../shared/navigation-bar/NavigationBar';
 
-import { SingleExperienceProps } from './SingleExperience.type';
+import {
+  ExperienceImageInstance,
+  SingleExperienceProps,
+} from './SingleExperience.type';
 
 export const SingleExperience: FC<SingleExperienceProps> = ({ data }) => {
   console.log(data);
@@ -37,7 +39,7 @@ export const SingleExperience: FC<SingleExperienceProps> = ({ data }) => {
         <Stack direction="row">
           {data['findExperienceByPublicIdentifier']['experience_images'] &&
             data['findExperienceByPublicIdentifier']['experience_images'].map(
-              (image: TSFixMe, index: number) => {
+              (image: { images: ExperienceImageInstance }, index: number) => {
                 return (
                   <Box p="2" size="md" key={index}>
                     <Image key={index} src={image['images']['url']} />

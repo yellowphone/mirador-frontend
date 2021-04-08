@@ -4,6 +4,7 @@ export interface SingleItineraryProps {
   data: FindItineraryByIdObject;
 }
 
+// @TODO: Geo! fix these types.
 export interface FindItineraryByIdObject {
   pkitinerary: number;
   title: string;

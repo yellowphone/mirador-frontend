@@ -3,7 +3,7 @@ export default (
   s: string,
   id: string,
   jsSrc: string,
-  cb: ((this: GlobalEventHandlers, ev: Event) => never) | null,
+  cb: () => void,
   onError: OnErrorEventHandler
 ): void => {
   const element = d.getElementsByTagName(s)[0] as HTMLScriptElement;

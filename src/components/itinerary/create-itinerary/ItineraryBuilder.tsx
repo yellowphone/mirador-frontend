@@ -18,6 +18,7 @@ import { CREATE_ITINERARY } from '../../../graphql/mutations/itineraryMutation';
 import { Paths } from '../../../utils/paths';
 import { ItineraryBuilderProps } from './CreateItinerary.types';
 import { useCookies } from 'react-cookie';
+// @TODO: Geo! Fix these types.
 import { TSFixMe } from '../../../types/global';
 
 export const ItineraryBuilder: FC<ItineraryBuilderProps> = ({
