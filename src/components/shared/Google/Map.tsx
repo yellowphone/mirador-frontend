@@ -77,7 +77,7 @@ export const Map: FC<IMapDataProps> = ({
           div.draggable = true;
           div.ondragstart = function (e) {
             const dataForItineraryElement = {
-              pkexerience: x.fk_experience_location,
+              pkexperience: x.fk_experience_location,
               title: x.title,
               imgUrl: x.imageUrl,
               imgAlt: x.imageAlt,

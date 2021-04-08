@@ -22,7 +22,7 @@ export const ConnectedCreateBlog = (): React.ReactElement => {
 
   const [createCoords, setCreateCoords] = useState({ lat: 0, lng: 0 });
 
-  const [mongoID, setMongoID] = useState('');
+  const [mongoid, setMongoid] = useState('');
 
   const [addedTags, setAddedTags] = useState<Tag[]>([]);
 
@@ -37,13 +37,13 @@ export const ConnectedCreateBlog = (): React.ReactElement => {
   });
 
   const [elements, setElements] = useState<ElementDataProps[]>([]);
-
+  
   const history = useHistory();
 
   useEffect(() => {
     createMongoBlog().then(data => {
       console.log(data);
-      setMongoID(data.data['createBlog']);
+      setMongoid(data.data['createBlog']);
     });
   }, [createMongoBlog]);
 
@@ -81,7 +81,7 @@ export const ConnectedCreateBlog = (): React.ReactElement => {
     };
     insertElement({
       variables: {
-        id: mongoID,
+        id: mongoid,
         element: element,
       },
     });
@@ -98,7 +98,7 @@ export const ConnectedCreateBlog = (): React.ReactElement => {
       variables: {
         title: input['title'],
         summary: input['summary'],
-        mongoid: mongoID,
+        mongoid: mongoid,
         pkuser: cookie['user']['pkuser'],
         lat: createCoords['lat'],
         lng: createCoords['lng'],

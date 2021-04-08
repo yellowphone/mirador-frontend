@@ -58,7 +58,7 @@ export const ItinerarySearcher = (): React.ReactElement => {
         }}
       />
       <Map
-        width={7 * (screen.width / 10)}
+        width={0.5 * screen.width}
         height={screen.height - 270}
         loader={loader}
         coords={coords}
