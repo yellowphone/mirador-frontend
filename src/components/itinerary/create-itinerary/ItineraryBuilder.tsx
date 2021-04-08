@@ -21,6 +21,7 @@ import {
   ItineraryBuilderProps,
 } from './CreateItinerary.types';
 import { useCookies } from 'react-cookie';
+// @TODO: Geo! Fix these types.
 import { TSFixMe } from '../../../types/global';
 import {
   CREATE_MONGODB_ITINERARY,

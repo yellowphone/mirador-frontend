@@ -1,19 +1,25 @@
 import { useQuery } from '@apollo/client';
 import { Button, Box, Wrap, WrapItem } from '@chakra-ui/react';
-import React, { useEffect, useState, FC } from 'react';
+import React, {
+  useEffect,
+  useState,
+  FC,
+  Dispatch,
+  SetStateAction,
+} from 'react';
 import { GET_TAGS } from '../../../../graphql/queries/tagQuery';
-import { TSFixMe } from '../../../../types/global';
 import { CategoryTag } from './CategoryTag';
+import { Tag } from './Tag.types';
 
 interface SelectTagProps {
-  setAddedTags: TSFixMe;
-  addedTags: TSFixMe[];
+  setAddedTags: Dispatch<SetStateAction<Tag[]>>;
+  addedTags: Tag[];
 }
 
 export const SelectTag: FC<SelectTagProps> = ({ setAddedTags, addedTags }) => {
   const [open, setOpen] = useState(false);
 
-  const [tags, setTags] = useState<TSFixMe[]>([]);
+  const [tags, setTags] = useState<Tag[]>([]);
 
   const { data, loading, error } = useQuery(GET_TAGS);
 
@@ -58,7 +64,7 @@ export const SelectTag: FC<SelectTagProps> = ({ setAddedTags, addedTags }) => {
       <Box maxW="md" borderWidth="1px" borderRadius="lg">
         <Wrap>
           {addedTags &&
-            addedTags.map((item: TSFixMe, index: number) => {
+            addedTags.map((item: Tag, index: number) => {
               return (
                 <WrapItem
                   onClick={() => onClose(item.tag, item.pktag)}
@@ -87,7 +93,7 @@ export const SelectTag: FC<SelectTagProps> = ({ setAddedTags, addedTags }) => {
           <Box maxW="sm" m={2}>
             <Wrap justify="center">
               {tags &&
-                tags.map((item: TSFixMe, index: number) => {
+                tags.map((item: Tag, index: number) => {
                   return (
                     <WrapItem
                       onClick={() => onAdd(item.tag, item.pktag)}

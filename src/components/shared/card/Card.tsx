@@ -33,7 +33,6 @@ import {
 import { FIND_ITINERARIES_FOR_USER } from '../../../graphql/queries/itineraryQuery';
 import { useForm } from 'react-hook-form';
 import { useCookies } from 'react-cookie';
-import { TSFixMe } from '../../../types/global';
 
 export const Card: FC<CardDataProps> = ({ experience }) => {
   const {
@@ -188,7 +187,7 @@ export const Card: FC<CardDataProps> = ({ experience }) => {
                   <Table>
                     <Tbody>
                       {userItineraries['findUser']['itineraries'].map(
-                        (item: TSFixMe) => {
+                        (item: { pkitinerary: number; title: string }) => {
                           return (
                             <Tr
                               key={item.pkitinerary}

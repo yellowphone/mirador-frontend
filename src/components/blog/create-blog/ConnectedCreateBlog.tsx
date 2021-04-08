@@ -6,7 +6,7 @@ import { CreateBlog } from './CreateBlog';
 import { Paths } from '../../../utils/paths';
 import { Loader } from '@googlemaps/js-api-loader';
 import { BlogExperienceCard } from '../blog-experience-card/BlogExperienceCard';
-import { SimpleGrid, Center, Text, Image } from '@chakra-ui/react';
+import { Center, Text, Image } from '@chakra-ui/react';
 import { useCookies } from 'react-cookie';
 import { NoLogin } from '../../shared/no-login/NoLogin';
 import {
@@ -14,12 +14,11 @@ import {
   INSERT_ELEMENT_INTO_BLOG,
 } from '../../../graphql/mutations/mongodbMutation';
 import { ElementDataProps } from '../Blog.types';
-import { TSFixMe } from '../../../types/global';
 import { mongodbClient } from '../../../graphql/mongodbClient';
 import { Tag } from '../../shared/media/Tags/Tag.types';
 
-export const ConnectedCreateBlog = () => {
-  const [cookie, setCookie] = useCookies(['user']);
+export const ConnectedCreateBlog = (): React.ReactElement => {
+  const [cookie] = useCookies(['user']);
 
   const [createCoords, setCreateCoords] = useState({ lat: 0, lng: 0 });
 
@@ -27,21 +26,18 @@ export const ConnectedCreateBlog = () => {
 
   const [addedTags, setAddedTags] = useState<Tag[]>([]);
 
-  const [createBlog, { data }] = useMutation(CREATE_BLOG);
+  const [createBlog] = useMutation(CREATE_BLOG);
 
-  const [createMongoBlog, { data: mongoData }] = useMutation(
-    CREATE_MONGODB_BLOG,
-    {
-      client: mongodbClient,
-    }
-  );
+  const [createMongoBlog] = useMutation(CREATE_MONGODB_BLOG, {
+    client: mongodbClient,
+  });
 
   const [insertElement] = useMutation(INSERT_ELEMENT_INTO_BLOG, {
     client: mongodbClient,
   });
 
-  const [elements, setElements] = useState<TSFixMe[]>([]);
-
+  const [elements, setElements] = useState<ElementDataProps[]>([]);
+  
   const history = useHistory();
 
   useEffect(() => {
@@ -49,7 +45,7 @@ export const ConnectedCreateBlog = () => {
       console.log(data);
       setMongoid(data.data['createBlog']);
     });
-  }, []);
+  }, [createMongoBlog]);
 
   const loader = new Loader({
     apiKey: `${process.env.MAPS_API_KEY}`,
