@@ -34,7 +34,7 @@ export const Map: FC<IMapDataProps> = ({
       lat: coords['lat'],
       lng: coords['lng'],
     },
-    zoom: 10,
+    zoom: 14,
     mapId: 'f80062b618e0b095',
     options: {
       mapTypeControl: false,
