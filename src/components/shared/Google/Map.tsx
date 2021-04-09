@@ -4,19 +4,26 @@ import { IExperience, ICoordinates } from '../../experience/Experience.types';
 import { Loader } from '@googlemaps/js-api-loader';
 import { useHistory } from 'react-router-dom';
 import { Paths } from '../../../utils/paths';
+import styled from 'styled-components';
+import {
+  AUTOCOMPLETE_INPUT_HEIGHT,
+  HEADER_HEIGHT,
+} from '../../../utils/styles/constants';
 
 interface IMapDataProps {
-  width: number;
-  height: number;
   loader: Loader;
   coords: ICoordinates;
-  experiences: Array<IExperience>;
+  experiences: IExperience[];
   infoWindow: boolean;
 }
 
+const StyledMap = styled.div`
+  // subtract height of header & autocomplete
+  height: calc(100vh - ${HEADER_HEIGHT + AUTOCOMPLETE_INPUT_HEIGHT}px);
+  width: 100%;
+`;
+
 export const Map: FC<IMapDataProps> = ({
-  height,
-  width,
   loader,
   coords,
   experiences,
@@ -103,5 +110,5 @@ export const Map: FC<IMapDataProps> = ({
       console.log(e);
     });
 
-  return <div style={{ height, width }} id="map" />;
+  return <StyledMap id="map" />;
 };

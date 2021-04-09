@@ -8,23 +8,32 @@ import {
   AccordionItem,
   AccordionButton,
   AccordionPanel,
-  Heading,
   Center,
   Input,
+  FormLabel,
+  Heading,
   Text,
 } from '@chakra-ui/react';
 import { useMutation } from '@apollo/client';
 import { CREATE_ITINERARY } from '../../../graphql/mutations/itineraryMutation';
 import { Paths } from '../../../utils/paths';
-import { ItineraryBuilderProps } from './CreateItinerary.types';
 import { useCookies } from 'react-cookie';
 // @TODO: Geo! Fix these types.
 import { TSFixMe } from '../../../types/global';
+import { useHistory } from 'react-router-dom';
+import styled from 'styled-components';
+import { spacer16 } from '../../../utils/styles/constants';
 
-export const ItineraryBuilder: FC<ItineraryBuilderProps> = ({
-  title,
-  history,
-}) => {
+const ItineraryBuilderWrapper = styled.article`
+  margin: ${spacer16};
+`;
+
+const InputWrapper = styled.div`
+  margin-bottom: ${spacer16};
+`;
+
+export const ItineraryBuilder: FC = () => {
+  const history = useHistory();
   const [cookie] = useCookies(['user']);
 
   const [obj, setObj] = useState<TSFixMe[]>([]);
@@ -47,8 +56,8 @@ export const ItineraryBuilder: FC<ItineraryBuilderProps> = ({
 
   const onItineraryCreate = (input: TSFixMe) => {
     if (input['start'] <= input['end']) {
-      const start = new Date(input['start']),
-        end = new Date(input['end']);
+      const start = new Date(input['start']);
+      const end = new Date(input['end']);
       start.setDate(start.getDate() + 1);
       end.setDate(end.getDate() + 1);
       for (start; start <= end; start.setDate(start.getDate() + 1)) {
@@ -70,7 +79,7 @@ export const ItineraryBuilder: FC<ItineraryBuilderProps> = ({
   const onSubmit = () => {
     createItinerary({
       variables: {
-        title: title,
+        title: 'New Itinerary',
         summary: '',
         content: {
           content: obj,
@@ -84,20 +93,28 @@ export const ItineraryBuilder: FC<ItineraryBuilderProps> = ({
     });
   };
 
-  if (obj.length == 0) {
+  if (obj.length === 0) {
     return (
-      <>
-        <Center>
-          <form onSubmit={handleSubmit(onItineraryCreate)}>
-            <Center>
-              <Text>Please select your trip start and end date</Text>
-            </Center>
-            <Input type="date" name="start" ref={register} />
-            <Input type="date" name="end" ref={register} />
-            <Button type="submit">Submit</Button>
-          </form>
-        </Center>
-      </>
+      <ItineraryBuilderWrapper>
+        <Heading as="h1" size="lg" marginBottom={2}>
+          Create a new itinerary
+        </Heading>
+        <Text fontSize="sm" marginBottom={4}>
+          Here are some details describing what an itinerary is! Lorem ipsum
+          dolor
+        </Text>
+        <form onSubmit={handleSubmit(onItineraryCreate)}>
+          <InputWrapper>
+            <FormLabel htmlFor="start-date">Trip start date</FormLabel>
+            <Input id="start-date" type="date" name="start" ref={register} />
+          </InputWrapper>
+          <InputWrapper>
+            <FormLabel htmlFor="end-date">Trip end date</FormLabel>
+            <Input id="end-date" type="date" name="end" ref={register} />
+          </InputWrapper>
+          <Button type="submit">Submit</Button>
+        </form>
+      </ItineraryBuilderWrapper>
     );
   } else {
     return (
