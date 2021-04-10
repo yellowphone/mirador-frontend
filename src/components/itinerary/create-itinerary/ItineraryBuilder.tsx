@@ -13,6 +13,8 @@ import {
   TabPanel,
   Container,
   Box,
+  HStack,
+  Heading,
 } from '@chakra-ui/react';
 import { useMutation } from '@apollo/client';
 import { CREATE_ITINERARY } from '../../../graphql/mutations/itineraryMutation';
@@ -94,15 +96,26 @@ export const ItineraryBuilder: FC<ItineraryBuilderProps> = ({
       console.log(element);
       switch (element['type']) {
         case 'experience':
-          /**
-           * Data being passed in for experience is
-           * - pkexperience
-           * - title
-           * - imgUrl (image link)
-           * - imgAlt (alt for image)
-           */
-
-          return <h1>pkexperience: {element['content']['pkexperience']}</h1>;
+          return (
+            <>
+              <Box maxW="sm" p="6" borderWidth="1px" borderRadius="lg">
+                <HStack spacing="7px">
+                  <Image
+                    objectFit="cover"
+                    height="150px"
+                    width="50%"
+                    src={element['content']['imgUrl']}
+                  />
+                  <Box>
+                    <Heading>{element['content']['title']}</Heading>
+                    <Text>
+                      pkexperience: {element['content']['pkexperience']}
+                    </Text>
+                  </Box>
+                </HStack>
+              </Box>
+            </>
+          );
       }
     });
   };
