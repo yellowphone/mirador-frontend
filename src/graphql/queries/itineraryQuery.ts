@@ -22,11 +22,6 @@ export const FIND_ITINERARY_BY_ID = gql`
       users {
         pkuser
       }
-      itinerary_experiences {
-        experiences {
-          pkexperience
-        }
-      }
     }
   }
 `;
