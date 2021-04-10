@@ -11,6 +11,8 @@ import {
   Tab,
   TabPanels,
   TabPanel,
+  Container,
+  Box,
 } from '@chakra-ui/react';
 import { useMutation } from '@apollo/client';
 import { CREATE_ITINERARY } from '../../../graphql/mutations/itineraryMutation';
@@ -168,14 +170,19 @@ export const ItineraryBuilder: FC<ItineraryBuilderProps> = ({
             {Object.keys(elements).map((key, index) => {
               return (
                 <TabPanel p={8} key={index}>
-                  <div
-                    onDragOver={e => handleDragOver(e)}
-                    onDrop={e => handleDragDrop(e, key)}
-                  >
-                    {/* need to allow div to allow dragged-in content */}
-                    <h1>hello</h1>
-                    {renderElements(key)}
-                  </div>
+                  <Box w="50%">
+                    <div
+                      onDragOver={e => handleDragOver(e)}
+                      onDrop={e => handleDragDrop(e, key)}
+                      style={{
+                        height: '75%',
+                        width: '50%',
+                        position: 'absolute',
+                      }}
+                    >
+                      {renderElements(key)}
+                    </div>
+                  </Box>
                 </TabPanel>
               );
             })}
