@@ -17,3 +17,8 @@ export interface ExperienceContentDataProps {
   imgUrl: string;
   imgAlt: string;
 }
+
+export interface ElementProps {
+  type: string;
+  content: ExperienceContentDataProps;
+}
