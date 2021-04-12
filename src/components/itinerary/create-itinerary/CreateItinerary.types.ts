@@ -22,3 +22,7 @@ export interface ElementProps {
   type: string;
   content: ExperienceContentDataProps;
 }
+
+export interface ManyElementDataProps {
+  [date: string]: ElementProps[];
+}

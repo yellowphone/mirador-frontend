@@ -1,5 +1,8 @@
+import { ManyElementDataProps } from '../create-itinerary/CreateItinerary.types';
+
 export interface SingleItineraryProps {
   data: FindItineraryByIdObject;
+  elements: ManyElementDataProps;
 }
 
 export interface FindItineraryByIdObject {

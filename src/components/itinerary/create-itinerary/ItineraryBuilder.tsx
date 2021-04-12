@@ -23,10 +23,9 @@ import {
   ElementProps,
   ExperienceContentDataProps,
   ItineraryBuilderProps,
+  ManyElementDataProps,
 } from './CreateItinerary.types';
 import { useCookies } from 'react-cookie';
-// @TODO: Geo! Fix these types.
-import { TSFixMe } from '../../../types/global';
 import {
   CREATE_MONGODB_ITINERARY,
   INSERT_ELEMENT_INTO_ITINERARY,
@@ -39,10 +38,7 @@ export const ItineraryBuilder: FC<ItineraryBuilderProps> = ({
 }) => {
   const [cookie] = useCookies(['user']);
 
-  // this is confusing for me, elements will always
-  // differ in type since it is a date range object
-  // SO how would I create a type for a dynamic object?
-  const [elements, setElements] = useState<TSFixMe>([]);
+  const [elements, setElements] = useState<ManyElementDataProps>({});
 
   const [mongoid, setMongoid] = useState('');
 
@@ -154,7 +150,7 @@ export const ItineraryBuilder: FC<ItineraryBuilderProps> = ({
   };
 
   // Render
-  if (elements.length == 0) {
+  if (Object.keys(elements).length == 0) {
     return (
       <form onSubmit={handleSubmit(onItineraryCreate)}>
         <Center>
