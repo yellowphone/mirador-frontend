@@ -26,6 +26,7 @@ export const SingleItinerary: FC<SingleItineraryProps> = ({
   // render elements
   const renderElements = (date: string) => {
     return elements[date].map((element: ElementProps, index: number) => {
+      console.log(element);
       switch (element['type']) {
         case 'experience':
           return (
@@ -46,6 +47,13 @@ export const SingleItinerary: FC<SingleItineraryProps> = ({
                   </Box>
                 </HStack>
               </Box>
+            </>
+          );
+
+        case 'text':
+          return (
+            <>
+              <Text>{element['content']}</Text>
             </>
           );
       }

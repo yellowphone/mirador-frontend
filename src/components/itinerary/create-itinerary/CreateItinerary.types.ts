@@ -20,7 +20,7 @@ export interface ExperienceContentDataProps {
 
 export interface ElementProps {
   type: string;
-  content: ExperienceContentDataProps;
+  content: ExperienceContentDataProps & string;
 }
 
 export interface ManyElementDataProps {
