@@ -1,4 +1,4 @@
-import React, { useState, FC } from 'react';
+import React, { useState, FC, FormEvent, ChangeEvent } from 'react';
 import { useForm } from 'react-hook-form';
 import {
   Button,
@@ -11,6 +11,11 @@ import {
   Tab,
   TabPanels,
   TabPanel,
+  Container,
+  Box,
+  HStack,
+  Heading,
+  Textarea,
 } from '@chakra-ui/react';
 import { useMutation } from '@apollo/client';
 import { CREATE_ITINERARY } from '../../../graphql/mutations/itineraryMutation';
@@ -19,15 +24,15 @@ import {
   ElementProps,
   ExperienceContentDataProps,
   ItineraryBuilderProps,
+  ManyElementDataProps,
 } from './CreateItinerary.types';
 import { useCookies } from 'react-cookie';
-// @TODO: Geo! Fix these types.
-import { TSFixMe } from '../../../types/global';
 import {
   CREATE_MONGODB_ITINERARY,
   INSERT_ELEMENT_INTO_ITINERARY,
 } from '../../../graphql/mutations/mongodbMutation';
 import { mongodbClient } from '../../../graphql/mongodbClient';
+import { AddIcon } from '@chakra-ui/icons';
 
 export const ItineraryBuilder: FC<ItineraryBuilderProps> = ({
   title,
@@ -35,12 +40,13 @@ export const ItineraryBuilder: FC<ItineraryBuilderProps> = ({
 }) => {
   const [cookie] = useCookies(['user']);
 
-  // this is confusing for me, elements will always
-  // differ in type since it is a date range object
-  // SO how would I create a type for a dynamic object?
-  const [elements, setElements] = useState<TSFixMe>([]);
+  const [elements, setElements] = useState<ManyElementDataProps>({});
 
   const [mongoid, setMongoid] = useState('');
+
+  const [text, setText] = useState('');
+
+  const [openText, setOpenText] = useState(false);
 
   const [createItinerary] = useMutation(CREATE_ITINERARY);
 
@@ -67,7 +73,7 @@ export const ItineraryBuilder: FC<ItineraryBuilderProps> = ({
   // Add helper for mongodb and json object
   const addElement = (
     type: string,
-    content: ExperienceContentDataProps,
+    content: ExperienceContentDataProps & string,
     date: string
   ) => {
     const newElem = { ...elements };
@@ -92,15 +98,33 @@ export const ItineraryBuilder: FC<ItineraryBuilderProps> = ({
       console.log(element);
       switch (element['type']) {
         case 'experience':
-          /**
-           * Data being passed in for experience is
-           * - pkexperience
-           * - title
-           * - imgUrl (image link)
-           * - imgAlt (alt for image)
-           */
+          return (
+            <>
+              <Box maxW="sm" p="6" borderWidth="1px" borderRadius="lg">
+                <HStack spacing="7px">
+                  <Image
+                    objectFit="cover"
+                    height="150px"
+                    width="50%"
+                    src={element['content']['imgUrl']}
+                  />
+                  <Box>
+                    <Heading>{element['content']['title']}</Heading>
+                    <Text>
+                      pkexperience: {element['content']['pkexperience']}
+                    </Text>
+                  </Box>
+                </HStack>
+              </Box>
+            </>
+          );
 
-          return <h1>pkexperience: {element['content']['pkexperience']}</h1>;
+        case 'text':
+          return (
+            <>
+              <Text>{element['content']}</Text>
+            </>
+          );
       }
     });
   };
@@ -138,8 +162,14 @@ export const ItineraryBuilder: FC<ItineraryBuilderProps> = ({
     });
   };
 
+  const handleInputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    console.log(e);
+    const inputValue = e.target.value;
+    setText(inputValue);
+  };
+
   // Render
-  if (elements.length == 0) {
+  if (Object.keys(elements).length == 0) {
     return (
       <form onSubmit={handleSubmit(onItineraryCreate)}>
         <Center>
@@ -167,16 +197,54 @@ export const ItineraryBuilder: FC<ItineraryBuilderProps> = ({
           <TabPanels>
             {Object.keys(elements).map((key, index) => {
               return (
-                <TabPanel p={8} key={index}>
-                  <div
-                    onDragOver={e => handleDragOver(e)}
-                    onDrop={e => handleDragDrop(e, key)}
-                  >
-                    {/* need to allow div to allow dragged-in content */}
-                    <h1>hello</h1>
-                    {renderElements(key)}
-                  </div>
-                </TabPanel>
+                <>
+                  <TabPanel p={4} key={index}>
+                    <Box w="50%">
+                      <div
+                        draggable
+                        onDragOver={e => handleDragOver(e)}
+                        onDrop={e => handleDragDrop(e, key)}
+                        style={{
+                          height: '75%',
+                          width: '50%',
+                          position: 'absolute',
+                        }}
+                      >
+                        {renderElements(key)}
+                      </div>
+                      <div>
+                        <Button
+                          onClick={() => {
+                            setOpenText(prev => !prev);
+                          }}
+                        >
+                          Add Notes
+                          <AddIcon p={2} />
+                        </Button>
+
+                        {openText && (
+                          <>
+                            <Textarea
+                              value={text}
+                              onChange={handleInputChange}
+                              placeholder="Here is a sample placeholder"
+                              size="sm"
+                            />
+                            <Button
+                              onClick={() => {
+                                addElement('text', text, key);
+                                setOpenText(false);
+                                setText(text);
+                              }}
+                            >
+                              Add to itinerary
+                            </Button>
+                          </>
+                        )}
+                      </div>
+                    </Box>
+                  </TabPanel>
+                </>
               );
             })}
           </TabPanels>

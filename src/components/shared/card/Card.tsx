@@ -33,6 +33,8 @@ import {
 import { FIND_ITINERARIES_FOR_USER } from '../../../graphql/queries/itineraryQuery';
 import { useForm } from 'react-hook-form';
 import { useCookies } from 'react-cookie';
+import { CREATE_MONGODB_ITINERARY } from '../../../graphql/mutations/mongodbMutation';
+import { mongodbClient } from '../../../graphql/mongodbClient';
 
 export const Card: FC<CardDataProps> = ({ experience }) => {
   const {
@@ -64,6 +66,10 @@ export const Card: FC<CardDataProps> = ({ experience }) => {
 
   const [createItinerary] = useMutation(CREATE_ITINERARY);
 
+  const [createMongoItinerary] = useMutation(CREATE_MONGODB_ITINERARY, {
+    client: mongodbClient,
+  });
+
   const [
     getUserItineraries,
     {
@@ -80,20 +86,34 @@ export const Card: FC<CardDataProps> = ({ experience }) => {
 
   const onCreateItinerary = (input: { title: string }) => {
     setLoadForCreateItinerary(true);
-    createItinerary({
+
+    // creating mongo itinerary instance
+    createMongoItinerary({
       variables: {
-        title: input['title'],
-        summary: '',
-        content: {
-          content: [],
-        },
-        pkuser: cookie['user']['pkuser'],
+        begining: '',
+        end: '',
       },
-    }).then(() => {
-      setLoadForCreateItinerary(false);
-      userItinerariesRefetch && userItinerariesRefetch();
-      setShowCreateItinerary(false);
-    });
+    })
+      .then(data => {
+        // creating postgresql itinerary instance with mongo id
+        createItinerary({
+          variables: {
+            title: input['title'],
+            summary: '',
+            mongoid: data.data.createItinerary._id,
+            pkuser: cookie['user']['pkuser'],
+          },
+        }).then(() => {
+          setLoadForCreateItinerary(false);
+          userItinerariesRefetch && userItinerariesRefetch();
+          setShowCreateItinerary(false);
+        });
+      })
+      .catch(error => {
+        window.alert('Oh no! There was an error, check the console');
+        console.log(error);
+        return;
+      });
   };
 
   return (
