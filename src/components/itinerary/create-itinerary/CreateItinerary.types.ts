@@ -1,10 +1,4 @@
 import { History } from 'history';
-export interface CreateItineraryDataProps {
-  history: History;
-}
-
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface ConnectedCreateItineraryDataProps {}
 
 export interface ItineraryBuilderProps {
   title: string;
@@ -20,7 +14,7 @@ export interface ExperienceContentDataProps {
 
 export interface ElementProps {
   type: string;
-  content: ExperienceContentDataProps & string;
+  content: ExperienceContentDataProps | string;
 }
 
 export interface ManyElementDataProps {
