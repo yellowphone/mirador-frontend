@@ -5,9 +5,16 @@ import { Search } from '../../shared/Google/Search';
 import { Map } from '../../shared/Google/Map';
 import { IExperience } from '../../experience/Experience.types';
 import { useQuery } from '@apollo/react-hooks';
+import styled from 'styled-components';
+
+const ItinerarySearcherContainer = styled.article`
+  display: flex;
+  flex-direction: column;
+`;
 
 export const ItinerarySearcher = (): React.ReactElement => {
   const [coords, setCoords] = useState({ lat: 37.235961, lng: -80.607775 });
+  const { lat, lng } = coords;
 
   const loader = new Loader({
     apiKey: `${process.env.MAPS_API_KEY}`,
@@ -18,7 +25,7 @@ export const ItinerarySearcher = (): React.ReactElement => {
   const { data: experienceItems, loading, error } = useQuery(
     FIND_EXPERIENCE_BY_COORDINATES,
     {
-      variables: { lat: coords['lat'], lng: coords['lng'] },
+      variables: { lat, lng },
     }
   );
 
@@ -49,22 +56,14 @@ export const ItinerarySearcher = (): React.ReactElement => {
   );
 
   return (
-    <>
-      <Search
-        setCoords={setCoords}
-        loader={loader}
-        refetch={() => {
-          return false;
-        }}
-      />
+    <ItinerarySearcherContainer>
+      <Search setCoords={setCoords} loader={loader} />
       <Map
-        width={0.5 * screen.width}
-        height={screen.height - 270}
         loader={loader}
         coords={coords}
         experiences={experienceList}
         infoWindow={true}
       />
-    </>
+    </ItinerarySearcherContainer>
   );
 };

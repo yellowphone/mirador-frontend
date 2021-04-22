@@ -1,10 +1,16 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React, {
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { Input, Box } from '@chakra-ui/react';
-import debounce from 'lodash/debounce';
 import { Loader } from '@googlemaps/js-api-loader';
 import './Search.css';
 import { LatLng } from '../../../types/global';
 import { ApolloQueryResult } from '@apollo/client';
+import { useDebounce } from 'react-use';
 
 interface ISearchDataProps {
   setCoords: Dispatch<SetStateAction<LatLng>>;
@@ -17,36 +23,57 @@ export const Search = ({
   refetch,
   loader,
 }: ISearchDataProps): React.ReactElement => {
-  const onChange = <P extends keyof Search>(props: P, value: Search[P]) => {
-    loader.load().then(() => {
-      const autocomplete = new google.maps.places.Autocomplete(value);
+  const autocompleteRef = useRef<HTMLInputElement>(null);
+  const [location, setLocation] = useState('');
+  const [, setDebouncedLocation] = useState('');
+  const [autocomplete, setAutocomplete] = useState<
+    google.maps.places.Autocomplete | undefined
+  >();
+
+  useEffect(() => {
+    if (autocompleteRef.current) {
+      loader.load().then(() => {
+        setAutocomplete(
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          new google.maps.places.Autocomplete(autocompleteRef.current!)
+        );
+      });
+    }
+  }, [loader]);
+
+  useEffect(() => {
+    if (autocomplete) {
       autocomplete.setFields([
         'address_components',
         'geometry',
         'icon',
         'name',
       ]);
+
       autocomplete.addListener('place_changed', () => {
         const place = autocomplete.getPlace();
+
+        // @TODO: this for some reason refreshes the whole component which is kind of meh. we'd like it to persist.
         setCoords({
           lat: place.geometry?.location.lat() || 0,
           lng: place.geometry?.location.lng() || 0,
         });
-        // Refetch potentially new data anytime a search occurs
-        if (refetch) {
-          refetch();
-        }
+        if (refetch) refetch();
       });
-    });
+    }
+  }, [autocomplete, refetch, setCoords]);
+
+  const onChange = (event: { target: HTMLInputElement }) => {
+    setLocation(event.target.value);
   };
 
-  const debounceOnChange = debounce(searchQuery => {
-    onChange('query', searchQuery);
-  }, 500);
-
-  type Search = {
-    query: HTMLInputElement;
-  };
+  useDebounce(
+    () => {
+      setDebouncedLocation(location);
+    },
+    500,
+    [location]
+  );
 
   return (
     <div>
@@ -55,10 +82,12 @@ export const Search = ({
           <Box maxW="100%">
             <Input
               placeholder={'Enter a location'}
-              onChange={e => {
-                debounceOnChange(e.target);
+              onChange={event => {
+                onChange(event);
               }}
-            ></Input>
+              ref={autocompleteRef}
+              value={location}
+            />
           </Box>
         </div>
       </div>
