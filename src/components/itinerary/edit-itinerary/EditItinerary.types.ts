@@ -1,8 +1,14 @@
 import { History } from 'history';
+import { TSFixMe } from '../../../types/global';
 
 export interface ItineraryEditorProps {
-  title: string;
-  history: History;
+  data: TSFixMe;
+  //   title: string;
+  //   history: History;
+}
+
+export interface EditItineraryDataProps {
+  data: TSFixMe;
 }
 
 export interface ExperienceContentDataProps {

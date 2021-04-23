@@ -1,18 +1,60 @@
-import React, { ReactElement, useState } from 'react';
-import { useMutation } from '@apollo/client';
+import React, { FC, ReactElement, useEffect, useState } from 'react';
+import { useLazyQuery, useMutation } from '@apollo/client';
 import { mongodbClient } from '../../../graphql/mongodbClient';
 import { EmptyItinerary } from './EmptyItinerary';
-import { ActiveItinerary } from '../ActiveItinerary';
-import { ManyElementDataProps } from './EditItinerary.types';
+import {
+  ItineraryEditorProps,
+  ManyElementDataProps,
+} from './EditItinerary.types';
 import { CREATE_MONGODB_ITINERARY } from '../../../graphql/mutations/mongodbMutation';
+import { FIND_MONGODB_ITINERARY } from '../../../graphql/queries/mongodbQuery';
+import { UPDATE_ITINERARY } from '../../../graphql/mutations/itineraryMutation';
+import { ActiveEditItinerary } from './ActiveEditItinerary';
 
-export const ItineraryEditor = (): ReactElement => {
+export const ItineraryEditor: FC<ItineraryEditorProps> = ({ data }) => {
   const [mongoid, setMongoid] = useState('');
   const [elements, setElements] = useState<ManyElementDataProps>({});
 
   const [createMongoItinerary] = useMutation(CREATE_MONGODB_ITINERARY, {
     client: mongodbClient,
   });
+
+  const [updateItinerary] = useMutation(UPDATE_ITINERARY);
+
+  /**
+   *
+   * GETTING EXTENSIVE ISSUE WHEN MONGO EXISTS
+   *
+   * but it works for mongo when no mongo found
+   *
+   *
+   */
+
+  const [findMongoItinerary] = useLazyQuery(FIND_MONGODB_ITINERARY, {
+    client: mongodbClient,
+    onCompleted: incomingData => {
+      const tempData: ManyElementDataProps = {};
+      Object.keys(incomingData.findItinerary).map((key, index) => {
+        if (key != '_id') {
+          tempData[key] = incomingData.findItinerary[key];
+        }
+      });
+      setElements(tempData);
+    },
+    onError: err => console.error(err),
+  });
+
+  useEffect(() => {
+    console.log(data);
+    if (data['findItineraryByPublicIdentifier']['mongoid']) {
+      setMongoid(data.findItineraryByPublicIdentifier.mongoid);
+      findMongoItinerary({
+        variables: {
+          id: data['findItineraryByPublicIdentifier']['mongoid'],
+        },
+      });
+    }
+  }, []);
 
   // Itinerary creates
   const onItineraryCreate = (input: { start: string; end: string }) => {
@@ -22,10 +64,19 @@ export const ItineraryEditor = (): ReactElement => {
           beginning: input['start'],
           end: input['end'],
         },
-      }).then(data => {
-        setMongoid(data.data.createItinerary._id);
-        delete data.data.createItinerary._id;
-        setElements(data.data.createItinerary);
+      }).then(returnData => {
+        updateItinerary({
+          variables: {
+            public_identifier:
+              data.findItineraryByPublicIdentifier.public_identifier,
+            title: data.findItineraryByPublicIdentifier.title,
+            mongoid: returnData.data.createItinerary._id,
+          },
+        });
+
+        setMongoid(returnData.data.createItinerary._id);
+        delete returnData.data.createItinerary._id;
+        setElements(returnData.data.createItinerary);
       });
     } else {
       alert('Date range is not valid! Try again!');
@@ -36,7 +87,7 @@ export const ItineraryEditor = (): ReactElement => {
     return <EmptyItinerary onItineraryCreate={onItineraryCreate} />;
   } else {
     return (
-      <ActiveItinerary
+      <ActiveEditItinerary
         elements={elements}
         setElements={setElements}
         mongoId={mongoid}
