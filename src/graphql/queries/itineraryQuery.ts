@@ -46,6 +46,7 @@ export const FIND_ITINERARY_BY_PUBLIC_IDENTIFIER = gql`
       summary
       mongoid
       created_on
+      public_identifier
       user_itineraries {
         users {
           username

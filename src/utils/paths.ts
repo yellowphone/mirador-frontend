@@ -10,4 +10,5 @@ export enum Paths {
   Itinerary = '/itinerary',
   SingleItinerary = '/itinerary',
   CreateItinerary = '/create/itinerary',
+  EditItinerary = '/edit/itinerary',
 }

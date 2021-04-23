@@ -87,27 +87,19 @@ export const Card: FC<CardDataProps> = ({ experience }) => {
   const onCreateItinerary = (input: { title: string }) => {
     setLoadForCreateItinerary(true);
 
-    // creating mongo itinerary instance
-    createMongoItinerary({
+    // creating postgresql itinerary instance with empty mongo id
+    createItinerary({
       variables: {
-        begining: '',
-        end: '',
+        title: input['title'],
+        summary: '',
+        mongoid: '',
+        pkuser: cookie['user']['pkuser'],
       },
     })
-      .then(data => {
-        // creating postgresql itinerary instance with mongo id
-        createItinerary({
-          variables: {
-            title: input['title'],
-            summary: '',
-            mongoid: data.data.createItinerary._id,
-            pkuser: cookie['user']['pkuser'],
-          },
-        }).then(() => {
-          setLoadForCreateItinerary(false);
-          userItinerariesRefetch && userItinerariesRefetch();
-          setShowCreateItinerary(false);
-        });
+      .then(() => {
+        setLoadForCreateItinerary(false);
+        userItinerariesRefetch && userItinerariesRefetch();
+        setShowCreateItinerary(false);
       })
       .catch(error => {
         window.alert('Oh no! There was an error, check the console');
