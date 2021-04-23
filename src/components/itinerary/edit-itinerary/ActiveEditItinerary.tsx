@@ -105,8 +105,11 @@ export const ActiveEditItinerary = ({
     type: string,
     content: ExperienceContentDataProps | string
   ) => {
+    // making deep copies to avoid object extensible issue
     const newElem = { ...elements };
-    newElem[selectedDay].push({ type: type, content: content });
+    const newInnerElem = [...newElem[selectedDay]];
+    newInnerElem.push({ type: type, content: content });
+    newElem[selectedDay] = newInnerElem;
     setElements(newElem);
 
     insertElement({
