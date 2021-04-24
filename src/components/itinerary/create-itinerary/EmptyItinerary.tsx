@@ -35,7 +35,7 @@ export const EmptyItinerary = ({
           <FormLabel htmlFor="end-date">Trip end date</FormLabel>
           <Input id="end-date" type="date" name="end" ref={register} />
         </InputWrapper>
-        <Button type="submit">Submit</Button>
+        <Button type="submit">Start new itinerary</Button>
       </form>
     </ItineraryBuilderWrapper>
   );

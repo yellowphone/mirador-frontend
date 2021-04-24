@@ -24,6 +24,7 @@ import styled from 'styled-components';
 import { mongodbClient } from '../../graphql/mongodbClient';
 import { CREATE_ITINERARY } from '../../graphql/mutations/itineraryMutation';
 import { INSERT_ELEMENT_INTO_ITINERARY } from '../../graphql/mutations/mongodbMutation';
+import { LOCAL_STORAGE } from '../../utils/constants';
 import { Paths } from '../../utils/paths';
 import { spacer16, spacer8 } from '../../utils/styles/constants';
 import {
@@ -111,9 +112,9 @@ export const ActiveItinerary = ({
         pkuser: cookie['user']['pkuser'],
       },
     }).then(data => {
-      console.log(data);
       const path = `${Paths.SingleItinerary}/${data.data['createItinerary']['public_identifier']}`;
       history.push(path);
+      localStorage.removeItem(LOCAL_STORAGE.ITINERARY_RANGE);
     });
   };
 
@@ -196,9 +197,28 @@ export const ActiveItinerary = ({
     <ActiveItineraryWrapper>
       <Flex alignItems="center" justifyContent="space-between" margin={2}>
         <Heading margin={2}>Your trip</Heading>
-        <Button type="submit" onClick={handleSubmit(onSubmit)}>
-          Create itinerary
-        </Button>
+        <Flex>
+          <Button
+            onClick={() => {
+              if (
+                confirm('This will delete the current itinerary. Are you sure?')
+              ) {
+                localStorage.removeItem(LOCAL_STORAGE.ITINERARY_RANGE);
+                setElements({});
+              }
+            }}
+            marginRight={2}
+          >
+            Cancel
+          </Button>
+          <Button
+            type="submit"
+            onClick={handleSubmit(onSubmit)}
+            colorScheme="blue"
+          >
+            Create itinerary
+          </Button>
+        </Flex>
       </Flex>
       <ItineraryInfoWrapper>
         <DayContainer>
@@ -215,7 +235,9 @@ export const ActiveItinerary = ({
           })}
         </DayContainer>
         <ItineraryDetails>
-          <Text fontSize="xs">{title}</Text>
+          <Text fontSize="xs" fontWeight="bold">
+            {title}
+          </Text>
           <Text fontSize="xs">{`${elementKeys[0]} - ${
             elementKeys[elementKeys.length - 1]
           }`}</Text>

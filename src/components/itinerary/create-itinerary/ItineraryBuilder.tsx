@@ -1,10 +1,11 @@
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement, useCallback, useEffect, useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { mongodbClient } from '../../../graphql/mongodbClient';
 import { EmptyItinerary } from './EmptyItinerary';
 import { ActiveItinerary } from '../ActiveItinerary';
 import { ManyElementDataProps } from './CreateItinerary.types';
 import { CREATE_MONGODB_ITINERARY } from '../../../graphql/mutations/mongodbMutation';
+import { LOCAL_STORAGE } from '../../../utils/constants';
 
 export const ItineraryBuilder = (): ReactElement => {
   const [mongoid, setMongoid] = useState('');
@@ -13,14 +14,18 @@ export const ItineraryBuilder = (): ReactElement => {
   const [createMongoItinerary] = useMutation(CREATE_MONGODB_ITINERARY, {
     client: mongodbClient,
   });
+  const activeUnsavedItinerary = localStorage.getItem(
+    LOCAL_STORAGE.ITINERARY_RANGE
+  );
 
   // Itinerary creates
   const onItineraryCreate = (input: { start: string; end: string }) => {
-    if (input['start'] <= input['end']) {
+    const { start, end } = input;
+    if (start <= end) {
       createMongoItinerary({
         variables: {
-          beginning: input['start'],
-          end: input['end'],
+          beginning: start,
+          end,
         },
       }).then(data => {
         setMongoid(data.data.createItinerary._id);
@@ -32,15 +37,22 @@ export const ItineraryBuilder = (): ReactElement => {
     }
   };
 
-  if (Object.keys(elements).length === 0) {
-    return <EmptyItinerary onItineraryCreate={onItineraryCreate} />;
-  } else {
-    return (
-      <ActiveItinerary
-        elements={elements}
-        setElements={setElements}
-        mongoId={mongoid}
-      />
-    );
-  }
+  useEffect(() => {
+    if (Object.keys(elements).length > 0) {
+      localStorage.setItem(
+        LOCAL_STORAGE.ITINERARY_RANGE,
+        JSON.stringify(elements)
+      );
+    }
+  }, [elements]);
+
+  return Object.keys(elements).length > 0 || activeUnsavedItinerary ? (
+    <ActiveItinerary
+      elements={elements}
+      setElements={setElements}
+      mongoId={mongoid}
+    />
+  ) : (
+    <EmptyItinerary onItineraryCreate={onItineraryCreate} />
+  );
 };
