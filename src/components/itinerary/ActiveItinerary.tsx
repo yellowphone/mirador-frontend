@@ -9,12 +9,21 @@ import {
   Heading,
   Textarea,
   Flex,
+  useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
 } from '@chakra-ui/react';
 import React, {
   ChangeEvent,
   Dispatch,
   ReactElement,
   SetStateAction,
+  useEffect,
   useState,
 } from 'react';
 import { useCookies } from 'react-cookie';
@@ -95,13 +104,20 @@ export const ActiveItinerary = ({
   const { handleSubmit } = useForm();
   const history = useHistory();
   const [createItinerary] = useMutation(CREATE_ITINERARY);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   const [text, setText] = useState('');
-  const [openText, setOpenText] = useState(false);
-  const [selectedDay, setSelectedDay] = useState(Object.keys(elements)[0]);
+  const [selectedDay, setSelectedDay] = useState(elementKeys[0]);
 
   const [insertElement] = useMutation(INSERT_ELEMENT_INTO_ITINERARY, {
     client: mongodbClient,
   });
+
+  useEffect(() => {
+    if (!selectedDay) {
+      setSelectedDay(elementKeys[0]);
+    }
+  }, [elementKeys, selectedDay]);
 
   const onSubmit = () => {
     createItinerary({
@@ -139,43 +155,45 @@ export const ActiveItinerary = ({
   };
 
   const renderElements = () => {
-    return elements[selectedDay].map((element: ElementProps, index: number) => {
-      switch (element['type']) {
-        case 'experience':
-          const elem = element.content as ExperienceContentDataProps;
-          return (
-            <div key={`${elem.pkexperience}-${index}`}>
-              <Box
-                maxW="sm"
-                p="6"
-                borderWidth="1px"
-                borderRadius="lg"
-                marginBottom={2}
-              >
-                <HStack spacing="7px">
-                  <Image
-                    objectFit="cover"
-                    height="150px"
-                    width="50%"
-                    src={elem.imgUrl}
-                  />
-                  <Box>
-                    <Heading>{elem.title}</Heading>
-                    <Text>pkexperience: {elem.pkexperience}</Text>
-                  </Box>
-                </HStack>
-              </Box>
-            </div>
-          );
+    return (elements[selectedDay] || []).map(
+      (element: ElementProps, index: number) => {
+        switch (element['type']) {
+          case 'experience':
+            const elem = element.content as ExperienceContentDataProps;
+            return (
+              <div key={`${elem.pkexperience}-${index}`}>
+                <Box
+                  maxW="sm"
+                  p="6"
+                  borderWidth="1px"
+                  borderRadius="lg"
+                  marginBottom={2}
+                >
+                  <HStack spacing="7px">
+                    <Image
+                      objectFit="cover"
+                      height="150px"
+                      width="50%"
+                      src={elem.imgUrl}
+                    />
+                    <Box>
+                      <Heading>{elem.title}</Heading>
+                      <Text>pkexperience: {elem.pkexperience}</Text>
+                    </Box>
+                  </HStack>
+                </Box>
+              </div>
+            );
 
-        case 'text':
-          return (
-            <div key={`${index}-text`}>
-              <Text>{element.content}</Text>
-            </div>
-          );
+          case 'text':
+            return (
+              <div key={`${index}-text`}>
+                <Text>{element.content}</Text>
+              </div>
+            );
+        }
       }
-    });
+    );
   };
 
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
@@ -188,9 +206,7 @@ export const ActiveItinerary = ({
   };
 
   const handleInputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    console.log(e);
-    const inputValue = e.target.value;
-    setText(inputValue);
+    setText(e.target.value);
   };
 
   return (
@@ -250,33 +266,45 @@ export const ActiveItinerary = ({
         {renderElements()}
       </DragDropContainer>
       <NotesContainer>
-        {openText && (
-          <>
-            <Textarea
-              value={text}
-              onChange={handleInputChange}
-              placeholder="Here is a sample placeholder"
-              size="sm"
-            />
-            <Button
-              onClick={() => {
-                addElement('text', text);
-                setOpenText(false);
-                setText(text);
-              }}
-            >
-              Add to itinerary
-            </Button>
-          </>
-        )}
-        <Button
-          onClick={() => {
-            setOpenText(prev => !prev);
-          }}
-        >
-          Add Notes
-          <AddIcon p={2} color="deepskyblue" />
-        </Button>
+        <Button onClick={onOpen}>Add notes</Button>
+        <Modal isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Add a note</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <Textarea
+                value={text}
+                onChange={handleInputChange}
+                placeholder="Here is a sample placeholder"
+                size="sm"
+              />
+            </ModalBody>
+
+            <ModalFooter>
+              <Button
+                variant="ghost"
+                onClick={() => {
+                  onClose();
+                  setText('');
+                }}
+              >
+                Cancel
+              </Button>
+              <Button
+                colorScheme="blue"
+                mr={3}
+                onClick={() => {
+                  onClose();
+                  addElement('text', text);
+                  setText('');
+                }}
+              >
+                Submit
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
       </NotesContainer>
     </ActiveItineraryWrapper>
   );

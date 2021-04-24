@@ -37,6 +37,14 @@ export const ItineraryBuilder = (): ReactElement => {
     }
   };
 
+  const hasElements = Object.keys(elements).length > 0;
+
+  useEffect(() => {
+    if (activeUnsavedItinerary && !hasElements) {
+      setElements(JSON.parse(activeUnsavedItinerary));
+    }
+  }, [activeUnsavedItinerary, hasElements]);
+
   useEffect(() => {
     if (Object.keys(elements).length > 0) {
       localStorage.setItem(
@@ -46,7 +54,7 @@ export const ItineraryBuilder = (): ReactElement => {
     }
   }, [elements]);
 
-  return Object.keys(elements).length > 0 || activeUnsavedItinerary ? (
+  return hasElements || activeUnsavedItinerary ? (
     <ActiveItinerary
       elements={elements}
       setElements={setElements}
