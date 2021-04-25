@@ -9,6 +9,14 @@ import {
   Heading,
   Textarea,
   Flex,
+  useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
 } from '@chakra-ui/react';
 import React, {
   ChangeEvent,
@@ -93,6 +101,7 @@ export const ActiveEditItinerary = ({
   const history = useHistory();
   const [text, setText] = useState('');
   const [openText, setOpenText] = useState(false);
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedDay, setSelectedDay] = useState(Object.keys(elements)[0]);
 
   const [insertElement] = useMutation(INSERT_ELEMENT_INTO_ITINERARY, {
@@ -212,33 +221,45 @@ export const ActiveEditItinerary = ({
         {renderElements()}
       </DragDropContainer>
       <NotesContainer>
-        {openText && (
-          <>
-            <Textarea
-              value={text}
-              onChange={handleInputChange}
-              placeholder="Here is a sample placeholder"
-              size="sm"
-            />
-            <Button
-              onClick={() => {
-                addElement('text', text);
-                setOpenText(false);
-                setText(text);
-              }}
-            >
-              Add to itinerary
-            </Button>
-          </>
-        )}
-        <Button
-          onClick={() => {
-            setOpenText(prev => !prev);
-          }}
-        >
-          Add Notes
-          <AddIcon p={2} color="deepskyblue" />
-        </Button>
+        <Button onClick={onOpen}>Add notes</Button>
+        <Modal isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Add a note</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <Textarea
+                value={text}
+                onChange={handleInputChange}
+                placeholder="Here is a sample placeholder"
+                size="sm"
+              />
+            </ModalBody>
+
+            <ModalFooter>
+              <Button
+                variant="ghost"
+                onClick={() => {
+                  onClose();
+                  setText('');
+                }}
+              >
+                Cancel
+              </Button>
+              <Button
+                colorScheme="blue"
+                mr={3}
+                onClick={() => {
+                  onClose();
+                  addElement('text', text);
+                  setText('');
+                }}
+              >
+                Submit
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
       </NotesContainer>
     </ActiveItineraryWrapper>
   );

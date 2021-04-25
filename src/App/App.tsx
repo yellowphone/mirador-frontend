@@ -37,7 +37,7 @@ export const App: React.FC = () => {
               <Route exact path={Paths.Blog} component={ConnectedBlog} />
               <Route
                 exact
-                path={Paths.SingleBlog + '/:id'}
+                path={`${Paths.SingleBlog}/:id`}
                 component={ConnectedSingleBlog}
               />
               <Route
@@ -53,7 +53,7 @@ export const App: React.FC = () => {
               />
               <Route
                 exact
-                path={Paths.SingleExperience + '/:id'}
+                path={`${Paths.SingleExperience}/:id`}
                 component={ConnectedSingleExperience}
               />
               <Route
@@ -68,7 +68,7 @@ export const App: React.FC = () => {
               />
               <Route
                 exact
-                path={Paths.SingleItinerary + '/:id'}
+                path={`${Paths.SingleItinerary}/:id`}
                 component={ConnectedSingleItinerary}
               />
               <Route
@@ -78,7 +78,7 @@ export const App: React.FC = () => {
               />
               <Route
                 exact
-                path={Paths.EditItinerary + '/:id'}
+                path={`${Paths.EditItinerary}/:id`}
                 component={ConnectedEditItinerary}
               />
               <Route exact path={Paths.Profile} component={ConnectedProfile} />
