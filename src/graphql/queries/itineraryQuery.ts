@@ -64,6 +64,8 @@ export const FIND_ITINERARY_BY_PUBLIC_IDENTIFIER = gql`
       itinerary_experiences {
         experiences {
           pkexperience
+          title
+          public_identifier
         }
       }
     }
