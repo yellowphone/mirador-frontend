@@ -66,6 +66,16 @@ export const FIND_ITINERARY_BY_PUBLIC_IDENTIFIER = gql`
           pkexperience
           title
           public_identifier
+          experience_images {
+            images {
+              url
+            }
+          }
+          experience_tags {
+            tags {
+              tag
+            }
+          }
         }
       }
     }
