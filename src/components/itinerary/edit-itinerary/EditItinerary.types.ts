@@ -7,6 +7,10 @@ export interface ItineraryEditorProps {
   //   history: History;
 }
 
+export interface SavedExperiencesDataProps {
+  data: TSFixMe;
+}
+
 export interface EditItineraryDataProps {
   data: TSFixMe;
 }

@@ -31,7 +31,7 @@ export const EditItinerary: FC<EditItineraryDataProps> = ({ data }) => {
             <Text>Saved</Text>
           </Box>
           {!checked && <ItinerarySearcher />}
-          {checked && <SavedExperiences />}
+          {checked && <SavedExperiences data={data} />}
         </Box>
 
         <ItineraryEditor data={data} />
