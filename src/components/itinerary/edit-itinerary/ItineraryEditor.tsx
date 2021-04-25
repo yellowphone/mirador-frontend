@@ -21,15 +21,6 @@ export const ItineraryEditor: FC<ItineraryEditorProps> = ({ data }) => {
 
   const [updateItinerary] = useMutation(UPDATE_ITINERARY);
 
-  /**
-   *
-   * GETTING EXTENSIVE ISSUE WHEN MONGO EXISTS
-   *
-   * but it works for mongo when no mongo found
-   *
-   *
-   */
-
   const [findMongoItinerary] = useLazyQuery(FIND_MONGODB_ITINERARY, {
     client: mongodbClient,
     onCompleted: incomingData => {
