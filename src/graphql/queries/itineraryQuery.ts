@@ -46,6 +46,7 @@ export const FIND_ITINERARY_BY_PUBLIC_IDENTIFIER = gql`
       summary
       mongoid
       created_on
+      public_identifier
       user_itineraries {
         users {
           username
@@ -63,6 +64,18 @@ export const FIND_ITINERARY_BY_PUBLIC_IDENTIFIER = gql`
       itinerary_experiences {
         experiences {
           pkexperience
+          title
+          public_identifier
+          experience_images {
+            images {
+              url
+            }
+          }
+          experience_tags {
+            tags {
+              tag
+            }
+          }
         }
       }
     }

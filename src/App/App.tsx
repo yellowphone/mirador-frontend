@@ -25,6 +25,7 @@ import { ConnectedSingleBlog } from '../components/blog/single-blog/ConnectedSin
 import { ConnectedCreateBlog } from '../components/blog/create-blog/ConnectedCreateBlog';
 import { ConnectedCreateItinerary } from '../components/itinerary/create-itinerary/ConnectedCreateItinerary';
 import { ConnectedSingleItinerary } from '../components/itinerary/single-itinerary/ConnectedSingleItinerary';
+import { ConnectedEditItinerary } from '../components/itinerary/edit-itinerary/ConnectedEditItinerary';
 
 export const App: React.FC = () => {
   return (
@@ -36,7 +37,7 @@ export const App: React.FC = () => {
               <Route exact path={Paths.Blog} component={ConnectedBlog} />
               <Route
                 exact
-                path={Paths.SingleBlog + '/:id'}
+                path={`${Paths.SingleBlog}/:id`}
                 component={ConnectedSingleBlog}
               />
               <Route
@@ -52,7 +53,7 @@ export const App: React.FC = () => {
               />
               <Route
                 exact
-                path={Paths.SingleExperience + '/:id'}
+                path={`${Paths.SingleExperience}/:id`}
                 component={ConnectedSingleExperience}
               />
               <Route
@@ -67,13 +68,18 @@ export const App: React.FC = () => {
               />
               <Route
                 exact
-                path={Paths.SingleItinerary + '/:id'}
+                path={`${Paths.SingleItinerary}/:id`}
                 component={ConnectedSingleItinerary}
               />
               <Route
                 exact
                 path={Paths.CreateItinerary}
                 component={ConnectedCreateItinerary}
+              />
+              <Route
+                exact
+                path={`${Paths.EditItinerary}/:id`}
+                component={ConnectedEditItinerary}
               />
               <Route exact path={Paths.Profile} component={ConnectedProfile} />
               <Redirect from="*" to={Paths.Home} />

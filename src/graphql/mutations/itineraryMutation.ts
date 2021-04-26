@@ -21,6 +21,24 @@ export const CREATE_ITINERARY = gql`
   }
 `;
 
+export const UPDATE_ITINERARY = gql`
+  mutation updateItinerary(
+    $public_identifier: String!
+    $title: String
+    $mongoid: String
+  ) {
+    updateItinerary(
+      public_identifier: $public_identifier
+      title: $title
+      mongoid: $mongoid
+    ) {
+      public_identifier
+      title
+      mongoid
+    }
+  }
+`;
+
 export const ADD_EXPERIENCE_TO_ITINERARY = gql`
   mutation addExperineceToItinerary($pkexperience: Int!, $pkitinerary: Int!) {
     addExperienceToItinerary(
