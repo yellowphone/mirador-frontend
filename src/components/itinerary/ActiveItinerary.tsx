@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client';
-import { AddIcon } from '@chakra-ui/icons';
+import { AddIcon, DeleteIcon } from '@chakra-ui/icons';
 import {
   Box,
   Button,
@@ -116,7 +116,7 @@ export const ActiveItinerary = ({
     client: mongodbClient,
   });
 
-  const [removeElement] = useMutation(DELETE_ELEMENT_FROM_ITINERARY, {
+  const [deleteElementMutation] = useMutation(DELETE_ELEMENT_FROM_ITINERARY, {
     client: mongodbClient,
   });
 
@@ -166,7 +166,7 @@ export const ActiveItinerary = ({
     newElem[selectedDay].splice(index, 1);
     setElements(newElem);
 
-    removeElement({
+    deleteElementMutation({
       variables: {
         id: mongoId,
         date: selectedDay,
@@ -201,6 +201,11 @@ export const ActiveItinerary = ({
                       <Heading>{elem.title}</Heading>
                       <Text>pkexperience: {elem.pkexperience}</Text>
                     </Box>
+                    <DeleteIcon
+                      onClick={() => {
+                        deleteElement(index);
+                      }}
+                    />
                   </HStack>
                 </Box>
               </div>
@@ -209,7 +214,14 @@ export const ActiveItinerary = ({
           case 'text':
             return (
               <div key={`${index}-text`}>
-                <Text>{element.content}</Text>
+                <HStack spacing="7px">
+                  <Text>{element.content}</Text>
+                  <DeleteIcon
+                    onClick={() => {
+                      deleteElement(index);
+                    }}
+                  />
+                </HStack>
               </div>
             );
         }
