@@ -32,7 +32,10 @@ import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { mongodbClient } from '../../graphql/mongodbClient';
 import { CREATE_ITINERARY } from '../../graphql/mutations/itineraryMutation';
-import { INSERT_ELEMENT_INTO_ITINERARY } from '../../graphql/mutations/mongodbMutation';
+import {
+  DELETE_ELEMENT_FROM_ITINERARY,
+  INSERT_ELEMENT_INTO_ITINERARY,
+} from '../../graphql/mutations/mongodbMutation';
 import { LOCAL_STORAGE } from '../../utils/constants';
 import { Paths } from '../../utils/paths';
 import { spacer16, spacer8 } from '../../utils/styles/constants';
@@ -113,6 +116,10 @@ export const ActiveItinerary = ({
     client: mongodbClient,
   });
 
+  const [removeElement] = useMutation(DELETE_ELEMENT_FROM_ITINERARY, {
+    client: mongodbClient,
+  });
+
   useEffect(() => {
     if (!selectedDay) {
       setSelectedDay(elementKeys[0]);
@@ -150,6 +157,20 @@ export const ActiveItinerary = ({
           content: content,
         },
         date: selectedDay,
+      },
+    });
+  };
+
+  const deleteElement = (index: number) => {
+    const newElem = { ...elements };
+    newElem[selectedDay].splice(index, 1);
+    setElements(newElem);
+
+    removeElement({
+      variables: {
+        id: mongoId,
+        date: selectedDay,
+        index: index,
       },
     });
   };

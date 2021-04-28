@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client';
-import { AddIcon } from '@chakra-ui/icons';
+import { AddIcon, DeleteIcon } from '@chakra-ui/icons';
 import {
   Box,
   Button,
@@ -31,7 +31,11 @@ import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { mongodbClient } from '../../../graphql/mongodbClient';
 import { CREATE_ITINERARY } from '../../../graphql/mutations/itineraryMutation';
-import { INSERT_ELEMENT_INTO_ITINERARY } from '../../../graphql/mutations/mongodbMutation';
+import {
+  DELETE_ELEMENT_FROM_ITINERARY,
+  INSERT_ELEMENT_INTO_ITINERARY,
+  SWAP_ELEMENTS_IN_ITINERARY,
+} from '../../../graphql/mutations/mongodbMutation';
 import { spacer16, spacer8 } from '../../../utils/styles/constants';
 import {
   ElementProps,
@@ -108,7 +112,13 @@ export const ActiveEditItinerary = ({
     client: mongodbClient,
   });
 
-  // no onsubmit, just add elements
+  const [swapElementsMutation] = useMutation(SWAP_ELEMENTS_IN_ITINERARY, {
+    client: mongodbClient,
+  });
+
+  const [deleteElementMutation] = useMutation(DELETE_ELEMENT_FROM_ITINERARY, {
+    client: mongodbClient,
+  });
 
   const addElement = (
     type: string,
@@ -129,6 +139,42 @@ export const ActiveEditItinerary = ({
           content: content,
         },
         date: selectedDay,
+      },
+    });
+  };
+
+  const swapElements = (firstIndex: number, secondIndex: number) => {
+    // swap in state
+    const newElem = { ...elements };
+    const newInnerElem = [...newElem[selectedDay]];
+    const temp = newInnerElem[secondIndex];
+    newInnerElem[secondIndex] = newInnerElem[firstIndex];
+    newInnerElem[firstIndex] = temp;
+    newElem[selectedDay] = newInnerElem;
+    setElements(newElem);
+
+    swapElementsMutation({
+      variables: {
+        id: mongoId,
+        date: selectedDay,
+        firstIndex: firstIndex,
+        secondIndex: secondIndex,
+      },
+    });
+  };
+
+  const deleteElement = (index: number) => {
+    const newElem = { ...elements };
+    const newInnerElem = [...newElem[selectedDay]];
+    newInnerElem.splice(index, 1);
+    newElem[selectedDay] = newInnerElem;
+    setElements(newElem);
+
+    deleteElementMutation({
+      variables: {
+        id: mongoId,
+        date: selectedDay,
+        index: index,
       },
     });
   };
@@ -158,6 +204,11 @@ export const ActiveEditItinerary = ({
                     <Heading>{elem.title}</Heading>
                     <Text>pkexperience: {elem.pkexperience}</Text>
                   </Box>
+                  <DeleteIcon
+                    onClick={() => {
+                      deleteElement(index);
+                    }}
+                  />
                 </HStack>
               </Box>
             </div>
@@ -166,7 +217,14 @@ export const ActiveEditItinerary = ({
         case 'text':
           return (
             <div key={`${index}-text`}>
-              <Text>{element.content}</Text>
+              <HStack spacing="7px">
+                <Text>{element.content}</Text>
+                <DeleteIcon
+                  onClick={() => {
+                    deleteElement(index);
+                  }}
+                />
+              </HStack>
             </div>
           );
       }

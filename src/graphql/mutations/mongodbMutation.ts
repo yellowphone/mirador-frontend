@@ -16,6 +16,22 @@ export const INSERT_ELEMENT_INTO_ITINERARY = gql`
   }
 `;
 
+export const SWAP_ELEMENTS_IN_ITINERARY = gql`
+  mutation swapElementsInItinerary(
+    $id: String
+    $date: String
+    $firstIndex: number
+    $secondIndex: number
+  ) {
+    swapElementsInItinerary(
+      id: $id
+      date: $date
+      firstIndex: $firstIndex
+      secondIndex: $secondIndex
+    )
+  }
+`;
+
 export const DELETE_ELEMENT_FROM_ITINERARY = gql`
   mutation deleteElementFromItinerary($id: String, $date: String, $index: Int) {
     deleteElementFromItinerary(id: $id, date: $date, index: $index)
