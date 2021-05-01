@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client';
-import { AddIcon } from '@chakra-ui/icons';
+import { AddIcon, DeleteIcon } from '@chakra-ui/icons';
 import {
   Box,
   Button,
@@ -32,7 +32,10 @@ import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { mongodbClient } from '../../graphql/mongodbClient';
 import { CREATE_ITINERARY } from '../../graphql/mutations/itineraryMutation';
-import { INSERT_ELEMENT_INTO_ITINERARY } from '../../graphql/mutations/mongodbMutation';
+import {
+  DELETE_ELEMENT_FROM_ITINERARY,
+  INSERT_ELEMENT_INTO_ITINERARY,
+} from '../../graphql/mutations/mongodbMutation';
 import { LOCAL_STORAGE } from '../../utils/constants';
 import { Paths } from '../../utils/paths';
 import { spacer16, spacer8 } from '../../utils/styles/constants';
@@ -113,6 +116,10 @@ export const ActiveItinerary = ({
     client: mongodbClient,
   });
 
+  const [deleteElementMutation] = useMutation(DELETE_ELEMENT_FROM_ITINERARY, {
+    client: mongodbClient,
+  });
+
   useEffect(() => {
     if (!selectedDay) {
       setSelectedDay(elementKeys[0]);
@@ -154,6 +161,20 @@ export const ActiveItinerary = ({
     });
   };
 
+  const deleteElement = (index: number) => {
+    const newElem = { ...elements };
+    newElem[selectedDay].splice(index, 1);
+    setElements(newElem);
+
+    deleteElementMutation({
+      variables: {
+        id: mongoId,
+        date: selectedDay,
+        index: index,
+      },
+    });
+  };
+
   const renderElements = () => {
     return (elements[selectedDay] || []).map(
       (element: ElementProps, index: number) => {
@@ -180,6 +201,11 @@ export const ActiveItinerary = ({
                       <Heading>{elem.title}</Heading>
                       <Text>pkexperience: {elem.pkexperience}</Text>
                     </Box>
+                    <DeleteIcon
+                      onClick={() => {
+                        deleteElement(index);
+                      }}
+                    />
                   </HStack>
                 </Box>
               </div>
@@ -188,7 +214,14 @@ export const ActiveItinerary = ({
           case 'text':
             return (
               <div key={`${index}-text`}>
-                <Text>{element.content}</Text>
+                <HStack spacing="7px">
+                  <Text>{element.content}</Text>
+                  <DeleteIcon
+                    onClick={() => {
+                      deleteElement(index);
+                    }}
+                  />
+                </HStack>
               </div>
             );
         }
