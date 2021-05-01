@@ -300,7 +300,6 @@ export const ActiveEditItinerary = ({
           })}
         </DayContainer>
         <ItineraryDetails>
-          <Text fontSize="xs">{title}</Text>
           <Text fontSize="xs">{`${elementKeys[0]} - ${
             elementKeys[elementKeys.length - 1]
           }`}</Text>
