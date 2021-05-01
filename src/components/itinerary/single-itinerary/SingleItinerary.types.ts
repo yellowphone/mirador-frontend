@@ -11,6 +11,7 @@ export interface FindItineraryByIdObject {
   summary: string;
   mongoid: string;
   created_on: Date;
+  public_identifier: string;
   user_itineraries: UserItineraries;
   users: Users;
   itinerary_tags: ExperienceTags;

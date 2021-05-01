@@ -82,6 +82,9 @@ export const ItineraryEditor: FC<ItineraryEditorProps> = ({ data }) => {
         elements={elements}
         setElements={setElements}
         mongoId={mongoid}
+        public_identifier={
+          data.findItineraryByPublicIdentifier.public_identifier
+        }
       />
     );
   }

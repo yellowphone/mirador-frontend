@@ -19,6 +19,8 @@ export const ConnectedSingleItinerary = (): React.ReactElement => {
   const [data, setData] = useState<TSFixMe>({});
   const [elements, setElements] = useState<ManyElementDataProps>({});
 
+  // need refetch
+
   useQuery(FIND_ITINERARY_BY_PUBLIC_IDENTIFIER, {
     variables: { public_identifier: location.pathname.split('/')[2] },
     onCompleted: data => {

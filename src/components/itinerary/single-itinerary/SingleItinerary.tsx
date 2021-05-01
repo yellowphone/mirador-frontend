@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useCallback } from 'react';
 import { NavigationBar } from '../../shared/navigation-bar/NavigationBar';
 import { SingleItineraryProps } from './SingleItinerary.types';
 import {
@@ -18,11 +18,22 @@ import {
   Heading,
 } from '@chakra-ui/react';
 import { ElementProps } from '../create-itinerary/CreateItinerary.types';
+import { useHistory } from 'react-router';
+import { Paths } from '../../../utils/paths';
 
 export const SingleItinerary: FC<SingleItineraryProps> = ({
   data,
   elements,
 }) => {
+  const history = useHistory();
+
+  const onNavigate = useCallback(
+    (path: Paths) => {
+      history.push(path + '/' + data.public_identifier);
+    },
+    [history, data.public_identifier]
+  );
+
   // render elements
   const renderElements = (date: string) => {
     return elements[date].map((element: ElementProps, index: number) => {
@@ -66,6 +77,10 @@ export const SingleItinerary: FC<SingleItineraryProps> = ({
       <p>Itinerary!!!</p>
       <p>pkitinerary: {data.pkitinerary}</p>
       <p>title: {data.title}</p>
+
+      <Button onClick={() => onNavigate(Paths.EditItinerary)}>
+        Edit Itinerary
+      </Button>
 
       <Tabs isLazy>
         <TabList overflowX="scroll" maxWidth="100%" maxHeight="100%">
