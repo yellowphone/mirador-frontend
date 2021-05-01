@@ -17,6 +17,9 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
+  Editable,
+  EditableInput,
+  EditablePreview,
 } from '@chakra-ui/react';
 import React, {
   ChangeEvent,
@@ -24,12 +27,14 @@ import React, {
   ReactElement,
   SetStateAction,
   useCallback,
+  useEffect,
   useState,
 } from 'react';
 import { useCookies } from 'react-cookie';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { mongodbClient } from '../../../graphql/mongodbClient';
+import { UPDATE_ITINERARY } from '../../../graphql/mutations/itineraryMutation';
 import {
   DELETE_ELEMENT_FROM_ITINERARY,
   INSERT_ELEMENT_INTO_ITINERARY,
@@ -95,14 +100,15 @@ export const ActiveEditItinerary = ({
   mongoId,
   setElements,
   public_identifier,
+  title,
 }: {
   elements: ManyElementDataProps;
   mongoId: string;
   setElements: Dispatch<SetStateAction<ManyElementDataProps>>;
   public_identifier: string;
+  title: string;
 }): ReactElement => {
   const elementKeys = Object.keys(elements);
-  const title = 'New Itinerary';
   const [cookie] = useCookies(['user']);
   const history = useHistory();
   const [text, setText] = useState('');
@@ -115,6 +121,8 @@ export const ActiveEditItinerary = ({
     },
     [history, public_identifier]
   );
+
+  const [updateTitle] = useMutation(UPDATE_ITINERARY);
 
   const [insertElement] = useMutation(INSERT_ELEMENT_INTO_ITINERARY, {
     client: mongodbClient,
@@ -260,7 +268,22 @@ export const ActiveEditItinerary = ({
         View Itinerary
       </Button>
       <Flex alignItems="center" justifyContent="space-between" margin={2}>
-        <Heading margin={2}>Your trip</Heading>
+        <Editable
+          margin={2}
+          fontSize={'2xl'}
+          defaultValue={title}
+          onSubmit={newTitle => {
+            updateTitle({
+              variables: {
+                public_identifier: public_identifier,
+                title: newTitle,
+              },
+            });
+          }}
+        >
+          <EditablePreview />
+          <EditableInput />
+        </Editable>
       </Flex>
       <ItineraryInfoWrapper>
         <DayContainer>
