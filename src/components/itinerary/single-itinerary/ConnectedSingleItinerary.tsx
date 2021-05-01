@@ -23,6 +23,7 @@ export const ConnectedSingleItinerary = (): React.ReactElement => {
 
   useQuery(FIND_ITINERARY_BY_PUBLIC_IDENTIFIER, {
     variables: { public_identifier: location.pathname.split('/')[2] },
+    fetchPolicy: 'cache-and-network',
     onCompleted: data => {
       console.log(data);
       setData(data);
@@ -36,6 +37,7 @@ export const ConnectedSingleItinerary = (): React.ReactElement => {
   useQuery(FIND_MONGODB_ITINERARY, {
     variables: { id: mongoid },
     client: mongodbClient,
+    fetchPolicy: 'cache-and-network',
     onCompleted: incomingData => {
       const tempData: ManyElementDataProps = {};
       Object.keys(incomingData.findItinerary).map((key, index) => {
