@@ -1,10 +1,14 @@
 import { Heading } from '@chakra-ui/layout';
-import React, { FC } from 'react';
-import { TSFixMe } from '../../types/global';
+import React from 'react';
 import { ItineraryGrid } from '../shared/itinerary-grid/ItineraryGrid';
 import { NavigationBar } from '../shared/navigation-bar/NavigationBar';
+import { FindItineraryByIdObject } from './single-itinerary/SingleItinerary.types';
 
-export const Itinerary: FC<TSFixMe> = ({ itineraries }): React.ReactElement => {
+export const Itinerary = ({
+  itineraries,
+}: {
+  itineraries: FindItineraryByIdObject[];
+}): React.ReactElement => {
   return (
     <>
       <NavigationBar />

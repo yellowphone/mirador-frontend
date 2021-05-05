@@ -2,13 +2,13 @@ import { useQuery } from '@apollo/client';
 import React, { useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { FIND_ITINERARIES_FOR_USER } from '../../graphql/queries/itineraryQuery';
-import { TSFixMe } from '../../types/global';
 import { Itinerary } from './Itinerary';
+import { FindItineraryByIdObject } from './single-itinerary/SingleItinerary.types';
 
 export const ConnectedItinerary = (): React.ReactElement => {
   const [cookie] = useCookies(['user']);
 
-  const [itineraries, setItineraries] = useState<TSFixMe>([]);
+  const [itineraries, setItineraries] = useState<FindItineraryByIdObject[]>([]);
 
   useQuery(FIND_ITINERARIES_FOR_USER, {
     variables: {

@@ -1,10 +1,14 @@
 import { Box, Heading } from '@chakra-ui/layout';
-import React, { FC, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import { useHistory } from 'react-router';
-import { TSFixMe } from '../../../types/global';
 import { Paths } from '../../../utils/paths';
+import { FindItineraryByIdObject } from '../../itinerary/single-itinerary/SingleItinerary.types';
 
-export const ItineraryCard: FC<TSFixMe> = ({ itinerary }) => {
+export const ItineraryCard = ({
+  itinerary,
+}: {
+  itinerary: FindItineraryByIdObject;
+}) => {
   const history = useHistory();
   const onNavigate = useCallback(
     (path: Paths) => {
