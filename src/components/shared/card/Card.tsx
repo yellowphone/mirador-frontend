@@ -33,8 +33,6 @@ import {
 import { FIND_ITINERARIES_FOR_USER } from '../../../graphql/queries/itineraryQuery';
 import { useForm } from 'react-hook-form';
 import { useCookies } from 'react-cookie';
-import { CREATE_MONGODB_ITINERARY } from '../../../graphql/mutations/mongodbMutation';
-import { mongodbClient } from '../../../graphql/mongodbClient';
 
 export const Card: FC<CardDataProps> = ({ experience }) => {
   const {
@@ -65,10 +63,6 @@ export const Card: FC<CardDataProps> = ({ experience }) => {
   const [addExperienceToItinerary] = useMutation(ADD_EXPERIENCE_TO_ITINERARY);
 
   const [createItinerary] = useMutation(CREATE_ITINERARY);
-
-  const [createMongoItinerary] = useMutation(CREATE_MONGODB_ITINERARY, {
-    client: mongodbClient,
-  });
 
   const [
     getUserItineraries,

@@ -34,6 +34,7 @@ export const FIND_USER_BY_EMAIL = gql`
     }
   }
 `;
+
 export const FIND_MANY_USERS = gql`
   query findManyUsers($firstName: String!) {
     findManyUsers(firstName: $firstName) {

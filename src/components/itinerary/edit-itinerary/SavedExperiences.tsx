@@ -1,9 +1,7 @@
-import { useQuery } from '@apollo/client';
 import { Image } from '@chakra-ui/image';
 import { Box, SimpleGrid, Text } from '@chakra-ui/layout';
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import styled from 'styled-components';
-import { FIND_SAVED_EXPERIENCES_FOR_ITINERARY } from '../../../graphql/queries/itineraryQuery';
 import { TSFixMe } from '../../../types/global';
 import { TagGrid } from '../../shared/media/Tags/TagGrid';
 import { SavedExperiencesDataProps } from './EditItinerary.types';
@@ -14,29 +12,16 @@ const SavedExperiencesContainer = styled.article`
 `;
 
 export const SavedExperiences: FC<SavedExperiencesDataProps> = ({ data }) => {
-  const [incomingData, setIncomingData] = useState<TSFixMe>({});
-  console.log(data.findItineraryByPublicIdentifier);
-
-  useQuery(FIND_SAVED_EXPERIENCES_FOR_ITINERARY, {
-    variables: {
-      public_identifier: data.findItineraryByPublicIdentifier.public_identifier,
-    },
-    onCompleted: incomingData => {
-      console.log(incomingData);
-      setIncomingData(incomingData);
-    },
-    fetchPolicy: 'cache-and-network',
-  });
-
   return (
     <SavedExperiencesContainer>
       <SimpleGrid columns={2} spacing={5}>
-        {incomingData.findItineraryByPublicIdentifier &&
-          incomingData.findItineraryByPublicIdentifier.itinerary_experiences.map(
+        {data.findItineraryByPublicIdentifier &&
+          data.findItineraryByPublicIdentifier.itinerary_experiences.map(
             (experience: TSFixMe, index: number) => {
               return (
                 <>
                   <Box
+                    key={index}
                     draggable
                     maxW="sm"
                     borderWidth="1px"
