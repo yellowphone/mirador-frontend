@@ -18,6 +18,7 @@ export const ConnectedItinerary = (): React.ReactElement => {
       console.log(incomingData.findUser.itineraries);
       setItineraries(incomingData.findUser.itineraries);
     },
+    fetchPolicy: 'cache-and-network',
   });
 
   return <Itinerary itineraries={itineraries} />;
