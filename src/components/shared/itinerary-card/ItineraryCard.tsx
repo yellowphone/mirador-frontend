@@ -12,7 +12,7 @@ export const ItineraryCard = ({
   const history = useHistory();
   const onNavigate = useCallback(
     (path: Paths) => {
-      history.push(path + '/' + itinerary.public_identifier);
+      history.push(`${path}/${itinerary.public_identifier}`);
     },
     [history, itinerary.public_identifier]
   );

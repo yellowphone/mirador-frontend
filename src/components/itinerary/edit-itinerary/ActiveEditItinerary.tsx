@@ -117,7 +117,7 @@ export const ActiveEditItinerary = ({
 
   const onNavigate = useCallback(
     (path: Paths) => {
-      history.push(path + '/' + public_identifier);
+      history.push(`${path}/${public_identifier}`);
     },
     [history, public_identifier]
   );

@@ -29,7 +29,7 @@ export const SingleItinerary: FC<SingleItineraryProps> = ({
 
   const onNavigate = useCallback(
     (path: Paths) => {
-      history.push(path + '/' + data.public_identifier);
+      history.push(`${path}/${data.public_identifier}`);
     },
     [history, data.public_identifier]
   );
