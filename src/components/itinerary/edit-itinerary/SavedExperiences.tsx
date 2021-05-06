@@ -12,53 +12,56 @@ const SavedExperiencesContainer = styled.article`
 `;
 
 export const SavedExperiences: FC<SavedExperiencesDataProps> = ({ data }) => {
-  console.log(data.findItineraryByPublicIdentifier);
   return (
     <SavedExperiencesContainer>
       <SimpleGrid columns={2} spacing={5}>
-        {data.findItineraryByPublicIdentifier.itinerary_experiences.map(
-          (experience: TSFixMe, index: number) => {
-            return (
-              <>
-                <Box
-                  draggable
-                  maxW="sm"
-                  borderWidth="1px"
-                  borderRadius="md"
-                  onDragStart={e => {
-                    const dataForItineraryElement = {
-                      pkexperience: experience.experiences.pkexperience,
-                      title: experience.experiences.title,
-                      imgUrl:
-                        experience.experiences.experience_images[0].images.url,
-                      imgAlt: 'yay',
-                    };
-                    e.dataTransfer &&
-                      e.dataTransfer.setData(
-                        'element',
-                        JSON.stringify(dataForItineraryElement)
-                      );
-                  }}
-                >
-                  <Box p="2" size="sm">
-                    {experience.experiences.experience_images && (
-                      <Image
-                        src={
-                          experience.experiences.experience_images[0].images.url
-                        }
-                        sizes="sm"
-                      />
-                    )}
+        {data.findItineraryByPublicIdentifier &&
+          data.findItineraryByPublicIdentifier.itinerary_experiences.map(
+            (experience: TSFixMe, index: number) => {
+              return (
+                <>
+                  <Box
+                    key={index}
+                    draggable
+                    maxW="sm"
+                    borderWidth="1px"
+                    borderRadius="md"
+                    onDragStart={e => {
+                      const dataForItineraryElement = {
+                        pkexperience: experience.experiences.pkexperience,
+                        title: experience.experiences.title,
+                        imgUrl:
+                          experience.experiences.experience_images[0].images
+                            .url,
+                        imgAlt: 'yay',
+                      };
+                      e.dataTransfer &&
+                        e.dataTransfer.setData(
+                          'element',
+                          JSON.stringify(dataForItineraryElement)
+                        );
+                    }}
+                  >
+                    <Box p="2" size="sm">
+                      {experience.experiences.experience_images && (
+                        <Image
+                          src={
+                            experience.experiences.experience_images[0].images
+                              .url
+                          }
+                          sizes="sm"
+                        />
+                      )}
+                    </Box>
+                    <Box p="2">
+                      <TagGrid tags={experience.experiences.experience_tags} />
+                      <Text>{experience.experiences.title}</Text>
+                    </Box>
                   </Box>
-                  <Box p="2">
-                    <TagGrid tags={experience.experiences.experience_tags} />
-                    <Text>{experience.experiences.title}</Text>
-                  </Box>
-                </Box>
-              </>
-            );
-          }
-        )}
+                </>
+              );
+            }
+          )}
       </SimpleGrid>
     </SavedExperiencesContainer>
   );

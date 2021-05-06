@@ -17,25 +17,30 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
+  Editable,
+  EditableInput,
+  EditablePreview,
 } from '@chakra-ui/react';
 import React, {
   ChangeEvent,
   Dispatch,
   ReactElement,
   SetStateAction,
+  useCallback,
+  useEffect,
   useState,
 } from 'react';
 import { useCookies } from 'react-cookie';
-import { useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { mongodbClient } from '../../../graphql/mongodbClient';
-import { CREATE_ITINERARY } from '../../../graphql/mutations/itineraryMutation';
+import { UPDATE_ITINERARY } from '../../../graphql/mutations/itineraryMutation';
 import {
   DELETE_ELEMENT_FROM_ITINERARY,
   INSERT_ELEMENT_INTO_ITINERARY,
   SWAP_ELEMENTS_IN_ITINERARY,
 } from '../../../graphql/mutations/mongodbMutation';
+import { Paths } from '../../../utils/paths';
 import { spacer16, spacer8 } from '../../../utils/styles/constants';
 import {
   ElementProps,
@@ -94,19 +99,30 @@ export const ActiveEditItinerary = ({
   elements,
   mongoId,
   setElements,
+  public_identifier,
+  title,
 }: {
   elements: ManyElementDataProps;
   mongoId: string;
   setElements: Dispatch<SetStateAction<ManyElementDataProps>>;
+  public_identifier: string;
+  title: string;
 }): ReactElement => {
   const elementKeys = Object.keys(elements);
-  const title = 'New Itinerary';
   const [cookie] = useCookies(['user']);
   const history = useHistory();
   const [text, setText] = useState('');
-  const [openText, setOpenText] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedDay, setSelectedDay] = useState(Object.keys(elements)[0]);
+
+  const onNavigate = useCallback(
+    (path: Paths) => {
+      history.push(`${path}/${public_identifier}`);
+    },
+    [history, public_identifier]
+  );
+
+  const [updateTitle] = useMutation(UPDATE_ITINERARY);
 
   const [insertElement] = useMutation(INSERT_ELEMENT_INTO_ITINERARY, {
     client: mongodbClient,
@@ -248,8 +264,26 @@ export const ActiveEditItinerary = ({
 
   return (
     <ActiveItineraryWrapper>
+      <Button onClick={() => onNavigate(Paths.SingleItinerary)}>
+        View Itinerary
+      </Button>
       <Flex alignItems="center" justifyContent="space-between" margin={2}>
-        <Heading margin={2}>Your trip</Heading>
+        <Editable
+          margin={2}
+          fontSize={'2xl'}
+          defaultValue={title}
+          onSubmit={newTitle => {
+            updateTitle({
+              variables: {
+                public_identifier: public_identifier,
+                title: newTitle,
+              },
+            });
+          }}
+        >
+          <EditablePreview />
+          <EditableInput />
+        </Editable>
       </Flex>
       <ItineraryInfoWrapper>
         <DayContainer>
@@ -266,7 +300,6 @@ export const ActiveEditItinerary = ({
           })}
         </DayContainer>
         <ItineraryDetails>
-          <Text fontSize="xs">{title}</Text>
           <Text fontSize="xs">{`${elementKeys[0]} - ${
             elementKeys[elementKeys.length - 1]
           }`}</Text>

@@ -32,6 +32,7 @@ export const FIND_ITINERARIES_FOR_USER = gql`
       pkuser
       itineraries {
         pkitinerary
+        public_identifier
         title
       }
     }

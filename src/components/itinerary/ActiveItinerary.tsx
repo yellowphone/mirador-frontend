@@ -17,6 +17,9 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
+  Editable,
+  EditableInput,
+  EditablePreview,
 } from '@chakra-ui/react';
 import React, {
   ChangeEvent,
@@ -102,7 +105,7 @@ export const ActiveItinerary = ({
   setElements: Dispatch<SetStateAction<ManyElementDataProps>>;
 }): ReactElement => {
   const elementKeys = Object.keys(elements);
-  const title = 'New Itinerary';
+  const [title, setTitle] = useState('New Itinerary');
   const [cookie] = useCookies(['user']);
   const { handleSubmit } = useForm();
   const history = useHistory();
@@ -245,7 +248,15 @@ export const ActiveItinerary = ({
   return (
     <ActiveItineraryWrapper>
       <Flex alignItems="center" justifyContent="space-between" margin={2}>
-        <Heading margin={2}>Your trip</Heading>
+        <Editable
+          margin={2}
+          fontSize={'2xl'}
+          defaultValue={title}
+          onChange={newTitle => setTitle(newTitle)}
+        >
+          <EditablePreview />
+          <EditableInput />
+        </Editable>
         <Flex>
           <Button
             onClick={() => {
@@ -284,9 +295,6 @@ export const ActiveItinerary = ({
           })}
         </DayContainer>
         <ItineraryDetails>
-          <Text fontSize="xs" fontWeight="bold">
-            {title}
-          </Text>
           <Text fontSize="xs">{`${elementKeys[0]} - ${
             elementKeys[elementKeys.length - 1]
           }`}</Text>

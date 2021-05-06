@@ -21,6 +21,7 @@ export const ConnectedEditItinerary = (): React.ReactElement => {
     onError: error => {
       console.error(error);
     },
+    fetchPolicy: 'cache-and-network',
   });
 
   return (

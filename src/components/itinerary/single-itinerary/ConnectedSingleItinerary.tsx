@@ -7,10 +7,7 @@ import { Page404 } from '../../shared/404/404';
 import { FIND_MONGODB_ITINERARY } from '../../../graphql/queries/mongodbQuery';
 import { mongodbClient } from '../../../graphql/mongodbClient';
 import { TSFixMe } from '../../../types/global';
-import {
-  ElementProps,
-  ManyElementDataProps,
-} from '../create-itinerary/CreateItinerary.types';
+import { ManyElementDataProps } from '../create-itinerary/CreateItinerary.types';
 
 export const ConnectedSingleItinerary = (): React.ReactElement => {
   const location = useLocation();
@@ -21,6 +18,7 @@ export const ConnectedSingleItinerary = (): React.ReactElement => {
 
   useQuery(FIND_ITINERARY_BY_PUBLIC_IDENTIFIER, {
     variables: { public_identifier: location.pathname.split('/')[2] },
+    fetchPolicy: 'cache-and-network',
     onCompleted: data => {
       console.log(data);
       setData(data);
@@ -34,9 +32,10 @@ export const ConnectedSingleItinerary = (): React.ReactElement => {
   useQuery(FIND_MONGODB_ITINERARY, {
     variables: { id: mongoid },
     client: mongodbClient,
+    fetchPolicy: 'cache-and-network',
     onCompleted: incomingData => {
       const tempData: ManyElementDataProps = {};
-      Object.keys(incomingData.findItinerary).map((key, index) => {
+      Object.keys(incomingData.findItinerary).map(key => {
         if (key != '_id') {
           tempData[key] = incomingData.findItinerary[key];
         }
