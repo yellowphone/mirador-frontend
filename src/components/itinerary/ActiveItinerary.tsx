@@ -29,6 +29,7 @@ import React, {
   useEffect,
   useState,
 } from 'react';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { useCookies } from 'react-cookie';
 import { useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
@@ -244,6 +245,16 @@ export const ActiveItinerary = ({
   const handleInputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setText(e.target.value);
   };
+
+  // const handleSwapElement = () => {
+
+  // }
+
+  // const onDragEnd = (result) => {
+  //   if (!result.destination) {
+  //     return;
+  //   }
+  // }
 
   return (
     <ActiveItineraryWrapper>
