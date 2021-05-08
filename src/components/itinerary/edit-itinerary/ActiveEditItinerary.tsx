@@ -27,10 +27,14 @@ import React, {
   ReactElement,
   SetStateAction,
   useCallback,
-  useEffect,
   useState,
 } from 'react';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import {
+  DragDropContext,
+  Droppable,
+  Draggable,
+  DropResult,
+} from 'react-beautiful-dnd';
 import { useCookies } from 'react-cookie';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
@@ -41,6 +45,7 @@ import {
   INSERT_ELEMENT_INTO_ITINERARY,
   SWAP_ELEMENTS_IN_ITINERARY,
 } from '../../../graphql/mutations/mongodbMutation';
+import { TSFixMe } from '../../../types/global';
 import { Paths } from '../../../utils/paths';
 import { spacer16, spacer8 } from '../../../utils/styles/constants';
 import {
@@ -162,13 +167,19 @@ export const ActiveEditItinerary = ({
 
   const swapElements = (firstIndex: number, secondIndex: number) => {
     // swap in state
+
+    // better handling for this, issue with readonly obj
     const newElem = { ...elements };
-    const newInnerElem = [...newElem[selectedDay]];
-    const temp = newInnerElem[secondIndex];
-    newInnerElem[secondIndex] = newInnerElem[firstIndex];
-    newInnerElem[firstIndex] = temp;
+    const newInnerElem = [...elements[selectedDay]];
+    const [removed] = newInnerElem.splice(firstIndex, 1);
+    newInnerElem.splice(secondIndex, 0, removed);
     newElem[selectedDay] = newInnerElem;
     setElements(newElem);
+
+    // trying to use this
+    // const [removed] = elements[selectedDay].splice(firstIndex, 1);
+    // elements[selectedDay].splice(secondIndex, 0, removed);
+    // setElements(elements)
 
     swapElementsMutation({
       variables: {
@@ -280,56 +291,6 @@ export const ActiveEditItinerary = ({
         </Droppable>
       </DragDropContext>
     );
-
-    // return elements[selectedDay].map((element: ElementProps, index: number) => {
-    //   switch (element['type']) {
-    //     case 'experience':
-    //       const elem = element.content as ExperienceContentDataProps;
-    //       return (
-    //         <div key={`${elem.pkexperience}-${index}`}>
-    //           <Box
-    //             maxW="sm"
-    //             p="6"
-    //             borderWidth="1px"
-    //             borderRadius="lg"
-    //             marginBottom={2}
-    //           >
-    //             <HStack spacing="7px">
-    //               <Image
-    //                 objectFit="cover"
-    //                 height="150px"
-    //                 width="50%"
-    //                 src={elem.imgUrl}
-    //               />
-    //               <Box>
-    //                 <Heading>{elem.title}</Heading>
-    //                 <Text>pkexperience: {elem.pkexperience}</Text>
-    //               </Box>
-    //               <DeleteIcon
-    //                 onClick={() => {
-    //                   deleteElement(index);
-    //                 }}
-    //               />
-    //             </HStack>
-    //           </Box>
-    //         </div>
-    //       );
-
-    //     case 'text':
-    //       return (
-    //         <div key={`${index}-text`}>
-    //           <HStack spacing="7px">
-    //             <Text>{element.content}</Text>
-    //             <DeleteIcon
-    //               onClick={() => {
-    //                 deleteElement(index);
-    //               }}
-    //             />
-    //           </HStack>
-    //         </div>
-    //       );
-    //   }
-    // });
   };
 
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
@@ -347,7 +308,7 @@ export const ActiveEditItinerary = ({
     setText(inputValue);
   };
 
-  const onDragEnd = result => {
+  const onDragEnd = (result: DropResult) => {
     if (!result.destination) {
       return;
     }

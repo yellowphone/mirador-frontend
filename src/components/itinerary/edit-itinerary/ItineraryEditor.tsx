@@ -11,7 +11,9 @@ import { FIND_MONGODB_ITINERARY } from '../../../graphql/queries/mongodbQuery';
 import { UPDATE_ITINERARY } from '../../../graphql/mutations/itineraryMutation';
 import { ActiveEditItinerary } from './ActiveEditItinerary';
 
-export const ItineraryEditor: FC<ItineraryEditorProps> = ({ data }) => {
+export const ItineraryEditor: FC<ItineraryEditorProps> = ({
+  data,
+}): ReactElement => {
   const [mongoid, setMongoid] = useState('');
   const [elements, setElements] = useState<ManyElementDataProps>({});
 
