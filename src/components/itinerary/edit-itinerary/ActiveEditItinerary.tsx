@@ -45,7 +45,6 @@ import {
   INSERT_ELEMENT_INTO_ITINERARY,
   SWAP_ELEMENTS_IN_ITINERARY,
 } from '../../../graphql/mutations/mongodbMutation';
-import { TSFixMe } from '../../../types/global';
 import { Paths } from '../../../utils/paths';
 import { spacer16, spacer8 } from '../../../utils/styles/constants';
 import {
