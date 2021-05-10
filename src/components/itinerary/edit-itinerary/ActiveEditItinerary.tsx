@@ -175,11 +175,6 @@ export const ActiveEditItinerary = ({
     newElem[selectedDay] = newInnerElem;
     setElements(newElem);
 
-    // trying to use this
-    // const [removed] = elements[selectedDay].splice(firstIndex, 1);
-    // elements[selectedDay].splice(secondIndex, 0, removed);
-    // setElements(elements)
-
     swapElementsMutation({
       variables: {
         id: mongoId.toString(),
