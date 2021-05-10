@@ -20,8 +20,6 @@ const rightSideStyle = {
 
 export const Experience: FC<ExperienceDataProps> = ({
   experiences,
-  coords,
-  setCoords,
   refetch,
 }) => {
   const loader = new Loader({
@@ -36,20 +34,13 @@ export const Experience: FC<ExperienceDataProps> = ({
       <Flex>
         <Box css={leftSideStyle} maxW="50%" width={screen.width / 2}>
           <Center pt="5">
-            <Search loader={loader} setCoords={setCoords} refetch={refetch} />
+            <Search loader={loader} refetch={refetch} />
           </Center>
 
           <CardsGrid list={experiences} />
         </Box>
         <Box css={rightSideStyle} maxW="50%" width={screen.width / 2}>
-          <Map
-            width={screen.width / 2}
-            height={screen.height - 230}
-            loader={loader}
-            coords={coords}
-            experiences={experiences}
-            infoWindow={false}
-          />
+          <Map loader={loader} experiences={experiences} infoWindow={false} />
         </Box>
       </Flex>
     </>

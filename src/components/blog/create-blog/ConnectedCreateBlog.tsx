@@ -16,11 +16,14 @@ import {
 import { ElementDataProps } from '../Blog.types';
 import { mongodbClient } from '../../../graphql/mongodbClient';
 import { Tag } from '../../shared/media/Tags/Tag.types';
+import { useLocationContext } from '../../../context/LocationContext';
 
 export const ConnectedCreateBlog = (): React.ReactElement => {
   const [cookie] = useCookies(['user']);
 
-  const [createCoords, setCreateCoords] = useState({ lat: 0, lng: 0 });
+  const {
+    coords: { lat, lng },
+  } = useLocationContext();
 
   const [mongoid, setMongoid] = useState('');
 
@@ -37,7 +40,7 @@ export const ConnectedCreateBlog = (): React.ReactElement => {
   });
 
   const [elements, setElements] = useState<ElementDataProps[]>([]);
-  
+
   const history = useHistory();
 
   useEffect(() => {
@@ -100,8 +103,8 @@ export const ConnectedCreateBlog = (): React.ReactElement => {
         summary: input['summary'],
         mongoid: mongoid,
         pkuser: cookie['user']['pkuser'],
-        lat: createCoords['lat'],
-        lng: createCoords['lng'],
+        lat,
+        lng,
         tags: tags,
       },
     }).then(data => {
@@ -119,7 +122,6 @@ export const ConnectedCreateBlog = (): React.ReactElement => {
           onSubmit={onSubmit}
           addElement={addElement}
           renderElements={renderElements}
-          setCreateCoords={setCreateCoords}
           loader={loader}
           setAddedTags={setAddedTags}
           addedTags={addedTags}

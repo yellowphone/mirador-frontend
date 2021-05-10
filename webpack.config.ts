@@ -1,30 +1,31 @@
 import { resolve } from 'path';
 import webpack from 'webpack';
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const dotenv = require('dotenv');
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import dotenv from 'dotenv';
 
 module.exports = () => {
-  
   const env = dotenv.config().parsed;
-  const envKeys = Object.keys(env).reduce((prev: any, next: any) => {
-    prev[`process.env.${next}`] = JSON.stringify(env[next]);
-    return prev;
-  }, {});
+  const envKeys = env
+    ? Object.keys(env).reduce((prev: any, next: any) => {
+        prev[`process.env.${next}`] = JSON.stringify(env[next]);
+        return prev;
+      }, {})
+    : {};
 
-  const isProd = process.env.NODE_ENV === "production";
+  const isProd = process.env.NODE_ENV === 'production';
 
   return {
-    mode: isProd ? "production" : "development",
+    mode: isProd ? 'production' : 'development',
     entry: {
-      index: "./src/index.tsx",
+      index: './src/index.tsx',
     },
     output: {
-      path: resolve(__dirname, "dist"),
-      filename: "mirador.bundle.js",
-      publicPath: '/'
+      path: resolve(__dirname, 'dist'),
+      filename: 'mirador.bundle.js',
+      publicPath: '/',
     },
     resolve: {
-      extensions: [".js", ".jsx", ".ts", ".tsx"],
+      extensions: ['.js', '.jsx', '.ts', '.tsx'],
     },
     module: {
       rules: [
@@ -39,17 +40,22 @@ module.exports = () => {
         },
         {
           test: /\.(png|j?g|svg|gif)?$/,
-          use: 'file-loader'
+          use: 'file-loader',
+        },
+        {
+          test: /\.js$/,
+          enforce: 'pre',
+          use: ['source-map-loader'],
         },
       ],
     },
     plugins: [
       new HtmlWebpackPlugin({
-        template: "./public/index.html",
-        filename: "index.html",
-        inject: "body",
+        template: './public/index.html',
+        filename: 'index.html',
+        inject: 'body',
       }),
-      new webpack.DefinePlugin(envKeys)
+      new webpack.DefinePlugin(envKeys),
     ],
     devServer: {
       port: 3000,
@@ -59,6 +65,6 @@ module.exports = () => {
       stats: 'errors-only',
       overlay: true,
       historyApiFallback: true,
-    }
-  }
+    },
+  };
 };

@@ -20,7 +20,6 @@ export const CreateBlog: FC<CreateBlogDataProps> = ({
   onSubmit,
   addElement,
   renderElements,
-  setCreateCoords,
   loader,
   setAddedTags,
   addedTags,
@@ -64,7 +63,7 @@ export const CreateBlog: FC<CreateBlogDataProps> = ({
             <Input name="title" placeholder="Title" ref={register} />
             <Textarea name="summary" placeholder="Summary" ref={register} />
             <SelectTag setAddedTags={setAddedTags} addedTags={addedTags} />
-            <Search loader={loader} setCoords={setCreateCoords} />
+            <Search loader={loader} />
           </form>
           <br></br>
 

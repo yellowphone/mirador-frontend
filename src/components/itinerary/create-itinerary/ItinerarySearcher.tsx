@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { Loader } from '@googlemaps/js-api-loader';
 import { FIND_EXPERIENCE_BY_COORDINATES } from '../../../graphql/queries/experienceQuery';
 import { Search } from '../../shared/Google/Search';
@@ -6,6 +6,7 @@ import { Map } from '../../shared/Google/Map';
 import { IExperience } from '../../experience/Experience.types';
 import { useQuery } from '@apollo/react-hooks';
 import styled from 'styled-components';
+import { useLocationContext } from '../../../context/LocationContext';
 
 const ItinerarySearcherContainer = styled.article`
   display: flex;
@@ -13,8 +14,14 @@ const ItinerarySearcherContainer = styled.article`
 `;
 
 export const ItinerarySearcher = (): React.ReactElement => {
-  const [coords, setCoords] = useState({ lat: 37.235961, lng: -80.607775 });
-  const { lat, lng } = coords;
+  const {
+    coords: { lat, lng },
+    setCoords,
+  } = useLocationContext();
+
+  useEffect(() => {
+    setCoords({ lat: 37.235961, lng: -80.607775 });
+  }, [lat, lng, setCoords]);
 
   const loader = new Loader({
     apiKey: `${process.env.MAPS_API_KEY}`,
@@ -57,13 +64,8 @@ export const ItinerarySearcher = (): React.ReactElement => {
 
   return (
     <ItinerarySearcherContainer>
-      <Search setCoords={setCoords} loader={loader} />
-      <Map
-        loader={loader}
-        coords={coords}
-        experiences={experienceList}
-        infoWindow={true}
-      />
+      <Search loader={loader} />
+      <Map loader={loader} experiences={experienceList} infoWindow={true} />
     </ItinerarySearcherContainer>
   );
 };

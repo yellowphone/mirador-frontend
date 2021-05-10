@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { IExperience, ICoordinates } from '../../experience/Experience.types';
+import { IExperience } from '../../experience/Experience.types';
 import { Loader } from '@googlemaps/js-api-loader';
 import { useHistory } from 'react-router-dom';
 import { Paths } from '../../../utils/paths';
@@ -8,10 +8,10 @@ import {
   AUTOCOMPLETE_INPUT_HEIGHT,
   HEADER_HEIGHT,
 } from '../../../utils/styles/constants';
+import { useLocationContext } from '../../../context/LocationContext';
 
 interface IMapDataProps {
   loader: Loader;
-  coords: ICoordinates;
   experiences: IExperience[];
   infoWindow: boolean;
 }
@@ -22,16 +22,14 @@ const StyledMap = styled.div`
   width: 100%;
 `;
 
-export const Map: FC<IMapDataProps> = ({
-  loader,
-  coords,
-  experiences,
-  infoWindow,
-}) => {
+export const Map: FC<IMapDataProps> = ({ loader, experiences, infoWindow }) => {
+  const {
+    coords: { lat, lng },
+  } = useLocationContext();
   const mapOptions = {
     center: {
-      lat: coords['lat'],
-      lng: coords['lng'],
+      lat,
+      lng,
     },
     zoom: 14,
     mapId: 'f80062b618e0b095',

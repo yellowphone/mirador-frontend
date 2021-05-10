@@ -1,25 +1,20 @@
-import React, {
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Input, Box } from '@chakra-ui/react';
 import { Loader } from '@googlemaps/js-api-loader';
 import './Search.css';
 import { LatLng } from '../../../types/global';
 import { ApolloQueryResult } from '@apollo/client';
 import { useDebounce } from 'react-use';
+import { useLocationContext } from '../../../context/LocationContext';
 
 interface ISearchDataProps {
-  setCoords: Dispatch<SetStateAction<LatLng>>;
-  refetch?: (variables?: Partial<LatLng>) => Promise<ApolloQueryResult<never>>;
+  refetch?: (
+    variables?: Partial<LatLng>
+  ) => Promise<ApolloQueryResult<unknown>>;
   loader: Loader;
 }
 
 export const Search = ({
-  setCoords,
   refetch,
   loader,
 }: ISearchDataProps): React.ReactElement => {
@@ -29,9 +24,10 @@ export const Search = ({
   const [autocomplete, setAutocomplete] = useState<
     google.maps.places.Autocomplete | undefined
   >();
+  const { setCoords } = useLocationContext();
 
   useEffect(() => {
-    if (autocompleteRef.current) {
+    if (!autocomplete && autocompleteRef.current) {
       loader.load().then(() => {
         setAutocomplete(
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -39,7 +35,7 @@ export const Search = ({
         );
       });
     }
-  }, [loader]);
+  }, [autocomplete, loader]);
 
   useEffect(() => {
     if (autocomplete) {
@@ -49,15 +45,17 @@ export const Search = ({
         'icon',
         'name',
       ]);
+    }
+  }, [autocomplete]);
 
+  useEffect(() => {
+    if (autocomplete && autocompleteRef.current) {
       autocomplete.addListener('place_changed', () => {
         const place = autocomplete.getPlace();
-
-        // @TODO: this for some reason refreshes the whole component which is kind of meh. we'd like it to persist.
-        setCoords({
+        setCoords(() => ({
           lat: place.geometry?.location.lat() || 0,
           lng: place.geometry?.location.lng() || 0,
-        });
+        }));
         if (refetch) refetch();
       });
     }

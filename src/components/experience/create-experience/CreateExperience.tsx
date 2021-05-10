@@ -22,7 +22,6 @@ import { SelectTag } from '../../shared/media/Tags/SelectTag';
 
 export const CreateExperience: FC<CreateExperienceDataProps> = ({
   onSubmit,
-  setCreateCoords,
   setAddedTags,
   addedTags,
   loader,
@@ -76,13 +75,7 @@ export const CreateExperience: FC<CreateExperienceDataProps> = ({
           <Text>Add photos to your experience</Text>
           <Input type="file" required onChange={onUploadInputChange} multiple />
 
-          <Search
-            loader={loader}
-            setCoords={setCreateCoords}
-            refetch={() => {
-              return false;
-            }}
-          />
+          <Search loader={loader} />
           <Button type="submit">Create</Button>
           {spin && <Spinner />}
         </form>
