@@ -1,13 +1,16 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { IExperience, ICoordinates } from '../../experience/Experience.types';
 import { Loader } from '@googlemaps/js-api-loader';
 import { useHistory } from 'react-router-dom';
+import ReactDOM from 'react-dom';
+import ReactDOMServer from 'react-dom/server';
 import { Paths } from '../../../utils/paths';
 import styled from 'styled-components';
 import {
   AUTOCOMPLETE_INPUT_HEIGHT,
   HEADER_HEIGHT,
 } from '../../../utils/styles/constants';
+import { info } from 'console';
 
 interface IMapDataProps {
   loader: Loader;
@@ -102,6 +105,15 @@ export const Map: FC<IMapDataProps> = ({
           newMarker.addListener('click', () => {
             newInfoWindow.open(map, newMarker);
           });
+
+          // newMarker.addListener('mouseover', () => {
+          //   newInfoWindow.open(map, newMarker);
+          // });
+
+          // ensure that infowindow stays open
+          // newMarker.addListener('mouseout', () => {
+          //   newInfoWindow.close();
+          // })
         });
       }
     })

@@ -29,6 +29,12 @@ import React, {
   useEffect,
   useState,
 } from 'react';
+import {
+  DragDropContext,
+  Droppable,
+  Draggable,
+  DropResult,
+} from 'react-beautiful-dnd';
 import { useCookies } from 'react-cookie';
 import { useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
@@ -38,6 +44,7 @@ import { CREATE_ITINERARY } from '../../graphql/mutations/itineraryMutation';
 import {
   DELETE_ELEMENT_FROM_ITINERARY,
   INSERT_ELEMENT_INTO_ITINERARY,
+  SWAP_ELEMENTS_IN_ITINERARY,
 } from '../../graphql/mutations/mongodbMutation';
 import { LOCAL_STORAGE } from '../../utils/constants';
 import { Paths } from '../../utils/paths';
@@ -119,6 +126,10 @@ export const ActiveItinerary = ({
     client: mongodbClient,
   });
 
+  const [swapElementsMutation] = useMutation(SWAP_ELEMENTS_IN_ITINERARY, {
+    client: mongodbClient,
+  });
+
   const [deleteElementMutation] = useMutation(DELETE_ELEMENT_FROM_ITINERARY, {
     client: mongodbClient,
   });
@@ -164,6 +175,22 @@ export const ActiveItinerary = ({
     });
   };
 
+  const swapElements = (firstIndex: number, secondIndex: number) => {
+    // swap in state
+    const [removed] = elements[selectedDay].splice(firstIndex, 1);
+    elements[selectedDay].splice(secondIndex, 0, removed);
+    setElements(elements);
+
+    swapElementsMutation({
+      variables: {
+        id: mongoId,
+        date: selectedDay,
+        firstIndex: firstIndex,
+        secondIndex: secondIndex,
+      },
+    });
+  };
+
   const deleteElement = (index: number) => {
     const newElem = { ...elements };
     newElem[selectedDay].splice(index, 1);
@@ -179,56 +206,88 @@ export const ActiveItinerary = ({
   };
 
   const renderElements = () => {
-    return (elements[selectedDay] || []).map(
-      (element: ElementProps, index: number) => {
-        switch (element['type']) {
-          case 'experience':
-            const elem = element.content as ExperienceContentDataProps;
-            return (
-              <div key={`${elem.pkexperience}-${index}`}>
-                <Box
-                  maxW="sm"
-                  p="6"
-                  borderWidth="1px"
-                  borderRadius="lg"
-                  marginBottom={2}
-                >
-                  <HStack spacing="7px">
-                    <Image
-                      objectFit="cover"
-                      height="150px"
-                      width="50%"
-                      src={elem.imgUrl}
-                    />
-                    <Box>
-                      <Heading>{elem.title}</Heading>
-                      <Text>pkexperience: {elem.pkexperience}</Text>
-                    </Box>
-                    <DeleteIcon
-                      onClick={() => {
-                        deleteElement(index);
-                      }}
-                    />
-                  </HStack>
-                </Box>
-              </div>
-            );
+    return (
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Droppable droppableId="droppable">
+          {(provided, snapshot) => (
+            <div {...provided.droppableProps} ref={provided.innerRef}>
+              {(elements[selectedDay] || []).map(
+                (element: ElementProps, index: number) => {
+                  switch (element['type']) {
+                    case 'experience':
+                      const elem = element.content as ExperienceContentDataProps;
+                      return (
+                        <Draggable draggableId={index.toString()} index={index}>
+                          {(provided, snapshot) => (
+                            <div
+                              ref={provided.innerRef}
+                              {...provided.draggableProps}
+                              {...provided.dragHandleProps}
+                            >
+                              <div key={`${elem.pkexperience}-${index}`}>
+                                <Box
+                                  maxW="sm"
+                                  p="6"
+                                  borderWidth="1px"
+                                  borderRadius="lg"
+                                  marginBottom={2}
+                                >
+                                  <HStack spacing="7px">
+                                    <Image
+                                      objectFit="cover"
+                                      height="150px"
+                                      width="50%"
+                                      src={elem.imgUrl}
+                                    />
+                                    <Box>
+                                      <Heading>{elem.title}</Heading>
+                                      <Text>
+                                        pkexperience: {elem.pkexperience}
+                                      </Text>
+                                    </Box>
+                                    <DeleteIcon
+                                      onClick={() => {
+                                        deleteElement(index);
+                                      }}
+                                    />
+                                  </HStack>
+                                </Box>
+                              </div>
+                            </div>
+                          )}
+                        </Draggable>
+                      );
 
-          case 'text':
-            return (
-              <div key={`${index}-text`}>
-                <HStack spacing="7px">
-                  <Text>{element.content}</Text>
-                  <DeleteIcon
-                    onClick={() => {
-                      deleteElement(index);
-                    }}
-                  />
-                </HStack>
-              </div>
-            );
-        }
-      }
+                    case 'text':
+                      return (
+                        <Draggable draggableId={index.toString()} index={index}>
+                          {(provided, snapshot) => (
+                            <div
+                              ref={provided.innerRef}
+                              {...provided.draggableProps}
+                              {...provided.dragHandleProps}
+                            >
+                              <div key={`${index}-text`}>
+                                <HStack spacing="7px">
+                                  <Text>{element.content}</Text>
+                                  <DeleteIcon
+                                    onClick={() => {
+                                      deleteElement(index);
+                                    }}
+                                  />
+                                </HStack>
+                              </div>
+                            </div>
+                          )}
+                        </Draggable>
+                      );
+                  }
+                }
+              )}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
     );
   };
 
@@ -243,6 +302,14 @@ export const ActiveItinerary = ({
 
   const handleInputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setText(e.target.value);
+  };
+
+  const onDragEnd = (result: DropResult) => {
+    if (!result.destination) {
+      return;
+    }
+
+    swapElements(result.source.index, result.destination.index);
   };
 
   return (

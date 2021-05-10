@@ -20,8 +20,8 @@ export const SWAP_ELEMENTS_IN_ITINERARY = gql`
   mutation swapElementsInItinerary(
     $id: String
     $date: String
-    $firstIndex: number
-    $secondIndex: number
+    $firstIndex: Int
+    $secondIndex: Int
   ) {
     swapElementsInItinerary(
       id: $id
