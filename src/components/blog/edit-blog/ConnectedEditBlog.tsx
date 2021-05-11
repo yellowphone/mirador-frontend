@@ -23,6 +23,7 @@ import {
   Draggable,
   DropResult,
 } from 'react-beautiful-dnd';
+import { UPDATE_BLOG } from '../../../graphql/mutations/blogMutation';
 
 export const ConnectedEditBlog = () => {
   const [data, setData] = useState<TSFixMe>({});
@@ -30,6 +31,8 @@ export const ConnectedEditBlog = () => {
   const [mongoid, setMongoid] = useState<string>('');
 
   const location = useLocation();
+
+  const [updateBlog] = useMutation(UPDATE_BLOG);
 
   const [insertElement] = useMutation(INSERT_ELEMENT_INTO_BLOG, {
     client: mongodbClient,
@@ -215,6 +218,7 @@ export const ConnectedEditBlog = () => {
           data={data}
           renderElements={renderElements}
           addElement={addElement}
+          updateBlog={updateBlog}
         />
       )}
     </>

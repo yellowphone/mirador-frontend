@@ -28,19 +28,16 @@ export const ConnectedSingleBlog = () => {
 
   const location = useLocation();
 
-  const { data: blogData, loading, error, refetch } = useQuery(
-    FIND_BLOG_BY_PUBLIC_IDENTIFIER,
-    {
-      fetchPolicy: 'cache-and-network',
-      variables: { public_identifier: location.pathname.split('/')[2] },
-      onCompleted: data => {
-        console.log(data);
-        setData(data);
-        setMongoid(data['findBlogByPublicIdentifier']['mongoid']);
-      },
-      onError: err => console.error(err),
-    }
-  );
+  useQuery(FIND_BLOG_BY_PUBLIC_IDENTIFIER, {
+    fetchPolicy: 'cache-and-network',
+    variables: { public_identifier: location.pathname.split('/')[2] },
+    onCompleted: data => {
+      console.log(data);
+      setData(data);
+      setMongoid(data['findBlogByPublicIdentifier']['mongoid']);
+    },
+    onError: err => console.error(err),
+  });
 
   useQuery(FIND_MONGODB_BLOG, {
     variables: { id: mongoid },

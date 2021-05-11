@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useMutation } from '@apollo/react-hooks';
-import { CREATE_BLOG } from '../../../graphql/mutations/blogMutation';
+import {
+  CREATE_BLOG,
+  UPDATE_BLOG,
+} from '../../../graphql/mutations/blogMutation';
 import { useHistory } from 'react-router-dom';
 import { CreateBlog } from './CreateBlog';
 import { Paths } from '../../../utils/paths';

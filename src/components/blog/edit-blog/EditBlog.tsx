@@ -11,6 +11,10 @@ import {
   Button,
   Input,
   Textarea,
+  Editable,
+  EditableInput,
+  EditablePreview,
+  Flex,
 } from '@chakra-ui/react';
 import { NavigationBar } from '../../shared/navigation-bar/NavigationBar';
 import { TagGrid } from '../../shared/media/Tags/TagGrid';
@@ -20,7 +24,7 @@ import { Upload } from '../../shared/upload/Upload';
 import { ExperienceSearch } from '../../shared/search/ExperienceSearch';
 import { useForm } from 'react-hook-form';
 
-export const EditBlog = ({ data, renderElements, addElement }) => {
+export const EditBlog = ({ data, renderElements, addElement, updateBlog }) => {
   const history = useHistory();
   const onNavigate = useCallback(
     (path: Paths) => {
@@ -64,18 +68,43 @@ export const EditBlog = ({ data, renderElements, addElement }) => {
       <Container maxW="lg" p={2}>
         <Button onClick={() => onNavigate(Paths.SingleBlog)}>View Blog</Button>
         <VStack spacing="20px" p={5}>
-          <Center>
-            <Heading>{data['findBlogByPublicIdentifier']['title']}</Heading>
-          </Center>
-          <Center>
-            <Text
-              style={{ textAlign: 'center' }}
-              fontSize="md"
-              as="em"
-              color="gray.500"
+          <Flex alignItems="center" justifyContent="space-between" margin={2}>
+            <Editable
+              margin={2}
+              fontSize={'2xl'}
+              defaultValue={data.findBlogByPublicIdentifier.title}
+              onSubmit={newTitle => {
+                updateBlog({
+                  variables: {
+                    public_identifier: data.findBlogByPublicIdentifier.public_identifier.toString(),
+                    title: newTitle,
+                  },
+                });
+              }}
             >
-              {data['findBlogByPublicIdentifier']['summary']}
-            </Text>
+              <EditablePreview />
+              <EditableInput />
+            </Editable>
+          </Flex>
+          <Center>
+            <Flex alignItems="center" justifyContent="space-between" margin={2}>
+              <Editable
+                margin={2}
+                fontSize={'md'}
+                defaultValue={data.findBlogByPublicIdentifier.summary}
+                onSubmit={newSummary => {
+                  updateBlog({
+                    variables: {
+                      public_identifier: data.findBlogByPublicIdentifier.public_identifier.toString(),
+                      summary: newSummary,
+                    },
+                  });
+                }}
+              >
+                <EditablePreview />
+                <EditableInput />
+              </Editable>
+            </Flex>
           </Center>
           <Center>
             <TagGrid tags={data['findBlogByPublicIdentifier']['blog_tags']} />
