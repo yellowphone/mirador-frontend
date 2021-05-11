@@ -33,7 +33,7 @@ export const SingleBlog: FC<SingleBlogDataProps> = ({
       <NavigationBar />
       <Container maxW="lg" p={2}>
         <Button onClick={() => onNavigate(Paths.EditBlog)}>Edit Blog</Button>
-        <VStack spacing="40px">
+        <VStack spacing="20px">
           <Center>
             <Heading>{data['findBlogByPublicIdentifier']['title']}</Heading>
           </Center>

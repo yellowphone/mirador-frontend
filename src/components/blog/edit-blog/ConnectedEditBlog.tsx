@@ -119,70 +119,76 @@ export const ConnectedEditBlog = () => {
                 switch (element['type']) {
                   case 'image':
                     return (
-                      <Draggable draggableId={index.toString()} index={index}>
-                        {(provided, snapshot) => (
-                          <div
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                          >
-                            <SimpleGrid key={index} columns={1}>
-                              <HStack spacing="7px">
-                                <Image src={element['content']} />
-                                <DeleteIcon
-                                  onClick={() => deleteElement(index)}
-                                />
-                              </HStack>
-                            </SimpleGrid>
-                          </div>
-                        )}
-                      </Draggable>
+                      <Center m={5}>
+                        <Draggable draggableId={index.toString()} index={index}>
+                          {(provided, snapshot) => (
+                            <div
+                              ref={provided.innerRef}
+                              {...provided.draggableProps}
+                              {...provided.dragHandleProps}
+                            >
+                              <SimpleGrid key={index} columns={1}>
+                                <HStack spacing="7px">
+                                  <Image src={element['content']} />
+                                  <DeleteIcon
+                                    onClick={() => deleteElement(index)}
+                                  />
+                                </HStack>
+                              </SimpleGrid>
+                            </div>
+                          )}
+                        </Draggable>
+                      </Center>
                     );
                   case 'text':
                     return (
-                      <Draggable draggableId={index.toString()} index={index}>
-                        {(provided, snapshot) => (
-                          <div
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                          >
-                            <SimpleGrid key={index} columns={1}>
-                              <HStack spacing="7px">
-                                <Text>{element['content']}</Text>
-                                <DeleteIcon
-                                  onClick={() => deleteElement(index)}
-                                />
-                              </HStack>
-                            </SimpleGrid>
-                          </div>
-                        )}
-                      </Draggable>
+                      <Center m={5}>
+                        <Draggable draggableId={index.toString()} index={index}>
+                          {(provided, snapshot) => (
+                            <div
+                              ref={provided.innerRef}
+                              {...provided.draggableProps}
+                              {...provided.dragHandleProps}
+                            >
+                              <SimpleGrid key={index} columns={1}>
+                                <HStack spacing="7px">
+                                  <Text>{element['content']}</Text>
+                                  <DeleteIcon
+                                    onClick={() => deleteElement(index)}
+                                  />
+                                </HStack>
+                              </SimpleGrid>
+                            </div>
+                          )}
+                        </Draggable>
+                      </Center>
                     );
                   case 'experience':
                     return (
-                      <Draggable draggableId={index.toString()} index={index}>
-                        {(provided, snapshot) => (
-                          <div
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                          >
-                            <SimpleGrid key={index} columns={1}>
-                              <HStack spacing="7px">
-                                <Center>
-                                  <BlogExperienceCard
-                                    public_identifier={element['content']}
+                      <Center m={5}>
+                        <Draggable draggableId={index.toString()} index={index}>
+                          {(provided, snapshot) => (
+                            <div
+                              ref={provided.innerRef}
+                              {...provided.draggableProps}
+                              {...provided.dragHandleProps}
+                            >
+                              <SimpleGrid key={index} columns={1}>
+                                <HStack spacing="7px">
+                                  <Center>
+                                    <BlogExperienceCard
+                                      public_identifier={element['content']}
+                                    />
+                                  </Center>
+                                  <DeleteIcon
+                                    onClick={() => deleteElement(index)}
                                   />
-                                </Center>
-                                <DeleteIcon
-                                  onClick={() => deleteElement(index)}
-                                />
-                              </HStack>
-                            </SimpleGrid>
-                          </div>
-                        )}
-                      </Draggable>
+                                </HStack>
+                              </SimpleGrid>
+                            </div>
+                          )}
+                        </Draggable>
+                      </Center>
                     );
                 }
               })}

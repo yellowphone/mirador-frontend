@@ -63,7 +63,7 @@ export const EditBlog = ({ data, renderElements, addElement }) => {
       <NavigationBar />
       <Container maxW="lg" p={2}>
         <Button onClick={() => onNavigate(Paths.SingleBlog)}>View Blog</Button>
-        <VStack spacing="40px" p={5}>
+        <VStack spacing="20px" p={5}>
           <Center>
             <Heading>{data['findBlogByPublicIdentifier']['title']}</Heading>
           </Center>
