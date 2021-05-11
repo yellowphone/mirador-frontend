@@ -31,6 +31,7 @@ export const ConnectedSingleBlog = () => {
   const { data: blogData, loading, error, refetch } = useQuery(
     FIND_BLOG_BY_PUBLIC_IDENTIFIER,
     {
+      fetchPolicy: 'cache-and-network',
       variables: { public_identifier: location.pathname.split('/')[2] },
       onCompleted: data => {
         console.log(data);
@@ -43,6 +44,7 @@ export const ConnectedSingleBlog = () => {
 
   useQuery(FIND_MONGODB_BLOG, {
     variables: { id: mongoid },
+    fetchPolicy: 'cache-and-network',
     client: mongodbClient,
     onCompleted: data => {
       console.log(data);

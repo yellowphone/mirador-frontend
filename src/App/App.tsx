@@ -26,6 +26,7 @@ import { ConnectedCreateBlog } from '../components/blog/create-blog/ConnectedCre
 import { ConnectedCreateItinerary } from '../components/itinerary/create-itinerary/ConnectedCreateItinerary';
 import { ConnectedSingleItinerary } from '../components/itinerary/single-itinerary/ConnectedSingleItinerary';
 import { ConnectedEditItinerary } from '../components/itinerary/edit-itinerary/ConnectedEditItinerary';
+import { ConnectedEditBlog } from '../components/blog/edit-blog/ConnectedEditBlog';
 
 export const App: React.FC = () => {
   return (
@@ -39,6 +40,11 @@ export const App: React.FC = () => {
                 exact
                 path={`${Paths.SingleBlog}/:id`}
                 component={ConnectedSingleBlog}
+              />
+              <Route
+                exact
+                path={`${Paths.EditBlog}/:id`}
+                component={ConnectedEditBlog}
               />
               <Route
                 exact

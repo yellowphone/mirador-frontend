@@ -5,13 +5,23 @@ import { Center, HStack, SimpleGrid, Text } from '@chakra-ui/layout';
 import React, { useState } from 'react';
 import { useLocation } from 'react-router';
 import { mongodbClient } from '../../../graphql/mongodbClient';
-import { DELETE_ELEMENT_FROM_BLOG } from '../../../graphql/mutations/mongodbMutation';
+import {
+  DELETE_ELEMENT_FROM_BLOG,
+  INSERT_ELEMENT_INTO_BLOG,
+} from '../../../graphql/mutations/mongodbMutation';
 import { FIND_BLOG_BY_PUBLIC_IDENTIFIER } from '../../../graphql/queries/blogQuery';
 import { FIND_MONGODB_BLOG } from '../../../graphql/queries/mongodbQuery';
 import { TSFixMe } from '../../../types/global';
+import { Page404 } from '../../shared/404/404';
 import { BlogExperienceCard } from '../blog-experience-card/BlogExperienceCard';
 import { ElementDataProps } from '../Blog.types';
 import { EditBlog } from './EditBlog';
+
+/**
+ * TODO:
+ * - add element
+ * - swap element
+ */
 
 export const ConnectedEditBlog = () => {
   const [data, setData] = useState<TSFixMe>({});
@@ -20,13 +30,18 @@ export const ConnectedEditBlog = () => {
 
   const location = useLocation();
 
+  const [insertElement] = useMutation(INSERT_ELEMENT_INTO_BLOG, {
+    client: mongodbClient,
+  });
+
   const [deleteElementMutation] = useMutation(DELETE_ELEMENT_FROM_BLOG, {
     client: mongodbClient,
   });
 
   useQuery(FIND_BLOG_BY_PUBLIC_IDENTIFIER, {
-    variables: { public_identifier: location.pathname.split('/')[2] },
+    variables: { public_identifier: location.pathname.split('/')[3] },
     onCompleted: data => {
+      console.log(data);
       setData(data);
       setMongoid(data['findBlogByPublicIdentifier']['mongoid']);
     },
@@ -43,6 +58,23 @@ export const ConnectedEditBlog = () => {
     },
     onError: err => console.error(err),
   });
+
+  const addElement = (type: string, content: string) => {
+    // add json to state
+    setElements(elements => [...elements, { type: type, content: content }]);
+
+    // add json to mongodb
+    const element = {
+      type: type,
+      content: content,
+    };
+    insertElement({
+      variables: {
+        id: mongoid,
+        element: element,
+      },
+    });
+  };
 
   const deleteElement = (index: number) => {
     const newElem = [...elements];
@@ -93,5 +125,16 @@ export const ConnectedEditBlog = () => {
     });
   };
 
-  return <EditBlog data={data} renderElements={renderElements} />;
+  return (
+    <>
+      {!data['findBlogByPublicIdentifier'] && <Page404 />}
+      {data['findBlogByPublicIdentifier'] && (
+        <EditBlog
+          data={data}
+          renderElements={renderElements}
+          addElement={addElement}
+        />
+      )}
+    </>
+  );
 };
