@@ -1,6 +1,6 @@
 import { Loader } from '@googlemaps/js-api-loader';
 import { Dispatch, SetStateAction } from 'react';
-import { LatLng, TSFixMe } from '../../../types/global';
+import { LatLng } from '../../../types/global';
 import { Tag } from '../../shared/media/Tags/Tag.types';
 
 export interface CreateBlogDataProps {
