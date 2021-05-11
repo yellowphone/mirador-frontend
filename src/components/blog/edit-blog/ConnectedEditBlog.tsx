@@ -191,40 +191,6 @@ export const ConnectedEditBlog = () => {
         </Droppable>
       </DragDropContext>
     );
-
-    // elements.map((element: ElementDataProps, index: number) => {
-    //   switch (element['type']) {
-    //     case 'image':
-    //       return (
-    //         <SimpleGrid key={index} columns={1}>
-    //           <HStack spacing="7px">
-    //             <Image src={element['content']} />
-    //             <DeleteIcon onClick={() => deleteElement(index)} />
-    //           </HStack>
-    //         </SimpleGrid>
-    //       );
-    //     case 'text':
-    //       return (
-    //         <SimpleGrid key={index} columns={1}>
-    //           <HStack spacing="7px">
-    //             <Text>{element['content']}</Text>
-    //             <DeleteIcon onClick={() => deleteElement(index)} />
-    //           </HStack>
-    //         </SimpleGrid>
-    //       );
-    //     case 'experience':
-    //       return (
-    //         <SimpleGrid key={index} columns={1}>
-    //           <HStack spacing="7px">
-    //             <Center>
-    //               <BlogExperienceCard public_identifier={element['content']} />
-    //             </Center>
-    //             <DeleteIcon onClick={() => deleteElement(index)} />
-    //           </HStack>
-    //         </SimpleGrid>
-    //       );
-    //   }
-    // });
   };
 
   const onDragEnd = (result: DropResult) => {

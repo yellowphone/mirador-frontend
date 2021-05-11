@@ -28,8 +28,6 @@ export const BlogExperienceCard: FC<BlogExperienceCardProps> = ({
     return <h1>Error!</h1>;
   }
 
-  console.log(data);
-
   const experience: IExperience = {
     fk_experience_location:
       data['findExperienceByPublicIdentifier']['pkexperience'],

@@ -6,16 +6,25 @@ import { CreateBlog } from './CreateBlog';
 import { Paths } from '../../../utils/paths';
 import { Loader } from '@googlemaps/js-api-loader';
 import { BlogExperienceCard } from '../blog-experience-card/BlogExperienceCard';
-import { Center, Text, Image } from '@chakra-ui/react';
+import { Center, Text, Image, SimpleGrid, HStack } from '@chakra-ui/react';
 import { useCookies } from 'react-cookie';
 import { NoLogin } from '../../shared/no-login/NoLogin';
 import {
   CREATE_MONGODB_BLOG,
+  DELETE_ELEMENT_FROM_BLOG,
   INSERT_ELEMENT_INTO_BLOG,
+  SWAP_ELEMENTS_IN_BLOG,
 } from '../../../graphql/mutations/mongodbMutation';
 import { ElementDataProps } from '../Blog.types';
 import { mongodbClient } from '../../../graphql/mongodbClient';
 import { Tag } from '../../shared/media/Tags/Tag.types';
+import {
+  DragDropContext,
+  Draggable,
+  Droppable,
+  DropResult,
+} from 'react-beautiful-dnd';
+import { DeleteIcon } from '@chakra-ui/icons';
 
 export const ConnectedCreateBlog = (): React.ReactElement => {
   const [cookie] = useCookies(['user']);
@@ -36,8 +45,16 @@ export const ConnectedCreateBlog = (): React.ReactElement => {
     client: mongodbClient,
   });
 
+  const [swapElementsMutation] = useMutation(SWAP_ELEMENTS_IN_BLOG, {
+    client: mongodbClient,
+  });
+
+  const [deleteElementMutation] = useMutation(DELETE_ELEMENT_FROM_BLOG, {
+    client: mongodbClient,
+  });
+
   const [elements, setElements] = useState<ElementDataProps[]>([]);
-  
+
   const history = useHistory();
 
   useEffect(() => {
@@ -54,20 +71,87 @@ export const ConnectedCreateBlog = (): React.ReactElement => {
   });
 
   const renderElements = () => {
-    return elements.map((element: ElementDataProps, index: number) => {
-      switch (element['type']) {
-        case 'image':
-          return <Image key={index} src={element['content']} />;
-        case 'text':
-          return <Text key={index}>{element['content']}</Text>;
-        case 'experience':
-          return (
-            <Center key={index}>
-              <BlogExperienceCard public_identifier={element['content']} />
-            </Center>
-          );
-      }
-    });
+    return (
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Droppable droppableId="droppable">
+          {(provided, snapshot) => (
+            <div {...provided.droppableProps} ref={provided.innerRef}>
+              {elements.map((element: ElementDataProps, index: number) => {
+                switch (element['type']) {
+                  case 'image':
+                    return (
+                      <Draggable draggableId={index.toString()} index={index}>
+                        {(provided, snapshot) => (
+                          <div
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                          >
+                            <SimpleGrid key={index} columns={1}>
+                              <HStack spacing="7px">
+                                <Image src={element['content']} />
+                                <DeleteIcon
+                                  onClick={() => deleteElement(index)}
+                                />
+                              </HStack>
+                            </SimpleGrid>
+                          </div>
+                        )}
+                      </Draggable>
+                    );
+                  case 'text':
+                    return (
+                      <Draggable draggableId={index.toString()} index={index}>
+                        {(provided, snapshot) => (
+                          <div
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                          >
+                            <SimpleGrid key={index} columns={1}>
+                              <HStack spacing="7px">
+                                <Text>{element['content']}</Text>
+                                <DeleteIcon
+                                  onClick={() => deleteElement(index)}
+                                />
+                              </HStack>
+                            </SimpleGrid>
+                          </div>
+                        )}
+                      </Draggable>
+                    );
+                  case 'experience':
+                    return (
+                      <Draggable draggableId={index.toString()} index={index}>
+                        {(provided, snapshot) => (
+                          <div
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                          >
+                            <SimpleGrid key={index} columns={1}>
+                              <HStack spacing="7px">
+                                <Center>
+                                  <BlogExperienceCard
+                                    public_identifier={element['content']}
+                                  />
+                                </Center>
+                                <DeleteIcon
+                                  onClick={() => deleteElement(index)}
+                                />
+                              </HStack>
+                            </SimpleGrid>
+                          </div>
+                        )}
+                      </Draggable>
+                    );
+                }
+              })}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
+    );
   };
 
   const addElement = (type: string, content: string) => {
@@ -85,6 +169,42 @@ export const ConnectedCreateBlog = (): React.ReactElement => {
         element: element,
       },
     });
+  };
+
+  const swapElements = (firstIndex: number, secondIndex: number) => {
+    const newElem = [...elements];
+    const [removed] = newElem.splice(firstIndex, 1);
+    newElem.splice(secondIndex, 0, removed);
+    setElements(newElem);
+
+    swapElementsMutation({
+      variables: {
+        id: mongoid,
+        firstIndex: firstIndex,
+        secondIndex: secondIndex,
+      },
+    });
+  };
+
+  const deleteElement = (index: number) => {
+    const newElem = [...elements];
+    newElem.splice(index, 1);
+    setElements(newElem);
+
+    deleteElementMutation({
+      variables: {
+        id: mongoid,
+        index: index,
+      },
+    });
+  };
+
+  const onDragEnd = (result: DropResult) => {
+    if (!result.destination) {
+      return;
+    }
+
+    swapElements(result.source.index, result.destination.index);
   };
 
   const onSubmit = (input: { summary: string; title: string }) => {
