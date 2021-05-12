@@ -56,6 +56,20 @@ export const INSERT_ELEMENT_INTO_BLOG = gql`
   }
 `;
 
+export const SWAP_ELEMENTS_IN_BLOG = gql`
+  mutation swapElementsInBlog(
+    $id: String
+    $firstIndex: Int
+    $secondIndex: Int
+  ) {
+    swapElementsInBlog(
+      id: $id
+      firstIndex: $firstIndex
+      secondIndex: $secondIndex
+    )
+  }
+`;
+
 export const DELETE_ELEMENT_FROM_BLOG = gql`
   mutation deleteElementFromBlog($id: String, $index: Int) {
     deleteElementFromBlog(id: $id, index: $index)

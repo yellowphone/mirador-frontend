@@ -8,7 +8,7 @@ export interface CreateBlogDataProps {
   loader: Loader;
   setCreateCoords: Dispatch<SetStateAction<LatLng>>;
   addElement: (type: string, content: string) => void;
-  renderElements: () => (JSX.Element | undefined)[];
+  renderElements: () => JSX.Element | undefined;
   setAddedTags: Dispatch<SetStateAction<Tag[]>>;
   addedTags: Tag[];
 }
