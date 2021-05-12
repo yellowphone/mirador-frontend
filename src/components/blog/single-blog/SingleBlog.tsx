@@ -22,7 +22,7 @@ export const SingleBlog: FC<SingleBlogDataProps> = ({
     (path: Paths) => {
       console.log(data);
       history.push(
-        path + '/' + data.findBlogByPublicIdentifier.public_identifier
+        `${path}/${data.findBlogByPublicIdentifier.public_identifier}`
       );
     },
     [history, data]

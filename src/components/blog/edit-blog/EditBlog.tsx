@@ -23,13 +23,31 @@ import { Paths } from '../../../utils/paths';
 import { Upload } from '../../shared/upload/Upload';
 import { ExperienceSearch } from '../../shared/search/ExperienceSearch';
 import { useForm } from 'react-hook-form';
+import { TSFixMe } from '../../../types/global';
+import {
+  FetchResult,
+  MutationFunctionOptions,
+  OperationVariables,
+} from '@apollo/client';
 
-export const EditBlog = ({ data, renderElements, addElement, updateBlog }) => {
+export const EditBlog = ({
+  data,
+  renderElements,
+  addElement,
+  updateBlog,
+}: {
+  data: TSFixMe;
+  renderElements: () => JSX.Element | undefined;
+  addElement: (type: string, content: string) => void;
+  updateBlog: (
+    options?: MutationFunctionOptions<any, OperationVariables> | undefined
+  ) => Promise<FetchResult<any, Record<string, any>, Record<string, any>>>;
+}) => {
   const history = useHistory();
   const onNavigate = useCallback(
     (path: Paths) => {
       history.push(
-        path + '/' + data.findBlogByPublicIdentifier.public_identifier
+        `${path}/${data.findBlogByPublicIdentifier.public_identifier}`
       );
     },
     [history, data]
