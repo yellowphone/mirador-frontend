@@ -9,11 +9,14 @@ import { NoLogin } from '../../shared/no-login/NoLogin';
 import { useCookies } from 'react-cookie';
 import { Tag } from '../../shared/media/Tags/Tag.types';
 import { ExperienceInput } from './CreateExperience.types';
+import { useLocationContext } from '../../../utils/context/LocationContext';
 
 export const ConnectedCreateExperience = (): React.ReactElement => {
-  const [cookie] = useCookies(['user']);
+  const {
+    coords: { lat, lng },
+  } = useLocationContext();
 
-  const [createCoords, setCreateCoords] = useState({ lat: 0, lng: 0 });
+  const [cookie] = useCookies(['user']);
 
   const [spin, setSpin] = useState(false);
 
@@ -24,12 +27,6 @@ export const ConnectedCreateExperience = (): React.ReactElement => {
   const [addedTags, setAddedTags] = useState<Tag[]>([]);
 
   const history = useHistory();
-
-  const loader = new Loader({
-    apiKey: `${process.env.MAPS_API_KEY}`,
-    version: 'weekly',
-    libraries: ['places', 'geometry'],
-  });
 
   const onUploadInputChange = (e: FormEvent<HTMLInputElement>) => {
     const newFiles = (e.target as HTMLInputElement).files as FileList;
@@ -54,8 +51,8 @@ export const ConnectedCreateExperience = (): React.ReactElement => {
           elevation: parseInt(input['elevation']),
           difficulty: input['difficulty'],
           pkuser: cookie['user']['pkuser'],
-          lat: createCoords['lat'],
-          lng: createCoords['lng'],
+          lat,
+          lng,
           tags: tags,
           images: files,
         },
@@ -80,8 +77,6 @@ export const ConnectedCreateExperience = (): React.ReactElement => {
       {cookie['user'] && (
         <CreateExperience
           onSubmit={onSubmit}
-          setCreateCoords={setCreateCoords}
-          loader={loader}
           setAddedTags={setAddedTags}
           addedTags={addedTags}
           onUploadInputChange={onUploadInputChange}

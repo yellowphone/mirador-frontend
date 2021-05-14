@@ -1,4 +1,4 @@
-import React, { ReactElement, useCallback, useEffect, useState } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { mongodbClient } from '../../../graphql/mongodbClient';
 import { EmptyItinerary } from './EmptyItinerary';

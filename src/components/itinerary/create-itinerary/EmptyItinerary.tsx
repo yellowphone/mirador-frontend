@@ -3,6 +3,7 @@ import React, { ReactElement } from 'react';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import { spacer16 } from '../../../utils/styles/constants';
+import { Search } from '../../shared/Google/Search';
 
 const ItineraryBuilderWrapper = styled.article`
   margin: ${spacer16};
@@ -27,6 +28,10 @@ export const EmptyItinerary = ({
         Here are some details describing what an itinerary is! Lorem ipsum dolor
       </Text>
       <form onSubmit={handleSubmit(onItineraryCreate)}>
+        <InputWrapper>
+          <FormLabel htmlFor="location">Location</FormLabel>
+          <Search />
+        </InputWrapper>
         <InputWrapper>
           <FormLabel htmlFor="start-date">Trip start date</FormLabel>
           <Input id="start-date" type="date" name="start" ref={register} />
