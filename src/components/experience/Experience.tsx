@@ -42,14 +42,7 @@ export const Experience: FC<ExperienceDataProps> = ({
           <CardsGrid list={experiences} />
         </Box>
         <Box css={rightSideStyle} maxW="50%" width={screen.width / 2}>
-          <Map
-            width={screen.width / 2}
-            height={screen.height - 230}
-            loader={loader}
-            coords={coords}
-            experiences={experiences}
-            infoWindow={false}
-          />
+          <Map loader={loader} coords={coords} experiences={experiences} />
         </Box>
       </Flex>
     </>
