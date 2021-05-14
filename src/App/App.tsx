@@ -27,72 +27,79 @@ import { ConnectedCreateItinerary } from '../components/itinerary/create-itinera
 import { ConnectedSingleItinerary } from '../components/itinerary/single-itinerary/ConnectedSingleItinerary';
 import { ConnectedEditItinerary } from '../components/itinerary/edit-itinerary/ConnectedEditItinerary';
 import { ConnectedEditBlog } from '../components/blog/edit-blog/ConnectedEditBlog';
+import { LocationContextWrapper } from '../utils/context/LocationContext';
 
 export const App: React.FC = () => {
   return (
     <ApolloProvider client={client}>
-      <CookiesProvider>
-        <ChakraProvider>
-          <Router>
-            <Switch>
-              <Route exact path={Paths.Blog} component={ConnectedBlog} />
-              <Route
-                exact
-                path={`${Paths.SingleBlog}/:id`}
-                component={ConnectedSingleBlog}
-              />
-              <Route
-                exact
-                path={`${Paths.EditBlog}/:id`}
-                component={ConnectedEditBlog}
-              />
-              <Route
-                exact
-                path={Paths.CreateBlog}
-                component={ConnectedCreateBlog}
-              />
-              <Route exact path={Paths.Home} component={ConnectedHome} />
-              <Route
-                exact
-                path={Paths.Experience}
-                component={ConnectedExperience}
-              />
-              <Route
-                exact
-                path={`${Paths.SingleExperience}/:id`}
-                component={ConnectedSingleExperience}
-              />
-              <Route
-                exact
-                path={Paths.CreateExperience}
-                component={ConnectedCreateExperience}
-              />
-              <Route
-                exact
-                path={Paths.Itinerary}
-                component={ConnectedItinerary}
-              />
-              <Route
-                exact
-                path={`${Paths.SingleItinerary}/:id`}
-                component={ConnectedSingleItinerary}
-              />
-              <Route
-                exact
-                path={Paths.CreateItinerary}
-                component={ConnectedCreateItinerary}
-              />
-              <Route
-                exact
-                path={`${Paths.EditItinerary}/:id`}
-                component={ConnectedEditItinerary}
-              />
-              <Route exact path={Paths.Profile} component={ConnectedProfile} />
-              <Redirect from="*" to={Paths.Home} />
-            </Switch>
-          </Router>
-        </ChakraProvider>
-      </CookiesProvider>
+      <LocationContextWrapper>
+        <CookiesProvider>
+          <ChakraProvider>
+            <Router>
+              <Switch>
+                <Route exact path={Paths.Blog} component={ConnectedBlog} />
+                <Route
+                  exact
+                  path={`${Paths.SingleBlog}/:id`}
+                  component={ConnectedSingleBlog}
+                />
+                <Route
+                  exact
+                  path={`${Paths.EditBlog}/:id`}
+                  component={ConnectedEditBlog}
+                />
+                <Route
+                  exact
+                  path={Paths.CreateBlog}
+                  component={ConnectedCreateBlog}
+                />
+                <Route exact path={Paths.Home} component={ConnectedHome} />
+                <Route
+                  exact
+                  path={Paths.Experience}
+                  component={ConnectedExperience}
+                />
+                <Route
+                  exact
+                  path={`${Paths.SingleExperience}/:id`}
+                  component={ConnectedSingleExperience}
+                />
+                <Route
+                  exact
+                  path={Paths.CreateExperience}
+                  component={ConnectedCreateExperience}
+                />
+                <Route
+                  exact
+                  path={Paths.Itinerary}
+                  component={ConnectedItinerary}
+                />
+                <Route
+                  exact
+                  path={`${Paths.SingleItinerary}/:id`}
+                  component={ConnectedSingleItinerary}
+                />
+                <Route
+                  exact
+                  path={Paths.CreateItinerary}
+                  component={ConnectedCreateItinerary}
+                />
+                <Route
+                  exact
+                  path={`${Paths.EditItinerary}/:id`}
+                  component={ConnectedEditItinerary}
+                />
+                <Route
+                  exact
+                  path={Paths.Profile}
+                  component={ConnectedProfile}
+                />
+                <Redirect from="*" to={Paths.Home} />
+              </Switch>
+            </Router>
+          </ChakraProvider>
+        </CookiesProvider>
+      </LocationContextWrapper>
     </ApolloProvider>
   );
 };
