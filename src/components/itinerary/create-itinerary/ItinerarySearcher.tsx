@@ -62,7 +62,7 @@ export const ItinerarySearcher = (): React.ReactElement => {
         loader={loader}
         coords={coords}
         experiences={experienceList}
-        infoWindow={true}
+        displayInfoWindow={true}
       />
     </ItinerarySearcherContainer>
   );
