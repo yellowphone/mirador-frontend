@@ -158,7 +158,7 @@ export const Map: FC<IMapDataProps> = ({
     })
     .catch(e => {
       // TODO: need to do something with error state.
-      console.log(e);
+      console.error(e);
     });
 
   return <StyledMap id="map" />;
