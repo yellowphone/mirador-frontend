@@ -3,6 +3,7 @@ import { Input, Box } from '@chakra-ui/react';
 import './Search.css';
 import { useDebounce } from 'react-use';
 import { useLocationContext } from '../../../utils/context/LocationContext';
+import { composePlace } from '../../../utils/composePlace';
 
 export const Search = (): React.ReactElement => {
   const { loader, setCoords } = useLocationContext();
@@ -35,7 +36,7 @@ export const Search = (): React.ReactElement => {
 
       autocomplete.addListener('place_changed', () => {
         const place = autocomplete.getPlace();
-
+        setLocation(composePlace(place));
         // @TODO: this for some reason refreshes the whole component which is kind of meh. we'd like it to persist.
         setCoords({
           lat: place.geometry?.location.lat() || 0,
