@@ -9,6 +9,7 @@ export interface IExperience {
   imageAlt: string;
   miles: number;
   elevation: number;
+  climbing: string;
   title: string;
   summary: string;
   rating: number;

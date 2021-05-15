@@ -77,6 +77,15 @@ export const CreateExperience: FC<CreateExperienceDataProps> = ({
                   </Select>
                 </div>
               );
+            case 'CLIMBING':
+              return (
+                <Input
+                  name="climbing"
+                  placeholder="5.10a"
+                  maxLength={5}
+                  ref={register}
+                />
+              );
           }
         })}
       </>

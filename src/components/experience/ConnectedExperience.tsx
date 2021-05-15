@@ -35,6 +35,7 @@ export const ConnectedExperience = (): React.ReactElement => {
         imageAlt: 'ok',
         miles: item.miles,
         elevation: item.elevation,
+        climbing: item.climbing,
         title: item.title,
         summary: item.summary,
         rating: 4,

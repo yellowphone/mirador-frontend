@@ -15,6 +15,7 @@ export const SingleExperience: FC<SingleExperienceProps> = ({ data }) => {
   const title = data['findExperienceByPublicIdentifier']['title'];
   const miles = data['findExperienceByPublicIdentifier']['miles'];
   const elevation = data['findExperienceByPublicIdentifier']['elevation'];
+  const climbing = data['findExperienceByPublicIdentifier']['climbing'];
   const summary = data['findExperienceByPublicIdentifier']['summary'];
   const lat =
     data['findExperienceByPublicIdentifier']['experience_locations']['lat'];
@@ -33,6 +34,7 @@ export const SingleExperience: FC<SingleExperienceProps> = ({ data }) => {
         <p>summary: {summary}</p>
         <p>miles: {miles}</p>
         <p>elevation: {elevation}</p>
+        <p>rating: {climbing}</p>
         <TagGrid tags={tags} />
       </div>
       <Container height="200px">
