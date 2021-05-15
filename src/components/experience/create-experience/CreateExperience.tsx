@@ -19,6 +19,7 @@ import { Search } from '../../shared/Google/Search';
 import { DifficultyType } from '../../shared/media/Badges/Badges.types';
 import { CreateExperienceDataProps } from './CreateExperience.types';
 import { SelectTag } from '../../shared/media/Tags/SelectTag';
+import { Tag } from '../../shared/media/Tags/Tag.types';
 
 export const CreateExperience: FC<CreateExperienceDataProps> = ({
   onSubmit,
@@ -31,6 +32,57 @@ export const CreateExperience: FC<CreateExperienceDataProps> = ({
 }) => {
   const { register, handleSubmit } = useForm();
 
+  const renderExperienceInput = () => {
+    return (
+      <>
+        {addedTags.map((value: Tag, index: number) => {
+          switch (value.tag) {
+            case 'HIKING':
+              return (
+                <div key={index}>
+                  <NumberInput
+                    name="miles"
+                    defaultValue={5}
+                    precision={1}
+                    step={0.1}
+                    ref={register}
+                  >
+                    <NumberInputField name="miles" ref={register} />
+                    <NumberInputStepper>
+                      <NumberIncrementStepper />
+                      <NumberDecrementStepper />
+                    </NumberInputStepper>
+                  </NumberInput>
+
+                  <NumberInput
+                    name="elevation"
+                    defaultValue={500}
+                    ref={register}
+                  >
+                    <NumberInputField name="elevation" ref={register} />
+                    <NumberInputStepper>
+                      <NumberIncrementStepper />
+                      <NumberDecrementStepper />
+                    </NumberInputStepper>
+                  </NumberInput>
+
+                  <Select
+                    name="difficulty"
+                    placeholder="Select difficulty"
+                    ref={register}
+                  >
+                    <option value={DifficultyType.EASY}>Easy</option>
+                    <option value={DifficultyType.MODERATE}>Moderate</option>
+                    <option value={DifficultyType.HARD}>Hard</option>
+                  </Select>
+                </div>
+              );
+          }
+        })}
+      </>
+    );
+  };
+
   return (
     <>
       <NavigationBar />
@@ -41,48 +93,12 @@ export const CreateExperience: FC<CreateExperienceDataProps> = ({
 
           <SelectTag setAddedTags={setAddedTags} addedTags={addedTags} />
 
-          <NumberInput
-            name="miles"
-            defaultValue={5}
-            precision={1}
-            step={0.1}
-            ref={register}
-          >
-            <NumberInputField name="miles" ref={register} />
-            <NumberInputStepper>
-              <NumberIncrementStepper />
-              <NumberDecrementStepper />
-            </NumberInputStepper>
-          </NumberInput>
-
-          <NumberInput name="elevation" defaultValue={500} ref={register}>
-            <NumberInputField name="elevation" ref={register} />
-            <NumberInputStepper>
-              <NumberIncrementStepper />
-              <NumberDecrementStepper />
-            </NumberInputStepper>
-          </NumberInput>
-
-          <Select
-            name="difficulty"
-            placeholder="Select difficulty"
-            ref={register}
-          >
-            <option value={DifficultyType.EASY}>Easy</option>
-            <option value={DifficultyType.MODERATE}>Moderate</option>
-            <option value={DifficultyType.HARD}>Hard</option>
-          </Select>
+          {renderExperienceInput()}
 
           <Text>Add photos to your experience</Text>
           <Input type="file" required onChange={onUploadInputChange} multiple />
 
-          <Search
-            loader={loader}
-            setCoords={setCreateCoords}
-            refetch={() => {
-              return false;
-            }}
-          />
+          <Search loader={loader} setCoords={setCreateCoords} />
           <Button type="submit">Create</Button>
           {spin && <Spinner />}
         </form>

@@ -9,10 +9,11 @@ import { FIND_EXPERIENCE_BY_COORDINATES } from '../../graphql/queries/experience
 export const ConnectedExperience = (): React.ReactElement => {
   const [coords, setCoords] = useState({ lat: 44.349483, lng: -68.187912 });
 
-  const { data: experienceItems, loading, error, refetch } = useQuery(
+  const { data: experienceItems, loading, error } = useQuery(
     FIND_EXPERIENCE_BY_COORDINATES,
     {
       variables: { lat: coords['lat'], lng: coords['lng'] },
+      fetchPolicy: 'cache-and-network',
     }
   );
 
@@ -50,7 +51,6 @@ export const ConnectedExperience = (): React.ReactElement => {
       experiences={experienceList}
       coords={coords}
       setCoords={setCoords}
-      refetch={refetch}
     />
   );
 };

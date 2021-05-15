@@ -28,5 +28,4 @@ export interface ExperienceDataProps {
   experiences: Array<IExperience>;
   coords: ICoordinates;
   setCoords: Dispatch<SetStateAction<LatLng>>;
-  refetch: (variables?: Partial<LatLng>) => Promise<ApolloQueryResult<never>>;
 }

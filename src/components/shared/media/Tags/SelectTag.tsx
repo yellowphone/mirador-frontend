@@ -21,7 +21,9 @@ export const SelectTag: FC<SelectTagProps> = ({ setAddedTags, addedTags }) => {
 
   const [tags, setTags] = useState<Tag[]>([]);
 
-  const { data, loading, error } = useQuery(GET_TAGS);
+  const { data, loading, error } = useQuery(GET_TAGS, {
+    fetchPolicy: 'cache-and-network',
+  });
 
   useEffect(() => {
     if (data && data['getTags']) {
