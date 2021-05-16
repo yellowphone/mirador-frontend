@@ -99,6 +99,17 @@ export const CreateExperience: FC<CreateExperienceDataProps> = ({
                   />
                 </InputGroup>
               );
+            case 'CAMPING':
+              return (
+                <InputGroup>
+                  <InputLeftElement pointerEvents="none">$</InputLeftElement>
+                  <Input
+                    placeholder="Enter amount per night"
+                    name="cost"
+                    ref={register}
+                  />
+                </InputGroup>
+              );
           }
         })}
       </>
