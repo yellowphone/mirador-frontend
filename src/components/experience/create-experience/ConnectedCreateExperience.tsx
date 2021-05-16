@@ -50,6 +50,7 @@ export const ConnectedCreateExperience = (): React.ReactElement => {
           summary: input['summary'],
           miles: parseFloat(input['miles']),
           climbing: input['climbing'],
+          cost: parseFloat(input['cost']),
           elevation: parseInt(input['elevation']),
           difficulty: input['difficulty'],
           pkuser: cookie['user']['pkuser'],

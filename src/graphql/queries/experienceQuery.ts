@@ -14,6 +14,7 @@ export const FIND_EXPERIENCE_BY_ID = gql`
       miles
       elevation
       climbing
+      cost
       difficulty
       experience_images {
         images {
@@ -81,6 +82,7 @@ export const FIND_EXPERIENCE_BY_PUBLIC_IDENTIFIER = gql`
       miles
       elevation
       climbing
+      cost
       public_identifier
       difficulty
       experience_images {

@@ -10,12 +10,12 @@ import {
 } from './SingleExperience.type';
 
 export const SingleExperience: FC<SingleExperienceProps> = ({ data }) => {
-  console.log(data);
   const id = data['findExperienceByPublicIdentifier']['pkexperience'];
   const title = data['findExperienceByPublicIdentifier']['title'];
   const miles = data['findExperienceByPublicIdentifier']['miles'];
   const elevation = data['findExperienceByPublicIdentifier']['elevation'];
   const climbing = data['findExperienceByPublicIdentifier']['climbing'];
+  const cost = data['findExperienceByPublicIdentifier']['cost'];
   const summary = data['findExperienceByPublicIdentifier']['summary'];
   const lat =
     data['findExperienceByPublicIdentifier']['experience_locations']['lat'];
@@ -35,6 +35,7 @@ export const SingleExperience: FC<SingleExperienceProps> = ({ data }) => {
         <p>miles: {miles}</p>
         <p>elevation: {elevation}</p>
         <p>rating: {climbing}</p>
+        <p>cost: {cost}</p>
         <TagGrid tags={tags} />
       </div>
       <Container height="200px">

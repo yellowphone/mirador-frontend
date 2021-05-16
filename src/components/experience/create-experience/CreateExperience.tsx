@@ -12,6 +12,8 @@ import {
   Spinner,
   Textarea,
   Text,
+  InputGroup,
+  InputLeftElement,
 } from '@chakra-ui/react';
 import { Button } from '@chakra-ui/react';
 import { NavigationBar } from '../../shared/navigation-bar/NavigationBar';
@@ -85,6 +87,17 @@ export const CreateExperience: FC<CreateExperienceDataProps> = ({
                   maxLength={5}
                   ref={register}
                 />
+              );
+            case 'MUSEUM':
+              return (
+                <InputGroup>
+                  <InputLeftElement pointerEvents="none">$</InputLeftElement>
+                  <Input
+                    placeholder="Enter amount"
+                    name="cost"
+                    ref={register}
+                  />
+                </InputGroup>
               );
           }
         })}

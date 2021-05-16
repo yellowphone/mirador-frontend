@@ -14,8 +14,6 @@ export const CategoryTag: FC<TagDataProps> = ({ tag, add, close }) => {
         return 'green';
       case 'MUSEUM':
         return 'teal';
-      case 'RESTAURANT':
-        return 'red';
       default:
         return 'orange';
     }

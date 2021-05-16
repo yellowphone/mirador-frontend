@@ -31,6 +31,7 @@ export interface Experience {
   miles: number;
   elevation: number;
   climbing: string;
+  cost: number;
   public_identifier: string;
   difficulty: DifficultyType;
   experience_images: ExperienceImage[];

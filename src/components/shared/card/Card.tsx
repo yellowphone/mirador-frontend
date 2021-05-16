@@ -130,6 +130,8 @@ export const Card: FC<CardDataProps> = ({ experience }) => {
           />
         )}
 
+        {/* TODO: FIX so it isn't just hiking, add many other fields */}
+
         <Box p="6">
           <Box d="flex" alignItems="baseline">
             <Box

@@ -36,6 +36,7 @@ export const ConnectedExperience = (): React.ReactElement => {
         miles: item.miles,
         elevation: item.elevation,
         climbing: item.climbing,
+        cost: item.cost,
         title: item.title,
         summary: item.summary,
         rating: 4,
