@@ -340,6 +340,7 @@ export const ActiveItinerary = ({
                 confirm('This will delete the current itinerary. Are you sure?')
               ) {
                 localStorage.removeItem(LOCAL_STORAGE.ITINERARY_RANGE);
+                localStorage.removeItem(LOCAL_STORAGE.COORDS);
                 setElements({});
               }
             }}
