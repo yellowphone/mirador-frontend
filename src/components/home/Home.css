@@ -10,3 +10,8 @@ input {
   /* not the best way, but it'll do */
   transform: translate(0%, 300%);
 }
+
+.pac-container {
+  /* this sucks, but chakra UI sets the z-index for their modals at 1400 for some god awful reason */
+  z-index: 1500;
+}

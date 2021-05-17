@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client';
-import { AddIcon, DeleteIcon } from '@chakra-ui/icons';
+import { DeleteIcon } from '@chakra-ui/icons';
 import {
   Box,
   Button,
@@ -20,6 +20,7 @@ import {
   Editable,
   EditableInput,
   EditablePreview,
+  FormLabel,
 } from '@chakra-ui/react';
 import React, {
   ChangeEvent,
@@ -47,8 +48,10 @@ import {
   SWAP_ELEMENTS_IN_ITINERARY,
 } from '../../graphql/mutations/mongodbMutation';
 import { LOCAL_STORAGE } from '../../utils/constants';
+import { useLocationContext } from '../../utils/context/LocationContext';
 import { Paths } from '../../utils/paths';
 import { spacer16, spacer8 } from '../../utils/styles/constants';
+import { Search } from '../shared/Google/Search';
 import {
   ElementProps,
   ExperienceContentDataProps,
@@ -96,7 +99,7 @@ const DragDropContainer = styled.div`
   padding: 0 ${spacer16};
 `;
 
-const NotesContainer = styled.div`
+const CTAContainer = styled.div`
   bottom: 0;
   padding: ${spacer16};
   position: fixed;
@@ -112,7 +115,9 @@ export const ActiveItinerary = ({
   setElements: Dispatch<SetStateAction<ManyElementDataProps>>;
 }): ReactElement => {
   const elementKeys = Object.keys(elements);
-  const [title, setTitle] = useState('New Itinerary');
+  const [title, setTitle] = useState('New itinerary');
+  const [addAdditionalLocation, setAddAdditionalLocation] = useState(false);
+  const { coords } = useLocationContext();
   const [cookie] = useCookies(['user']);
   const { handleSubmit } = useForm();
   const history = useHistory();
@@ -139,6 +144,10 @@ export const ActiveItinerary = ({
       setSelectedDay(elementKeys[0]);
     }
   }, [elementKeys, selectedDay]);
+
+  useEffect(() => {
+    setAddAdditionalLocation(false);
+  }, [coords]);
 
   const onSubmit = () => {
     createItinerary({
@@ -373,7 +382,7 @@ export const ActiveItinerary = ({
       >
         {renderElements()}
       </DragDropContainer>
-      <NotesContainer>
+      <CTAContainer>
         <Button onClick={onOpen}>Add notes</Button>
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
@@ -413,7 +422,44 @@ export const ActiveItinerary = ({
             </ModalFooter>
           </ModalContent>
         </Modal>
-      </NotesContainer>
+        <Button
+          colorScheme="blue"
+          marginLeft={4}
+          marginRight={4}
+          onClick={() => {
+            setAddAdditionalLocation(!addAdditionalLocation);
+          }}
+        >
+          Add additional location
+        </Button>
+        <Modal
+          isOpen={addAdditionalLocation}
+          onClose={() => setAddAdditionalLocation(false)}
+        >
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Add additional location to itinerary</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <FormLabel htmlFor="location" margin={2}>
+                Additional location
+              </FormLabel>
+              <Search />
+            </ModalBody>
+
+            <ModalFooter>
+              <Button
+                variant="ghost"
+                onClick={() => {
+                  setAddAdditionalLocation(false);
+                }}
+              >
+                Close
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      </CTAContainer>
     </ActiveItineraryWrapper>
   );
 };
