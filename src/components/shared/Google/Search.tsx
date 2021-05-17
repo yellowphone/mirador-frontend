@@ -14,13 +14,11 @@ import { useDebounce } from 'react-use';
 
 interface ISearchDataProps {
   setCoords: Dispatch<SetStateAction<LatLng>>;
-  refetch?: (variables?: Partial<LatLng>) => Promise<ApolloQueryResult<never>>;
   loader: Loader;
 }
 
 export const Search = ({
   setCoords,
-  refetch,
   loader,
 }: ISearchDataProps): React.ReactElement => {
   const autocompleteRef = useRef<HTMLInputElement>(null);
@@ -58,10 +56,9 @@ export const Search = ({
           lat: place.geometry?.location.lat() || 0,
           lng: place.geometry?.location.lng() || 0,
         });
-        if (refetch) refetch();
       });
     }
-  }, [autocomplete, refetch, setCoords]);
+  }, [autocomplete, setCoords]);
 
   const onChange = (event: { target: HTMLInputElement }) => {
     setLocation(event.target.value);

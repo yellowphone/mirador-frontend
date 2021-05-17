@@ -8,6 +8,7 @@ export const CREATE_EXPERIENCE = gql`
     $miles: Float
     $elevation: Int
     $climbing: String
+    $cost: Float
     $difficulty: Difficulty_Level
     $lat: Float!
     $lng: Float!
@@ -21,6 +22,7 @@ export const CREATE_EXPERIENCE = gql`
       summary: $summary
       miles: $miles
       elevation: $elevation
+      cost: $cost
       climbing: $climbing
       difficulty: $difficulty
       lat: $lat

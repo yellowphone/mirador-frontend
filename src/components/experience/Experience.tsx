@@ -22,7 +22,6 @@ export const Experience: FC<ExperienceDataProps> = ({
   experiences,
   coords,
   setCoords,
-  refetch,
 }) => {
   const loader = new Loader({
     apiKey: `${process.env.MAPS_API_KEY}`,
@@ -36,7 +35,7 @@ export const Experience: FC<ExperienceDataProps> = ({
       <Flex>
         <Box css={leftSideStyle} maxW="50%" width={screen.width / 2}>
           <Center pt="5">
-            <Search loader={loader} setCoords={setCoords} refetch={refetch} />
+            <Search loader={loader} setCoords={setCoords} />
           </Center>
 
           <CardsGrid list={experiences} />

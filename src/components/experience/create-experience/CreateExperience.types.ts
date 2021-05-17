@@ -8,7 +8,9 @@ export interface ExperienceInput {
   summary: string;
   miles: string;
   elevation: string;
+  cost: string;
   difficulty: string;
+  climbing: string;
 }
 export interface CreateExperienceDataProps {
   onSubmit: (input: ExperienceInput) => void;

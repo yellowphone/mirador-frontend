@@ -26,6 +26,7 @@ export const ItinerarySearcher = (): React.ReactElement => {
     FIND_EXPERIENCE_BY_COORDINATES,
     {
       variables: { lat, lng },
+      fetchPolicy: 'cache-and-network',
     }
   );
 
@@ -41,7 +42,7 @@ export const ItinerarySearcher = (): React.ReactElement => {
     (item: IExperience) => {
       return {
         fk_experience_location: item.fk_experience_location,
-        imageUrl: 'http://www.citrusmilo.com/acadia/joebraun_precipice27.jpg',
+        imageUrl: item.url ? item.url[0] : '',
         imageAlt: 'ok',
         miles: item.miles,
         elevation: item.elevation,
