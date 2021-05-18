@@ -14,7 +14,6 @@ export interface ExperienceInput {
 }
 export interface CreateExperienceDataProps {
   onSubmit: (input: ExperienceInput) => void;
-  setCreateCoords: Dispatch<SetStateAction<LatLng>>;
   setAddedTags: Dispatch<SetStateAction<Tag[]>>;
   addedTags: Tag[];
   loader: Loader;

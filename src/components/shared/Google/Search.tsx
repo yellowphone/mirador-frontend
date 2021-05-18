@@ -1,26 +1,12 @@
-import React, {
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Input, Box } from '@chakra-ui/react';
-import { Loader } from '@googlemaps/js-api-loader';
 import './Search.css';
-import { LatLng } from '../../../types/global';
-import { ApolloQueryResult } from '@apollo/client';
 import { useDebounce } from 'react-use';
+import { useLocationContext } from '../../../utils/context/LocationContext';
+import { composePlace } from '../../../utils/composePlace';
 
-interface ISearchDataProps {
-  setCoords: Dispatch<SetStateAction<LatLng>>;
-  loader: Loader;
-}
-
-export const Search = ({
-  setCoords,
-  loader,
-}: ISearchDataProps): React.ReactElement => {
+export const Search = (): React.ReactElement => {
+  const { loader, setCoords } = useLocationContext();
   const autocompleteRef = useRef<HTMLInputElement>(null);
   const [location, setLocation] = useState('');
   const [, setDebouncedLocation] = useState('');
@@ -50,7 +36,7 @@ export const Search = ({
 
       autocomplete.addListener('place_changed', () => {
         const place = autocomplete.getPlace();
-
+        setLocation(composePlace(place));
         // @TODO: this for some reason refreshes the whole component which is kind of meh. we'd like it to persist.
         setCoords({
           lat: place.geometry?.location.lat() || 0,
@@ -78,6 +64,8 @@ export const Search = ({
         <div>
           <Box maxW="100%">
             <Input
+              id="location"
+              _placeholder={{ color: 'black' }}
               placeholder={'Enter a location'}
               onChange={event => {
                 onChange(event);

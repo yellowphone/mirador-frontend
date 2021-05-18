@@ -1,18 +1,26 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { Experience } from './Experience';
 import { IExperience } from './Experience.types';
 
 import { useQuery } from '@apollo/react-hooks';
 
 import { FIND_EXPERIENCE_BY_COORDINATES } from '../../graphql/queries/experienceQuery';
+import { useLocationContext } from '../../utils/context/LocationContext';
 
 export const ConnectedExperience = (): React.ReactElement => {
-  const [coords, setCoords] = useState({ lat: 44.349483, lng: -68.187912 });
+  const {
+    coords: { lat, lng },
+    setCoords,
+  } = useLocationContext();
+
+  useEffect(() => {
+    setCoords({ lat: 44.349483, lng: -68.187912 });
+  }, [setCoords]);
 
   const { data: experienceItems, loading, error } = useQuery(
     FIND_EXPERIENCE_BY_COORDINATES,
     {
-      variables: { lat: coords['lat'], lng: coords['lng'] },
+      variables: { lat, lng },
       fetchPolicy: 'cache-and-network',
     }
   );
@@ -24,8 +32,6 @@ export const ConnectedExperience = (): React.ReactElement => {
     console.error(error);
     return <h1>Error!</h1>;
   }
-
-  console.log(experienceItems);
 
   const experienceList: Array<IExperience> = experienceItems?.findExperienceByCoordinates?.map(
     (item: IExperience) => {
@@ -48,11 +54,5 @@ export const ConnectedExperience = (): React.ReactElement => {
     }
   );
 
-  return (
-    <Experience
-      experiences={experienceList}
-      coords={coords}
-      setCoords={setCoords}
-    />
-  );
+  return <Experience experiences={experienceList} />;
 };

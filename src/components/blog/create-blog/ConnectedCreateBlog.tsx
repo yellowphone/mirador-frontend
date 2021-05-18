@@ -28,11 +28,14 @@ import {
   DropResult,
 } from 'react-beautiful-dnd';
 import { DeleteIcon } from '@chakra-ui/icons';
+import { useLocationContext } from '../../../utils/context/LocationContext';
 
 export const ConnectedCreateBlog = (): React.ReactElement => {
-  const [cookie] = useCookies(['user']);
+  const {
+    coords: { lat, lng },
+  } = useLocationContext();
 
-  const [createCoords, setCreateCoords] = useState({ lat: 0, lng: 0 });
+  const [cookie] = useCookies(['user']);
 
   const [mongoid, setMongoid] = useState('');
 
@@ -66,12 +69,6 @@ export const ConnectedCreateBlog = (): React.ReactElement => {
       setMongoid(data.data['createBlog']);
     });
   }, [createMongoBlog]);
-
-  const loader = new Loader({
-    apiKey: `${process.env.MAPS_API_KEY}`,
-    version: 'weekly',
-    libraries: ['places', 'geometry'],
-  });
 
   const renderElements = () => {
     return (
@@ -229,8 +226,8 @@ export const ConnectedCreateBlog = (): React.ReactElement => {
         summary: input['summary'],
         mongoid: mongoid,
         pkuser: cookie['user']['pkuser'],
-        lat: createCoords['lat'],
-        lng: createCoords['lng'],
+        lat,
+        lng,
         tags: tags,
       },
     }).then(data => {
@@ -248,8 +245,6 @@ export const ConnectedCreateBlog = (): React.ReactElement => {
           onSubmit={onSubmit}
           addElement={addElement}
           renderElements={renderElements}
-          setCreateCoords={setCreateCoords}
-          loader={loader}
           setAddedTags={setAddedTags}
           addedTags={addedTags}
         />

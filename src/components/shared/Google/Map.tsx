@@ -1,35 +1,27 @@
-import React, { FC, useState } from 'react';
-import { IExperience, ICoordinates } from '../../experience/Experience.types';
-import { Loader } from '@googlemaps/js-api-loader';
+import React, { FC } from 'react';
+import { IExperience } from '../../experience/Experience.types';
 import { useHistory } from 'react-router-dom';
-import ReactDOM from 'react-dom';
-import ReactDOMServer from 'react-dom/server';
 import { Paths } from '../../../utils/paths';
 import styled from 'styled-components';
-import {
-  AUTOCOMPLETE_INPUT_HEIGHT,
-  HEADER_HEIGHT,
-} from '../../../utils/styles/constants';
+import { HEADER_HEIGHT } from '../../../utils/styles/constants';
+import { useLocationContext } from '../../../utils/context/LocationContext';
 
 interface IMapDataProps {
-  loader: Loader;
-  coords: ICoordinates;
   experiences: IExperience[];
   displayInfoWindow?: boolean;
 }
 
 const StyledMap = styled.div`
-  // subtract height of header & autocomplete
-  height: calc(100vh - ${HEADER_HEIGHT + AUTOCOMPLETE_INPUT_HEIGHT}px);
+  // subtract height of header
+  height: calc(100vh - ${HEADER_HEIGHT}px);
   width: 100%;
 `;
 
 export const Map: FC<IMapDataProps> = ({
-  loader,
-  coords,
   experiences,
   displayInfoWindow = false,
 }) => {
+  const { coords, loader } = useLocationContext();
   let map: google.maps.Map;
   let timeoutId: NodeJS.Timeout | null;
   let mouseOverInfoWindow = false;
