@@ -4,7 +4,7 @@ import { useForm, Controller } from 'react-hook-form';
 import styled from 'styled-components';
 import { spacer16 } from '../../../utils/styles/constants';
 import { Search } from '../../shared/Google/Search';
-import { DateRangePicker } from 'react-dates';
+import { DateRangePicker, FocusedInputShape } from 'react-dates';
 import moment from 'moment';
 
 const ItineraryBuilderWrapper = styled.article`
@@ -22,7 +22,9 @@ export const EmptyItinerary = ({
 }): ReactElement => {
   const [startDate, setStartDate] = useState<moment.Moment | null>(null);
   const [endDate, setEndDate] = useState<moment.Moment | null>(null);
-  const [focusedInput, setFocusedInput] = useState<moment.Moment | null>(null);
+  const [focusedInput, setFocusedInput] = useState<FocusedInputShape | null>(
+    null
+  );
 
   const { handleSubmit } = useForm();
   return (
@@ -54,14 +56,14 @@ export const EmptyItinerary = ({
             startDate,
             endDate,
           }: {
-            startDate: moment.Moment;
-            endDate: moment.Moment;
+            startDate: moment.Moment | null;
+            endDate: moment.Moment | null;
           }) => {
             setStartDate(startDate);
             setEndDate(endDate);
           }}
           focusedInput={focusedInput}
-          onFocusChange={(focusedInput: moment.Moment) =>
+          onFocusChange={(focusedInput: FocusedInputShape | null) =>
             setFocusedInput(focusedInput)
           }
         />
