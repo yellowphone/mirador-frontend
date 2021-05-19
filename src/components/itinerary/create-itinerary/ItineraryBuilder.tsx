@@ -23,6 +23,7 @@ export const ItineraryBuilder = (): ReactElement => {
 
   // Itinerary creates
   const onItineraryCreate = (input: { start: string; end: string }) => {
+    console.log(input);
     const { start, end } = input;
     if (start <= end) {
       createMongoItinerary({
