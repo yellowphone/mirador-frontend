@@ -22,8 +22,7 @@ export const ItineraryBuilder = (): ReactElement => {
   const activeUnsavedCoords = localStorage.getItem(LOCAL_STORAGE.COORDS);
 
   // Itinerary creates
-  const onItineraryCreate = (input: { start: string; end: string }) => {
-    const { start, end } = input;
+  const onItineraryCreate = (start: string, end: string) => {
     if (start <= end) {
       createMongoItinerary({
         variables: {

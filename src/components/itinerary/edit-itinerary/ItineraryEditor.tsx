@@ -50,12 +50,12 @@ export const ItineraryEditor: FC<ItineraryEditorProps> = ({
   }, []);
 
   // Itinerary creates
-  const onItineraryCreate = (input: { start: string; end: string }) => {
-    if (input['start'] <= input['end']) {
+  const onItineraryCreate = (start: string, end: string) => {
+    if (start <= end) {
       createMongoItinerary({
         variables: {
-          beginning: input['start'],
-          end: input['end'],
+          beginning: start,
+          end,
         },
       }).then(returnData => {
         updateItinerary({

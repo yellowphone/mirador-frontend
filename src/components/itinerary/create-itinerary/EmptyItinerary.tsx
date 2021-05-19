@@ -1,9 +1,11 @@
 import { Button, FormLabel, Heading, Input, Text } from '@chakra-ui/react';
-import React, { ReactElement } from 'react';
-import { useForm } from 'react-hook-form';
+import React, { ReactElement, useState } from 'react';
+import { useForm, Controller } from 'react-hook-form';
 import styled from 'styled-components';
 import { spacer16 } from '../../../utils/styles/constants';
 import { Search } from '../../shared/Google/Search';
+import { DateRangePicker, FocusedInputShape } from 'react-dates';
+import moment from 'moment';
 
 const ItineraryBuilderWrapper = styled.article`
   margin: ${spacer16};
@@ -16,9 +18,15 @@ const InputWrapper = styled.div`
 export const EmptyItinerary = ({
   onItineraryCreate,
 }: {
-  onItineraryCreate: (input: { start: string; end: string }) => void;
+  onItineraryCreate: (start: string, end: string) => void;
 }): ReactElement => {
-  const { register, handleSubmit } = useForm();
+  const [startDate, setStartDate] = useState<moment.Moment | null>(null);
+  const [endDate, setEndDate] = useState<moment.Moment | null>(null);
+  const [focusedInput, setFocusedInput] = useState<FocusedInputShape | null>(
+    null
+  );
+
+  const { handleSubmit } = useForm();
   return (
     <ItineraryBuilderWrapper>
       <Heading as="h1" size="lg" marginBottom={2}>
@@ -27,19 +35,39 @@ export const EmptyItinerary = ({
       <Text fontSize="sm" marginBottom={4}>
         Here are some details describing what an itinerary is! Lorem ipsum dolor
       </Text>
-      <form onSubmit={handleSubmit(onItineraryCreate)}>
+      <form
+        onSubmit={handleSubmit(() => {
+          const stringStartDate = moment(startDate).format('YYYY-MM-DD');
+          const stringEndDate = moment(endDate).format('YYYY-MM-DD');
+          onItineraryCreate(stringStartDate, stringEndDate);
+        })}
+      >
         <InputWrapper>
           <FormLabel htmlFor="location">Location</FormLabel>
           <Search />
         </InputWrapper>
-        <InputWrapper>
-          <FormLabel htmlFor="start-date">Trip start date</FormLabel>
-          <Input id="start-date" type="date" name="start" ref={register} />
-        </InputWrapper>
-        <InputWrapper>
-          <FormLabel htmlFor="end-date">Trip end date</FormLabel>
-          <Input id="end-date" type="date" name="end" ref={register} />
-        </InputWrapper>
+
+        <DateRangePicker
+          startDate={startDate}
+          startDateId="startDateId"
+          endDate={endDate}
+          endDateId="endDateId"
+          onDatesChange={({
+            startDate,
+            endDate,
+          }: {
+            startDate: moment.Moment | null;
+            endDate: moment.Moment | null;
+          }) => {
+            setStartDate(startDate);
+            setEndDate(endDate);
+          }}
+          focusedInput={focusedInput}
+          onFocusChange={(focusedInput: FocusedInputShape | null) =>
+            setFocusedInput(focusedInput)
+          }
+        />
+
         <Button type="submit">Start new itinerary</Button>
       </form>
     </ItineraryBuilderWrapper>
