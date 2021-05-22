@@ -11,10 +11,42 @@ export const FIND_USER = gql`
       lastname
       bio
       experiences {
-        pkexperience
+        title
+        miles
+        elevation
+        climbing
+        cost
+        public_identifier
+        difficulty
+        experience_images {
+          images {
+            url
+          }
+        }
+        experience_tags {
+          tags {
+            tag
+          }
+        }
       }
       blogs {
-        pkblog
+        title
+        summary
+        public_identifier
+        blog_tags: {
+          include: {
+            tags: true
+          }
+        }
+      }
+      itineraries {
+        public_identifier
+        title
+        itinerary_tags {
+          tags {
+            tag
+          }
+        }
       }
     }
   }
