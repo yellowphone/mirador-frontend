@@ -10,6 +10,8 @@ export const ConnectedProfile = (): React.ReactElement => {
 
   const [data, setData] = useState<TSFixMe>({});
 
+  console.log(data);
+
   useQuery(FIND_USER, {
     variables: {
       pkuser: cookie['user']['pkuser'],

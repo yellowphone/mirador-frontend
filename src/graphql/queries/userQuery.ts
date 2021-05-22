@@ -6,7 +6,6 @@ export const FIND_USER = gql`
       pkuser
       username
       email
-      password
       firstname
       lastname
       bio
@@ -33,9 +32,9 @@ export const FIND_USER = gql`
         title
         summary
         public_identifier
-        blog_tags: {
-          include: {
-            tags: true
+        blog_tags {
+          tags {
+            tag
           }
         }
       }
