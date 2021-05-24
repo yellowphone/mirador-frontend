@@ -61,7 +61,7 @@ export const NavigationBar: FC = () => {
 
   return (
     <Navbar bg="light justify-content-between" sticky="top">
-      <Grid templateColumns="repeat(5, 1fr)" gap="20">
+      <Grid templateColumns="repeat(5, 1fr)" gap="20" width="100%">
         <GridItem p="4">
           <Navbar.Brand onClick={() => onNavigate(Paths.Home)}>
             Mirador

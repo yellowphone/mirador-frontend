@@ -1,6 +1,5 @@
 import React, { FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { NavigationBar } from '../../shared/navigation-bar/NavigationBar';
 import { CreateBlogDataProps } from './CreateBlog.types';
 import {
   Container,
@@ -52,7 +51,6 @@ export const CreateBlog: FC<CreateBlogDataProps> = ({
 
   return (
     <>
-      <NavigationBar />
       <Container maxW="xl">
         <Box maxW="100%">
           <form onSubmit={handleSubmit(onSubmit)}>

@@ -1,6 +1,5 @@
 import React, { FC, useState } from 'react';
 import styled from 'styled-components';
-import { NavigationBar } from '../../shared/navigation-bar/NavigationBar';
 import { ItineraryEditor } from './ItineraryEditor';
 import { ItinerarySearcher } from '../create-itinerary/ItinerarySearcher';
 import { EditItineraryDataProps } from './EditItinerary.types';
@@ -17,8 +16,6 @@ export const EditItinerary: FC<EditItineraryDataProps> = ({ data }) => {
 
   return (
     <>
-      <NavigationBar />
-      {/* TODO: ^^^ Create global layout so we don't have to include this on every page. */}
       <CreateItineraryContainer>
         <Box>
           <Box d="flex" p={2} alignItems="baseline">

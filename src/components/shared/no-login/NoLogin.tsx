@@ -9,7 +9,6 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { useHistory } from 'react-router-dom';
-import { NavigationBar } from '../navigation-bar/NavigationBar';
 import { Paths } from '../../../utils/paths';
 
 export const NoLogin = (): React.ReactElement => {
@@ -17,7 +16,6 @@ export const NoLogin = (): React.ReactElement => {
 
   return (
     <>
-      <NavigationBar />
       <Modal isOpen={true} onClose={() => ({})}>
         <ModalOverlay />
         <ModalContent>

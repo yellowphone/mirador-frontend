@@ -28,6 +28,7 @@ import { ConnectedSingleItinerary } from '../components/itinerary/single-itinera
 import { ConnectedEditItinerary } from '../components/itinerary/edit-itinerary/ConnectedEditItinerary';
 import { ConnectedEditBlog } from '../components/blog/edit-blog/ConnectedEditBlog';
 import { LocationContextWrapper } from '../utils/context/LocationContext';
+import { NavigationBar } from '../components/shared/navigation-bar/NavigationBar';
 
 export const App: React.FC = () => {
   return (
@@ -36,6 +37,7 @@ export const App: React.FC = () => {
         <CookiesProvider>
           <ChakraProvider>
             <Router>
+              <NavigationBar />
               <Switch>
                 <Route exact path={Paths.Blog} component={ConnectedBlog} />
                 <Route

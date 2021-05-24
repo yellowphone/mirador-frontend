@@ -1,18 +1,14 @@
 import React, { FC, useCallback } from 'react';
-import { NavigationBar } from '../../shared/navigation-bar/NavigationBar';
 import { SingleItineraryProps } from './SingleItinerary.types';
 import {
   Button,
   Image,
-  Center,
-  Input,
   Text,
   Tabs,
   TabList,
   Tab,
   TabPanels,
   TabPanel,
-  Container,
   Box,
   HStack,
   Heading,
@@ -73,7 +69,6 @@ export const SingleItinerary: FC<SingleItineraryProps> = ({
 
   return (
     <>
-      <NavigationBar />
       <p>Itinerary!!!</p>
       <p>pkitinerary: {data.pkitinerary}</p>
       <p>title: {data.title}</p>
