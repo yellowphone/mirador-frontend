@@ -10,6 +10,7 @@ import {
   MenuItem,
   Text,
   useDisclosure,
+  Heading,
 } from '@chakra-ui/react';
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import { Nav } from 'react-bootstrap';
@@ -64,7 +65,9 @@ export const NavigationBar: FC = () => {
       <Grid templateColumns="repeat(5, 1fr)" gap="20" width="100%">
         <GridItem p="4">
           <Navbar.Brand onClick={() => onNavigate(Paths.Home)}>
-            Mirador
+            <Heading as="h1" size="lg" fontFamily="Comfortaa">
+              Mirador
+            </Heading>
           </Navbar.Brand>
         </GridItem>
         <Spacer />

@@ -1765,6 +1765,11 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
+"@fontsource/comfortaa@^4.3.0":
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/@fontsource/comfortaa/-/comfortaa-4.3.0.tgz#dc2a0d4666928eea8c478b4c5000198e61cf11c0"
+  integrity sha512-DYHJtqalvM3W3wcMVldnoW/EnxPUwx4aXGPuZBzbtebaGuSonpI372VqbRk4bNpKdn06hRNAWJiPHvzJAS3pmA==
+
 "@fontsource/open-sans@^4.3.0":
   version "4.3.0"
   resolved "https://registry.yarnpkg.com/@fontsource/open-sans/-/open-sans-4.3.0.tgz#960c3d9df5e841369e47d775dbb1a80212ff08d1"
