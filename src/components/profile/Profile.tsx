@@ -9,7 +9,7 @@ export const Profile = ({ data }: { data: TSFixMe }): React.ReactElement => {
     <>
       <NavigationBar />
       <ProfileCard />
-      <ActionBar />
+      <ActionBar data={data} />
     </>
   );
 };
