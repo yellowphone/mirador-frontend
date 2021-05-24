@@ -15,9 +15,7 @@
     "watch": true,
     "sourceMap": true,
     "outDir": "./dist/",
-    "types": ["googlemaps", "node"],
+    "types": ["googlemaps", "node", "gapi", "gapi.auth2", "facebook-js-sdk"]
   },
-  "include": [
-    "src"
-  ],
+  "include": ["src"]
 }

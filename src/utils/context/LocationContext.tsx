@@ -9,7 +9,11 @@ import React, {
   useContext,
   useState,
 } from 'react';
-import { LatLng } from '../../types/global';
+
+export type LatLng = {
+  lat: number;
+  lng: number;
+};
 
 type LocationContextInterface = {
   coords: LatLng;
