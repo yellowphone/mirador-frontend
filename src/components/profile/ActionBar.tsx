@@ -10,7 +10,11 @@ import { sortedLastIndex } from 'lodash';
 import React from 'react';
 import { TSFixMe } from '../../types/global';
 
-export const ActionBar = ({ data }: { data: TSFixMe }): React.ReactElement => {
+export const ActionBar = ({
+  userData,
+}: {
+  userData: TSFixMe;
+}): React.ReactElement => {
   return (
     <div style={{ paddingTop: '10px' }}>
       <Center>
@@ -23,34 +27,32 @@ export const ActionBar = ({ data }: { data: TSFixMe }): React.ReactElement => {
           </TabList>
 
           <TabPanels>
-            {/* overview */}
             <TabPanel>
               <p>Overview</p>
               <p>A current temporary solution and just passing in data</p>
               <p>Will need UI work</p>
             </TabPanel>
 
-            {/* experiences */}
             <TabPanel>
               <p>Experiences</p>
             </TabPanel>
 
-            {/* blogs */}
             <TabPanel>
               <p>Blogs</p>
-              {data.blogs &&
-                data.blogs.map((blog: TSFixMe, index: number) => {
+              {userData.blogs &&
+                userData.blogs.map((blog: TSFixMe, index: number) => {
                   return <p key={index}>title: {blog.title}</p>;
                 })}
             </TabPanel>
 
-            {/* itineraries */}
             <TabPanel>
               <p>Itineraries</p>
-              {data.itineraries &&
-                data.itineraries.map((itinerary: TSFixMe, index: number) => {
-                  return <p key={index}>title: {itinerary.title}</p>;
-                })}
+              {userData.itineraries &&
+                userData.itineraries.map(
+                  (itinerary: TSFixMe, index: number) => {
+                    return <p key={index}>title: {itinerary.title}</p>;
+                  }
+                )}
             </TabPanel>
           </TabPanels>
         </Tabs>

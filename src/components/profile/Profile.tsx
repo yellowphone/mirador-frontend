@@ -4,12 +4,16 @@ import { NavigationBar } from '../shared/navigation-bar/NavigationBar';
 import { ActionBar } from './ActionBar';
 import { ProfileCard } from './ProfileCard';
 
-export const Profile = ({ data }: { data: TSFixMe }): React.ReactElement => {
+export const Profile = ({
+  userData,
+}: {
+  userData: TSFixMe;
+}): React.ReactElement => {
   return (
     <>
       <NavigationBar />
       <ProfileCard />
-      <ActionBar data={data} />
+      <ActionBar userData={userData} />
     </>
   );
 };

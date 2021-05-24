@@ -8,19 +8,19 @@ import { Profile } from './Profile';
 export const ConnectedProfile = (): React.ReactElement => {
   const [cookie] = useCookies(['user']);
 
-  const [data, setData] = useState<TSFixMe>({});
+  const [userData, setUserData] = useState<TSFixMe>({});
 
-  console.log(data);
+  console.log(userData);
 
   useQuery(FIND_USER, {
     variables: {
       pkuser: cookie['user']['pkuser'],
     },
     onCompleted: incomingData => {
-      setData(incomingData.findUser);
+      setUserData(incomingData.findUser);
     },
     fetchPolicy: 'cache-and-network',
   });
 
-  return <Profile data={data} />;
+  return <Profile userData={userData} />;
 };
