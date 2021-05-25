@@ -1,4 +1,4 @@
-import { LatLng } from '../../../types/global';
+import { LatLng } from '../../../utils/context/LocationContext';
 import { DifficultyType } from '../../shared/media/Badges/Badges.types';
 
 export interface ExperienceImageInstance {

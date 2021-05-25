@@ -1765,6 +1765,21 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
+"@fontsource/comfortaa@^4.3.0":
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/@fontsource/comfortaa/-/comfortaa-4.3.0.tgz#dc2a0d4666928eea8c478b4c5000198e61cf11c0"
+  integrity sha512-DYHJtqalvM3W3wcMVldnoW/EnxPUwx4aXGPuZBzbtebaGuSonpI372VqbRk4bNpKdn06hRNAWJiPHvzJAS3pmA==
+
+"@fontsource/open-sans@^4.3.0":
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/@fontsource/open-sans/-/open-sans-4.3.0.tgz#960c3d9df5e841369e47d775dbb1a80212ff08d1"
+  integrity sha512-U4mz+KC0WT0AbjR5BanmfXbtkirFU3puOCOblJ3dm8ekV+SfZ4QSjpEryNCaY16gqNgKtwMWMOtVvlNPmc9gfw==
+
+"@fontsource/raleway@^4.3.0":
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/@fontsource/raleway/-/raleway-4.3.0.tgz#8ca67d6f521f07c6e1fa611adea6a2e1cf1b23af"
+  integrity sha512-uXY9PH241WKop5jOXvG7azKc/cTuyEKM+TIlV6Xos+lUGfPqBNmiR5J0IX4sJkyOq59UJjYcYCvEU/rOqfh/Tw==
+
 "@googlemaps/js-api-loader@^1.11.1":
   version "1.11.1"
   resolved "https://registry.npmjs.org/@googlemaps/js-api-loader/-/js-api-loader-1.11.1.tgz"
@@ -2089,6 +2104,11 @@
   resolved "https://registry.npmjs.org/@types/extract-files/-/extract-files-8.1.0.tgz"
   integrity sha512-ulxvlFU71yLVV3JxdBgryASAIp+aZQuQOpkhU1SznJlcWz0qsJCWHqdJqP6Lprs3blqGS5FH5GbBkU0977+Wew==
 
+"@types/facebook-js-sdk@^3.3.2":
+  version "3.3.2"
+  resolved "https://registry.yarnpkg.com/@types/facebook-js-sdk/-/facebook-js-sdk-3.3.2.tgz#4e34c7bf758a1ac848baef1dc3fc03e9b67553a6"
+  integrity sha512-s4L1r0lhdSz7Q138pnXU6/0escJCisKAgaIMOPiAOS32OxrdOkRTPXJShEd08jwmrvD3KCpj+kboWiH343n3vg==
+
 "@types/fork-ts-checker-webpack-plugin@^0.4.5":
   version "0.4.5"
   resolved "https://registry.npmjs.org/@types/fork-ts-checker-webpack-plugin/-/fork-ts-checker-webpack-plugin-0.4.5.tgz"
@@ -2096,7 +2116,14 @@
   dependencies:
     fork-ts-checker-webpack-plugin "*"
 
-"@types/gapi@^0.0.39":
+"@types/gapi.auth2@^0.0.54":
+  version "0.0.54"
+  resolved "https://registry.yarnpkg.com/@types/gapi.auth2/-/gapi.auth2-0.0.54.tgz#812207fb213fde4f2d74e6f0abd9da7ba34782ac"
+  integrity sha512-4HEphaKsGndb9+tnd2PBBmxloaij04iYXVsjgHpFxqbPFt5Le6pasoh5g5BEtwp/YEm9xDbzssp44BYR2/7RcQ==
+  dependencies:
+    "@types/gapi" "*"
+
+"@types/gapi@*", "@types/gapi@^0.0.39":
   version "0.0.39"
   resolved "https://registry.npmjs.org/@types/gapi/-/gapi-0.0.39.tgz"
   integrity sha512-R1TZeZbvvbIC60DBJMhuOEivQHzOQtzl3uMDOOENTYQTSSDB6oEMpJo8HVPOTWivdUTbyEcB5qQOVr/JCKRlCQ==
@@ -4795,7 +4822,7 @@ file-entry-cache@^6.0.1:
 
 file-loader@^6.2.0:
   version "6.2.0"
-  resolved "https://registry.npmjs.org/file-loader/-/file-loader-6.2.0.tgz"
+  resolved "https://registry.yarnpkg.com/file-loader/-/file-loader-6.2.0.tgz#baef7cf8e1840df325e4390b4484879480eebe4d"
   integrity sha512-qo3glqyTa61Ytg4u73GultjHGjdRyig3tG6lPtyX/jOEJvHif9uB0/OCI2Kif6ctF3caQTW2G5gym21oAsI4pw==
   dependencies:
     loader-utils "^2.0.0"

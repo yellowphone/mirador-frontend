@@ -1,6 +1,5 @@
 import { Box, Center, Flex } from '@chakra-ui/react';
 import React, { FC } from 'react';
-import { NavigationBar } from '../shared/navigation-bar/NavigationBar';
 import './Experience.css';
 import { ExperienceDataProps } from './Experience.types';
 import { CardsGrid } from '../shared/cards-grid/CardsGrid';
@@ -14,13 +13,11 @@ const leftSideStyle = {
 
 const rightSideStyle = {
   scroll: 'none',
-  // position: 'fixed', // need to get the map to be fixed to the right
 };
 
 export const Experience: FC<ExperienceDataProps> = ({ experiences }) => {
   return (
     <>
-      <NavigationBar />
       <Flex>
         <Box css={leftSideStyle} maxW="50%" width={screen.width / 2}>
           <Center pt="5">

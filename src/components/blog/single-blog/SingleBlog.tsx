@@ -7,7 +7,6 @@ import {
   Text,
   Button,
 } from '@chakra-ui/react';
-import { NavigationBar } from '../../shared/navigation-bar/NavigationBar';
 import { SingleBlogDataProps } from './SingleBlog.types';
 import { TagGrid } from '../../shared/media/Tags/TagGrid';
 import { useHistory } from 'react-router';
@@ -30,7 +29,6 @@ export const SingleBlog: FC<SingleBlogDataProps> = ({
 
   return (
     <>
-      <NavigationBar />
       <Container maxW="lg" p={2}>
         <Button onClick={() => onNavigate(Paths.EditBlog)}>Edit Blog</Button>
         <VStack spacing="20px">

@@ -2,8 +2,6 @@ import { Stack, Image, Container, Box } from '@chakra-ui/react';
 import React, { FC } from 'react';
 import { TagGrid } from '../../shared/media/Tags/TagGrid';
 
-import { NavigationBar } from '../../shared/navigation-bar/NavigationBar';
-
 import {
   ExperienceImageInstance,
   SingleExperienceProps,
@@ -25,7 +23,6 @@ export const SingleExperience: FC<SingleExperienceProps> = ({ data }) => {
 
   return (
     <>
-      <NavigationBar />
       <div>
         <h1>{title}</h1>
         <p>primary key of this experience: {id}</p>

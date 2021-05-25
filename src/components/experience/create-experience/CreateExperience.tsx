@@ -16,7 +16,6 @@ import {
   InputLeftElement,
 } from '@chakra-ui/react';
 import { Button } from '@chakra-ui/react';
-import { NavigationBar } from '../../shared/navigation-bar/NavigationBar';
 import { Search } from '../../shared/Google/Search';
 import { DifficultyType } from '../../shared/media/Badges/Badges.types';
 import { CreateExperienceDataProps } from './CreateExperience.types';
@@ -116,7 +115,6 @@ export const CreateExperience: FC<CreateExperienceDataProps> = ({
 
   return (
     <>
-      <NavigationBar />
       <Box maxW="xl">
         <form onSubmit={handleSubmit(onSubmit)}>
           <Input name="title" placeholder="Title" ref={register} />

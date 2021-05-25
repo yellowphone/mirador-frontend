@@ -1,12 +1,9 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, ReactElement } from 'react';
 import {
   Container,
-  SimpleGrid,
   Center,
-  Heading,
   VStack,
   Text,
-  Image,
   Box,
   Button,
   Input,
@@ -16,7 +13,6 @@ import {
   EditablePreview,
   Flex,
 } from '@chakra-ui/react';
-import { NavigationBar } from '../../shared/navigation-bar/NavigationBar';
 import { TagGrid } from '../../shared/media/Tags/TagGrid';
 import { useHistory } from 'react-router';
 import { Paths } from '../../../utils/paths';
@@ -42,7 +38,7 @@ export const EditBlog = ({
   updateBlog: (
     options?: MutationFunctionOptions<any, OperationVariables> | undefined
   ) => Promise<FetchResult<any, Record<string, any>, Record<string, any>>>;
-}) => {
+}): ReactElement => {
   const history = useHistory();
   const onNavigate = useCallback(
     (path: Paths) => {
@@ -82,7 +78,6 @@ export const EditBlog = ({
 
   return (
     <>
-      <NavigationBar />
       <Container maxW="lg" p={2}>
         <Button onClick={() => onNavigate(Paths.SingleBlog)}>View Blog</Button>
         <VStack spacing="20px" p={5}>

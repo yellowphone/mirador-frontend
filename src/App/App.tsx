@@ -1,4 +1,7 @@
-import { ChakraProvider } from '@chakra-ui/react';
+import { ChakraProvider, extendTheme } from '@chakra-ui/react';
+import '@fontsource/raleway/400.css';
+import '@fontsource/open-sans/700.css';
+import '@fontsource/comfortaa/700.css';
 import React from 'react';
 import {
   Redirect,
@@ -28,14 +31,23 @@ import { ConnectedSingleItinerary } from '../components/itinerary/single-itinera
 import { ConnectedEditItinerary } from '../components/itinerary/edit-itinerary/ConnectedEditItinerary';
 import { ConnectedEditBlog } from '../components/blog/edit-blog/ConnectedEditBlog';
 import { LocationContextWrapper } from '../utils/context/LocationContext';
+import { NavigationBar } from '../components/shared/navigation-bar/NavigationBar';
+
+const theme = extendTheme({
+  fonts: {
+    heading: 'Open Sans',
+    body: 'Raleway',
+  },
+});
 
 export const App: React.FC = () => {
   return (
     <ApolloProvider client={client}>
       <LocationContextWrapper>
         <CookiesProvider>
-          <ChakraProvider>
+          <ChakraProvider theme={theme}>
             <Router>
+              <NavigationBar />
               <Switch>
                 <Route exact path={Paths.Blog} component={ConnectedBlog} />
                 <Route

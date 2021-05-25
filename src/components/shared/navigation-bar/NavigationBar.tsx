@@ -10,11 +10,11 @@ import {
   MenuItem,
   Text,
   useDisclosure,
+  Link,
+  HStack,
 } from '@chakra-ui/react';
 import React, { FC, useCallback, useEffect, useState } from 'react';
-import { Nav } from 'react-bootstrap';
-import Navbar from 'react-bootstrap/Navbar';
-import { useHistory } from 'react-router-dom';
+import { Link as ReactRouterLink, useHistory } from 'react-router-dom';
 import { Paths } from '../../../utils/paths';
 import './NavigationBar.css';
 import { MdPerson } from 'react-icons/md';
@@ -27,6 +27,19 @@ import {
   logout,
 } from '../../../utils/userContext';
 import { useCookies } from 'react-cookie';
+import styled from 'styled-components';
+import { spacer8 } from '../../../utils/styles/constants';
+import { BrandLink, Logo } from './Logo';
+
+const Nav = styled.nav`
+  align-items: center;
+  display: flex;
+  box-shadow: rgb(0 0 0 / 8%) 0px 1px 12px;
+  padding: ${spacer8};
+  position: sticky;
+  top: 0;
+  z-index: 1;
+`;
 
 export const NavigationBar: FC = () => {
   const [cookie, , removeCookie] = useCookies(['user']);
@@ -60,31 +73,29 @@ export const NavigationBar: FC = () => {
   }, [cookie, user]);
 
   return (
-    <Navbar bg="light justify-content-between" sticky="top">
-      <Grid templateColumns="repeat(5, 1fr)" gap="20">
-        <GridItem p="4">
-          <Navbar.Brand onClick={() => onNavigate(Paths.Home)}>
-            Mirador
-          </Navbar.Brand>
+    <Nav>
+      <Grid templateColumns="repeat(5, 1fr)" gap="20" width="100%">
+        <GridItem alignItems="center" display="flex" p="4">
+          <Logo path={Paths.Home} />
         </GridItem>
         <Spacer />
-        <GridItem pt="4">
-          <Nav className="center">
-            <Nav.Link onClick={() => onNavigate(Paths.Experience)}>
-              Experiences
-            </Nav.Link>
-            <Nav.Link onClick={() => onNavigate(Paths.Blog)}>Blogs</Nav.Link>
-            <Nav.Link onClick={() => onNavigate(Paths.Itinerary)}>
-              Itineraries
-            </Nav.Link>
-          </Nav>
-        </GridItem>
+        <HStack alignItems="center">
+          <Link to={Paths.Experience} as={ReactRouterLink}>
+            Experiences
+          </Link>
+          <Link to={Paths.Blog} as={ReactRouterLink}>
+            Blogs
+          </Link>
+          <Link to={Paths.Itinerary} as={ReactRouterLink}>
+            Itineraries
+          </Link>
+        </HStack>
         <Spacer />
-        <GridItem p="4">
-          <Nav className="center">
+        <GridItem p="4" alignItems="center" display="flex">
+          <HStack padding="8px">
             {user ? (
-              <Grid templateColumns="repeat(3, 1fr)">
-                <GridItem>
+              <Grid templateColumns="1fr 24px">
+                <GridItem marginRight="8px">
                   <Menu>
                     <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
                       <AddIcon />
@@ -109,24 +120,23 @@ export const NavigationBar: FC = () => {
                     </MenuList>
                   </Menu>
                 </GridItem>
-                <Spacer />
-                <GridItem onClick={() => onNavigate(Paths.Profile)}>
+                <BrandLink to={Paths.Profile} as={ReactRouterLink}>
                   <Icon as={MdPerson} w={8} h={8} />
-                </GridItem>
+                </BrandLink>
               </Grid>
             ) : (
-              <>
-                <Nav.Link onClick={onOpen}>
+              <HStack padding="8px">
+                <Link onClick={onOpen}>
                   {/* <Login isOpen={isOpen} onOpen={onOpen} onClose={onClose} /> */}
                   <Text>Login</Text>
-                </Nav.Link>
-                <Nav.Link>Sign up</Nav.Link>
-              </>
+                </Link>
+                <Link>Sign up</Link>
+              </HStack>
             )}
-          </Nav>
+          </HStack>
         </GridItem>
         {!user && <Login onClose={onClose} isOpen={isOpen} setUser={setUser} />}
       </Grid>
-    </Navbar>
+    </Nav>
   );
 };
