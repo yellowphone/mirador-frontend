@@ -1,4 +1,4 @@
-export const HEADER_HEIGHT = 88;
+export const HEADER_HEIGHT = 104;
 export const AUTOCOMPLETE_INPUT_HEIGHT = 40;
 
 export const spacer4 = '4px';
