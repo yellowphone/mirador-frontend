@@ -38,6 +38,7 @@ const Nav = styled.nav`
   padding: ${spacer8};
   position: sticky;
   top: 0;
+  z-index: 1;
 `;
 
 export const NavigationBar: FC = () => {
