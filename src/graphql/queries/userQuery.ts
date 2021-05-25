@@ -6,15 +6,46 @@ export const FIND_USER = gql`
       pkuser
       username
       email
-      password
       firstname
       lastname
       bio
       experiences {
-        pkexperience
+        title
+        miles
+        elevation
+        climbing
+        cost
+        public_identifier
+        difficulty
+        experience_images {
+          images {
+            url
+          }
+        }
+        experience_tags {
+          tags {
+            tag
+          }
+        }
       }
       blogs {
-        pkblog
+        title
+        summary
+        public_identifier
+        blog_tags {
+          tags {
+            tag
+          }
+        }
+      }
+      itineraries {
+        public_identifier
+        title
+        itinerary_tags {
+          tags {
+            tag
+          }
+        }
       }
     }
   }
