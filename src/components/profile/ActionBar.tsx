@@ -1,3 +1,4 @@
+import { useQuery } from '@apollo/client';
 import {
   Center,
   Tabs,
@@ -6,15 +7,39 @@ import {
   TabPanels,
   TabPanel,
 } from '@chakra-ui/react';
-import { sortedLastIndex } from 'lodash';
-import React from 'react';
-import { TSFixMe } from '../../types/global';
+import React, { useState } from 'react';
+import { useCookies } from 'react-cookie';
+import { FIND_USER } from '../../graphql/queries/userQuery';
+import { IBlog } from '../blog/Blog.types';
+import { Experience } from '../experience/single-experience/SingleExperience.type';
+import { FindItineraryByIdObject } from '../itinerary/single-itinerary/SingleItinerary.types';
 
-export const ActionBar = ({
-  userData,
-}: {
-  userData: TSFixMe;
-}): React.ReactElement => {
+export interface UserData {
+  blogs: IBlog[];
+  email: string;
+  experiences: Experience[];
+  firstname: string;
+  itineraries: FindItineraryByIdObject[];
+  lastname: string;
+  pkuser: number;
+  username: string;
+}
+
+export const ActionBar = (): React.ReactElement => {
+  const [cookie] = useCookies(['user']);
+
+  const [userData, setUserData] = useState<Partial<UserData>>({});
+
+  useQuery(FIND_USER, {
+    variables: {
+      pkuser: cookie.user.pkuser,
+    },
+    onCompleted: incomingData => {
+      setUserData(incomingData.findUser);
+    },
+    fetchPolicy: 'cache-and-network',
+  });
+
   return (
     <div style={{ paddingTop: '10px' }}>
       <Center>
@@ -40,7 +65,7 @@ export const ActionBar = ({
             <TabPanel>
               <p>Blogs</p>
               {userData.blogs &&
-                userData.blogs.map((blog: TSFixMe, index: number) => {
+                userData.blogs.map((blog: IBlog, index: number) => {
                   return <p key={index}>title: {blog.title}</p>;
                 })}
             </TabPanel>
@@ -49,7 +74,7 @@ export const ActionBar = ({
               <p>Itineraries</p>
               {userData.itineraries &&
                 userData.itineraries.map(
-                  (itinerary: TSFixMe, index: number) => {
+                  (itinerary: FindItineraryByIdObject, index: number) => {
                     return <p key={index}>title: {itinerary.title}</p>;
                   }
                 )}
