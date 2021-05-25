@@ -1,18 +1,22 @@
 import { useQuery } from '@apollo/client';
 import {
-  Center,
   Tabs,
   TabList,
   Tab,
   TabPanels,
   TabPanel,
+  Wrap,
 } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useCookies } from 'react-cookie';
+import { useHistory } from 'react-router';
+import styled from 'styled-components';
 import { FIND_USER } from '../../graphql/queries/userQuery';
+import { spacer24 } from '../../utils/styles/constants';
 import { IBlog } from '../blog/Blog.types';
 import { Experience } from '../experience/single-experience/SingleExperience.type';
 import { FindItineraryByIdObject } from '../itinerary/single-itinerary/SingleItinerary.types';
+import { BlogCard, ExperienceCard, ItineraryCard } from './Card';
 
 export interface UserData {
   blogs: IBlog[];
@@ -25,10 +29,17 @@ export interface UserData {
   username: string;
 }
 
+const ActionBarContainer = styled.section`
+  overflow-y: scroll;
+  padding: ${spacer24};
+`;
+
 export const ActionBar = (): React.ReactElement => {
   const [cookie] = useCookies(['user']);
+  const history = useHistory();
 
   const [userData, setUserData] = useState<Partial<UserData>>({});
+  console.log({ userData });
 
   useQuery(FIND_USER, {
     variables: {
@@ -40,48 +51,66 @@ export const ActionBar = (): React.ReactElement => {
     fetchPolicy: 'cache-and-network',
   });
 
+  const calcDefaultIndex = useCallback(() => {
+    const tabs = ['experiences', 'blogs', 'itineraries'];
+    if (!history.location.search) return 0;
+    return tabs.findIndex(tab => history.location.search.includes(tab));
+  }, [history]);
+
   return (
-    <div style={{ paddingTop: '10px' }}>
-      <Center>
-        <Tabs variant="soft-rounded">
-          <TabList>
-            <Tab>Overview</Tab>
-            <Tab>Experiences</Tab>
-            <Tab>Blogs</Tab>
-            <Tab>Itineraries</Tab>
-          </TabList>
+    <ActionBarContainer>
+      <Tabs
+        variant="soft-rounded"
+        colorScheme="green"
+        defaultIndex={calcDefaultIndex()}
+      >
+        <TabList>
+          <Tab onClick={() => history.push('/profile?tab=experiences')}>
+            Experiences
+          </Tab>
+          <Tab onClick={() => history.push('/profile?tab=blogs')}>Blogs</Tab>
+          <Tab onClick={() => history.push('/profile?tab=itineraries')}>
+            Itineraries
+          </Tab>
+        </TabList>
 
-          <TabPanels>
-            <TabPanel>
-              <p>Overview</p>
-              <p>A current temporary solution and just passing in data</p>
-              <p>Will need UI work</p>
-            </TabPanel>
+        <TabPanels>
+          <TabPanel>
+            <Wrap>
+              {userData.experiences &&
+                userData.experiences.map((experience: Experience) => (
+                  <ExperienceCard
+                    key={experience.public_identifier}
+                    experience={experience}
+                  />
+                ))}
+            </Wrap>
+          </TabPanel>
 
-            <TabPanel>
-              <p>Experiences</p>
-            </TabPanel>
-
-            <TabPanel>
-              <p>Blogs</p>
+          <TabPanel>
+            <Wrap>
               {userData.blogs &&
-                userData.blogs.map((blog: IBlog, index: number) => {
-                  return <p key={index}>title: {blog.title}</p>;
-                })}
-            </TabPanel>
+                userData.blogs.map((blog: IBlog) => (
+                  <BlogCard key={blog.public_identifier} blog={blog} />
+                ))}
+            </Wrap>
+          </TabPanel>
 
-            <TabPanel>
-              <p>Itineraries</p>
+          <TabPanel>
+            <Wrap>
               {userData.itineraries &&
                 userData.itineraries.map(
-                  (itinerary: FindItineraryByIdObject, index: number) => {
-                    return <p key={index}>title: {itinerary.title}</p>;
-                  }
+                  (itinerary: FindItineraryByIdObject) => (
+                    <ItineraryCard
+                      key={itinerary.public_identifier}
+                      itinerary={itinerary}
+                    />
+                  )
                 )}
-            </TabPanel>
-          </TabPanels>
-        </Tabs>
-      </Center>
-    </div>
+            </Wrap>
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
+    </ActionBarContainer>
   );
 };
