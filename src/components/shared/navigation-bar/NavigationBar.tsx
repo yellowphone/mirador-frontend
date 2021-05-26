@@ -12,6 +12,7 @@ import {
   useDisclosure,
   Link,
   HStack,
+  IconButton,
 } from '@chakra-ui/react';
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import { Link as ReactRouterLink, useHistory } from 'react-router-dom';
@@ -114,15 +115,23 @@ export const NavigationBar: FC = () => {
                       <MenuItem onClick={() => onNavigate(Paths.CreateBlog)}>
                         New Blog
                       </MenuItem>
-
-                      {/* This is only temporary */}
-                      <MenuItem onClick={onLogout}>Logout</MenuItem>
                     </MenuList>
                   </Menu>
                 </GridItem>
-                <BrandLink to={Paths.Profile} as={ReactRouterLink}>
-                  <Icon as={MdPerson} w={8} h={8} />
-                </BrandLink>
+                <Menu>
+                  <MenuButton
+                    as={IconButton}
+                    aria-label="Options"
+                    icon={<MdPerson />}
+                    variant="outline"
+                  />
+                  <MenuList>
+                    <MenuItem onClick={() => onNavigate(Paths.Profile)}>
+                      Profile
+                    </MenuItem>
+                    <MenuItem onClick={onLogout}>Logout</MenuItem>
+                  </MenuList>
+                </Menu>
               </Grid>
             ) : (
               <HStack padding="8px">
