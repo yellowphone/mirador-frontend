@@ -32,6 +32,8 @@ import { ConnectedEditItinerary } from '../components/itinerary/edit-itinerary/C
 import { ConnectedEditBlog } from '../components/blog/edit-blog/ConnectedEditBlog';
 import { LocationContextWrapper } from '../utils/context/LocationContext';
 import { NavigationBar } from '../components/shared/navigation-bar/NavigationBar';
+import styled from 'styled-components';
+import { HEADER_HEIGHT } from '../utils/styles/constants';
 
 const theme = extendTheme({
   fonts: {
@@ -39,6 +41,11 @@ const theme = extendTheme({
     body: 'Raleway',
   },
 });
+
+const Main = styled.main`
+  height: calc(100vh - ${HEADER_HEIGHT}px);
+  overflow: hidden;
+`;
 
 export const App: React.FC = () => {
   return (
@@ -48,66 +55,68 @@ export const App: React.FC = () => {
           <ChakraProvider theme={theme}>
             <Router>
               <NavigationBar />
-              <Switch>
-                <Route exact path={Paths.Blog} component={ConnectedBlog} />
-                <Route
-                  exact
-                  path={`${Paths.SingleBlog}/:id`}
-                  component={ConnectedSingleBlog}
-                />
-                <Route
-                  exact
-                  path={`${Paths.EditBlog}/:id`}
-                  component={ConnectedEditBlog}
-                />
-                <Route
-                  exact
-                  path={Paths.CreateBlog}
-                  component={ConnectedCreateBlog}
-                />
-                <Route exact path={Paths.Home} component={ConnectedHome} />
-                <Route
-                  exact
-                  path={Paths.Experience}
-                  component={ConnectedExperience}
-                />
-                <Route
-                  exact
-                  path={`${Paths.SingleExperience}/:id`}
-                  component={ConnectedSingleExperience}
-                />
-                <Route
-                  exact
-                  path={Paths.CreateExperience}
-                  component={ConnectedCreateExperience}
-                />
-                <Route
-                  exact
-                  path={Paths.Itinerary}
-                  component={ConnectedItinerary}
-                />
-                <Route
-                  exact
-                  path={`${Paths.SingleItinerary}/:id`}
-                  component={ConnectedSingleItinerary}
-                />
-                <Route
-                  exact
-                  path={Paths.CreateItinerary}
-                  component={ConnectedCreateItinerary}
-                />
-                <Route
-                  exact
-                  path={`${Paths.EditItinerary}/:id`}
-                  component={ConnectedEditItinerary}
-                />
-                <Route
-                  exact
-                  path={Paths.Profile}
-                  component={ConnectedProfile}
-                />
-                <Redirect from="*" to={Paths.Home} />
-              </Switch>
+              <Main>
+                <Switch>
+                  <Route exact path={Paths.Blog} component={ConnectedBlog} />
+                  <Route
+                    exact
+                    path={`${Paths.SingleBlog}/:id`}
+                    component={ConnectedSingleBlog}
+                  />
+                  <Route
+                    exact
+                    path={`${Paths.EditBlog}/:id`}
+                    component={ConnectedEditBlog}
+                  />
+                  <Route
+                    exact
+                    path={Paths.CreateBlog}
+                    component={ConnectedCreateBlog}
+                  />
+                  <Route exact path={Paths.Home} component={ConnectedHome} />
+                  <Route
+                    exact
+                    path={Paths.Experience}
+                    component={ConnectedExperience}
+                  />
+                  <Route
+                    exact
+                    path={`${Paths.SingleExperience}/:id`}
+                    component={ConnectedSingleExperience}
+                  />
+                  <Route
+                    exact
+                    path={Paths.CreateExperience}
+                    component={ConnectedCreateExperience}
+                  />
+                  <Route
+                    exact
+                    path={Paths.Itinerary}
+                    component={ConnectedItinerary}
+                  />
+                  <Route
+                    exact
+                    path={`${Paths.SingleItinerary}/:id`}
+                    component={ConnectedSingleItinerary}
+                  />
+                  <Route
+                    exact
+                    path={Paths.CreateItinerary}
+                    component={ConnectedCreateItinerary}
+                  />
+                  <Route
+                    exact
+                    path={`${Paths.EditItinerary}/:id`}
+                    component={ConnectedEditItinerary}
+                  />
+                  <Route
+                    exact
+                    path={Paths.Profile}
+                    component={ConnectedProfile}
+                  />
+                  <Redirect from="*" to={Paths.Home} />
+                </Switch>
+              </Main>
             </Router>
           </ChakraProvider>
         </CookiesProvider>
