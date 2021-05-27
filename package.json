@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "scripts": {
     "start": "node server.js",
-    "heroku-postbuild": "webpack -p",
     "build:dev": "webpack --mode development",
     "build:prod": "webpack --mode production",
     "lint": "tsc --noEmit && pretty-quick --staged && lint-staged",
