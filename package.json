@@ -2,6 +2,7 @@
   "name": "mirador",
   "version": "1.0.0",
   "scripts": {
+    "start": "yarn start:dev",
     "build:dev": "webpack --mode development",
     "build:prod": "webpack --mode production",
     "lint": "tsc --noEmit && pretty-quick --staged && lint-staged",
