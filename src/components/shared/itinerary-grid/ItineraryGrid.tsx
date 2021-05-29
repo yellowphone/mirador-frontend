@@ -8,7 +8,6 @@ export const ItineraryGrid = ({
 }: {
   itineraries: FindItineraryByIdObject[];
 }) => {
-  console.log(itineraries);
   return (
     <Container maxW="xl" centerContent>
       <SimpleGrid columns={3} spacing={10}>

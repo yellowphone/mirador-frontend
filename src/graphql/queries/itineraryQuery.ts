@@ -39,6 +39,20 @@ export const FIND_ITINERARIES_FOR_USER = gql`
   }
 `;
 
+export const FIND_MANY_ITINERARIES = gql`
+  query findManyItineraries {
+    findManyItineraries {
+      title
+      public_identifier
+      itinerary_tags {
+        tags {
+          tag
+        }
+      }
+    }
+  }
+`;
+
 export const FIND_ITINERARY_BY_PUBLIC_IDENTIFIER = gql`
   query findItineraryByPublicIdentifier($public_identifier: String!) {
     findItineraryByPublicIdentifier(public_identifier: $public_identifier) {
