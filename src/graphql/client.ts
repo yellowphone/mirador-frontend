@@ -5,7 +5,6 @@ import { getUserContext } from '../utils/userContext';
 
 const uploadLink = createUploadLink({
   uri: process.env.BACKEND_API_URL,
-  // uri: 'http://localhost:4000/graphql',
 });
 
 const authLink = setContext((_, { headers }) => {
@@ -24,7 +23,6 @@ const link = ApolloLink.from([(uploadLink as unknown) as ApolloLink, authLink]);
 
 export const client = new ApolloClient({
   uri: process.env.BACKEND_API_URL,
-  // uri: 'http://localhost:4000/graphql',
   cache: new InMemoryCache(),
   link: link,
 });
