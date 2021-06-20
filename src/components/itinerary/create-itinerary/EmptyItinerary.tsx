@@ -6,9 +6,11 @@ import { spacer16 } from '../../../utils/styles/constants';
 import { Search } from '../../shared/Google/Search';
 import { DateRangePicker, FocusedInputShape } from 'react-dates';
 import moment from 'moment';
+import { grey0 } from '../../../utils/styles/colors';
 
 const ItineraryBuilderWrapper = styled.article`
-  margin: ${spacer16};
+  background-color: ${grey0};
+  padding: ${spacer16};
 `;
 
 const InputWrapper = styled.div`
