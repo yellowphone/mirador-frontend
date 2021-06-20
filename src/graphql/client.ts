@@ -3,8 +3,10 @@ import { createUploadLink } from 'apollo-upload-client';
 import { setContext } from '@apollo/client/link/context';
 import { getUserContext } from '../utils/userContext';
 
+require('dotenv').config();
+
 const uploadLink = createUploadLink({
-  uri: process.env.BACKEND_API_URL,
+  uri: process.env.REACT_APP_BACKEND_API_URL,
 });
 
 const authLink = setContext((_, { headers }) => {
@@ -19,10 +21,10 @@ const authLink = setContext((_, { headers }) => {
 });
 
 // this type coercion is gross, but apollo-upload-client and @apollo/client have mismatched types!
-const link = ApolloLink.from([(uploadLink as unknown) as ApolloLink, authLink]);
+const link = ApolloLink.from([uploadLink as unknown as ApolloLink, authLink]);
 
 export const client = new ApolloClient({
-  uri: process.env.BACKEND_API_URL,
+  uri: process.env.REACT_APP_BACKEND_API_URL,
   cache: new InMemoryCache(),
   link: link,
 });

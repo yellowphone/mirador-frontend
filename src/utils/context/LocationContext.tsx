@@ -10,6 +10,8 @@ import React, {
   useState,
 } from 'react';
 
+require('dotenv').config();
+
 export type LatLng = {
   lat: number;
   lng: number;
@@ -24,16 +26,15 @@ type LocationContextInterface = {
 const initialState = {
   coords: { lat: 0, lng: 0 },
   loader: new Loader({
-    apiKey: `${process.env.MAPS_API_KEY}`,
+    apiKey: `${process.env.REACT_APP_MAPS_API_KEY}`,
     version: 'weekly',
     libraries: ['places', 'geometry'],
   }),
   setCoords: () => {},
 };
 
-export const LocationContext = createContext<LocationContextInterface>(
-  initialState
-);
+export const LocationContext =
+  createContext<LocationContextInterface>(initialState);
 
 export const LocationContextWrapper = ({
   children,
