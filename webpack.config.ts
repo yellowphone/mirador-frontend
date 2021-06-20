@@ -82,6 +82,7 @@ module.exports = () => {
       new webpack.EnvironmentPlugin(['REACT_APP_GOOGLE_CLIENT_ID']),
       new webpack.EnvironmentPlugin(['REACT_APP_MAPS_API_KEY']),
       new webpack.EnvironmentPlugin(['REACT_APP_MONGODB_API_URL']),
+      new webpack.EnvironmentPlugin(['REACT_APP_SC_ATTR']),
     ],
     devServer: {
       port: 3000,
