@@ -26,6 +26,9 @@ module.exports = () => {
     },
     resolve: {
       extensions: ['.js', '.jsx', '.ts', '.tsx'],
+      alias: {
+        process: 'process/browser',
+      },
     },
     module: {
       rules: [
@@ -68,6 +71,12 @@ module.exports = () => {
         inject: 'body',
       }),
       new webpack.DefinePlugin(envKeys),
+      new webpack.DefinePlugin({
+        'process.env': JSON.stringify(dotenv.config().parsed), // it will automatically pick up key values from .env file
+      }),
+      new webpack.ProvidePlugin({
+        process: 'process/browser',
+      }),
     ],
     devServer: {
       port: 3000,
