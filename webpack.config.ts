@@ -68,9 +68,6 @@ module.exports = () => {
         inject: 'body',
       }),
       new webpack.DefinePlugin(envKeys),
-      new webpack.DefinePlugin({
-        'process.env': JSON.stringify(dotenv.config().parsed),
-      }),
     ],
     devServer: {
       port: 3000,
