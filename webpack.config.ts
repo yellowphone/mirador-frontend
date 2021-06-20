@@ -26,6 +26,9 @@ module.exports = () => {
     },
     resolve: {
       extensions: ['.js', '.jsx', '.ts', '.tsx'],
+      alias: {
+        process: 'process/browser',
+      },
     },
     module: {
       rules: [
@@ -69,8 +72,18 @@ module.exports = () => {
       }),
       new webpack.DefinePlugin(envKeys),
       new webpack.DefinePlugin({
-        'process.env': JSON.stringify(dotenv.config().parsed),
+        'process.env': JSON.stringify(dotenv.config().parsed), // it will automatically pick up key values from .env file
       }),
+      new webpack.ProvidePlugin({
+        process: 'process/browser',
+      }),
+      new webpack.EnvironmentPlugin(['NODE_ENV']),
+      new webpack.EnvironmentPlugin(['REACT_APP_BACKEND_API_URL']),
+      new webpack.EnvironmentPlugin(['REACT_APP_GOOGLE_CLIENT_ID']),
+      new webpack.EnvironmentPlugin(['REACT_APP_MAPS_API_KEY']),
+      new webpack.EnvironmentPlugin(['REACT_APP_MONGODB_API_URL']),
+      new webpack.EnvironmentPlugin(['REACT_APP_SC_ATTR']),
+      new webpack.EnvironmentPlugin(['REACT_APP_SC_DISABLE_SPEEDY']),
     ],
     devServer: {
       port: 3000,

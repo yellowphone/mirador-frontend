@@ -20,8 +20,6 @@ import { useLazyQuery } from '@apollo/client';
 import { FIND_USER_BY_EMAIL } from '../../graphql/queries/userQuery';
 import { useCookies } from 'react-cookie';
 
-require('dotenv').config();
-
 export const Login: FC<ILoginDataProps> = ({ isOpen, onClose, setUser }) => {
   const [cookie, setCookie] = useCookies(['user']);
 

@@ -10,8 +10,6 @@ import React, {
   useState,
 } from 'react';
 
-require('dotenv').config();
-
 export type LatLng = {
   lat: number;
   lng: number;
