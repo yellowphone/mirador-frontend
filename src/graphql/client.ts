@@ -3,8 +3,6 @@ import { createUploadLink } from 'apollo-upload-client';
 import { setContext } from '@apollo/client/link/context';
 import { getUserContext } from '../utils/userContext';
 
-require('dotenv').config();
-
 const uploadLink = createUploadLink({
   uri: process.env.REACT_APP_BACKEND_API_URL,
 });
