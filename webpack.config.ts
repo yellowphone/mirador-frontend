@@ -77,6 +77,11 @@ module.exports = () => {
       new webpack.ProvidePlugin({
         process: 'process/browser',
       }),
+      new webpack.EnvironmentPlugin(['NODE_ENV']),
+      new webpack.EnvironmentPlugin(['REACT_APP_BACKEND_API_URL']),
+      new webpack.EnvironmentPlugin(['REACT_APP_GOOGLE_CLIENT_ID']),
+      new webpack.EnvironmentPlugin(['REACT_APP_MAPS_API_KEY']),
+      new webpack.EnvironmentPlugin(['REACT_APP_MONGODB_API_URL']),
     ],
     devServer: {
       port: 3000,
