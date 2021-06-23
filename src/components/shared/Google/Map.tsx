@@ -1,10 +1,11 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { IExperience } from '../../experience/Experience.types';
 import { useHistory } from 'react-router-dom';
 import { Paths } from '../../../utils/paths';
 import styled from 'styled-components';
 import { HEADER_HEIGHT } from '../../../utils/styles/constants';
 import { useLocationContext } from '../../../utils/context/LocationContext';
+import _ from 'lodash';
 
 interface IMapDataProps {
   experiences: IExperience[];
@@ -19,10 +20,11 @@ const StyledMap = styled.div`
 
 export const Map: FC<IMapDataProps> = ({
   experiences,
+  // TODO: is there a better way to name this that would describe the different map usages
   displayInfoWindow = false,
 }) => {
   const { coords, loader } = useLocationContext();
-  let map: google.maps.Map;
+  let map: google.maps.Map | undefined = undefined;
   let timeoutId: NodeJS.Timeout | null;
   let mouseOverInfoWindow = false;
 
@@ -37,6 +39,15 @@ export const Map: FC<IMapDataProps> = ({
       mapTypeControl: false,
       gestureHandling: 'greedy',
     },
+    zoomControlOptions: {
+      position: 6, // LEFT_BOTTOM,
+    },
+    streetViewControlOptions: {
+      position: 6,
+    },
+    // fullscreenControlOptions: {
+    //   position: 5, // LEFT_TOP
+    // },
   };
 
   const history = useHistory();
@@ -141,6 +152,10 @@ export const Map: FC<IMapDataProps> = ({
         );
       }
       map = new google.maps.Map(mapContainer, mapOptions);
+      map.panBy(
+        Math.floor((map.getDiv() as HTMLDivElement).offsetWidth / 6),
+        0
+      );
 
       if (!displayInfoWindow) {
         experiences.map(createMarkerAndAddRoute);

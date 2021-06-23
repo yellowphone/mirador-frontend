@@ -34,7 +34,7 @@ export const ActiveItinerary = ({
   setElements: Dispatch<SetStateAction<ManyElementDataProps>>;
 }): ReactElement => {
   const elementKeys = Object.keys(elements);
-  const [title, setTitle] = useState('New itinerary');
+  const [title, setTitle] = useState('My trip');
   const [cookie] = useCookies(['user']);
   const { handleSubmit } = useForm();
   const history = useHistory();

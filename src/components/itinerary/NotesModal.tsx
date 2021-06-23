@@ -26,7 +26,9 @@ export const NotesModal = ({
 
   return (
     <>
-      <Button onClick={onOpen}>Add notes</Button>
+      <Button onClick={onOpen} size="xs">
+        Add notes
+      </Button>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>

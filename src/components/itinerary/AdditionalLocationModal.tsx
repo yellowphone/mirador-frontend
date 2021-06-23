@@ -30,6 +30,7 @@ export const AdditionalLocationModal = (): ReactElement => {
         onClick={() => {
           setAddAdditionalLocation(!addAdditionalLocation);
         }}
+        size="xs"
       >
         Add additional location
       </Button>

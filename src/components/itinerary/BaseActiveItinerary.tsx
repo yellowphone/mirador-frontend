@@ -1,4 +1,4 @@
-import { EditIcon } from '@chakra-ui/icons';
+import { CalendarIcon, EditIcon } from '@chakra-ui/icons';
 import {
   Button,
   Editable,
@@ -7,20 +7,27 @@ import {
   Flex,
   useEditableControls,
   Text,
+  Box,
+  IconButton,
+  Icon,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  Select,
 } from '@chakra-ui/react';
+import moment from 'moment';
 import React, { ReactElement } from 'react';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import { useHistory } from 'react-router';
 import { LOCAL_STORAGE } from '../../utils/constants';
+import { formatSingleDate, formatWeekdayMonthDayYear } from '../../utils/date';
 import { Paths } from '../../utils/paths';
+import { grey0 } from '../../utils/styles/colors';
+import { spacer16, spacer24 } from '../../utils/styles/constants';
 import {
   ActiveItineraryWrapper,
-  CTAContainer,
-  Day,
-  DayContainer,
-  DayText,
   DragDropContainer,
-  ItineraryDetails,
   ItineraryInfoWrapper,
 } from './ActiveItinerary.style';
 import { AdditionalLocationModal } from './AdditionalLocationModal';
@@ -34,6 +41,7 @@ import {
   ItineraryExperienceText,
 } from './ItineraryExperienceItem';
 import { NotesModal } from './NotesModal';
+import { BsThreeDots } from 'react-icons/bs';
 
 export enum ItineraryType {
   NEW = 'NEW',
@@ -74,6 +82,10 @@ export const BaseActiveItinerary = ({
   updateTitle?: (title: string) => void;
 }): ReactElement => {
   const history = useHistory();
+  const hasDates = dates.length > 0;
+  const startDate = hasDates ? dates[0] : undefined;
+  const endDate = hasDates ? dates[dates.length - 1] : undefined;
+
   const renderItineraryItems = () => {
     return (
       <DragDropContext onDragEnd={onDragEnd}>
@@ -137,77 +149,111 @@ export const BaseActiveItinerary = ({
 
   return (
     <ActiveItineraryWrapper>
-      {type === ItineraryType.EDIT && (
-        <Button onClick={() => history.push(`${Paths.SingleItinerary}/${id}`)}>
-          Go back
-        </Button>
-      )}
-      <Flex alignItems="center" justifyContent="space-between" margin={2}>
-        <Flex alignItems="center">
-          <Editable
-            fontSize={'2xl'}
-            fontWeight="bold"
-            defaultValue={title}
-            onChange={type === ItineraryType.NEW ? setTitle : undefined}
-            onSubmit={type === ItineraryType.EDIT ? updateTitle : undefined}
-          >
-            <EditablePreview />
-            <EditableInput />
-            <EditableControls />
-          </Editable>
-        </Flex>
-        {type === ItineraryType.NEW && (
-          <Flex>
-            <Button
-              onClick={() => {
-                if (
-                  confirm(
-                    'This will delete the current itinerary. Are you sure?'
-                  )
-                ) {
-                  localStorage.removeItem(LOCAL_STORAGE.ITINERARY_RANGE);
-                  localStorage.removeItem(LOCAL_STORAGE.COORDS);
-                  if (resetItineraryItems) resetItineraryItems();
-                }
-              }}
-              marginRight={2}
-            >
-              Cancel
-            </Button>
-            <Button type="submit" onClick={createItinerary} colorScheme="blue">
-              Create itinerary
-            </Button>
+      <Flex flexDir="column" position="sticky" top="0" minWidth="550px">
+        <Box p={spacer24} backgroundColor={grey0}>
+          <Flex alignItems="center" justifyContent="space-between">
+            <Flex alignItems="center">
+              <Editable
+                fontSize={'2xl'}
+                fontWeight="bold"
+                defaultValue={title}
+                onChange={type === ItineraryType.NEW ? setTitle : undefined}
+                onSubmit={type === ItineraryType.EDIT ? updateTitle : undefined}
+              >
+                <EditablePreview />
+                <EditableInput />
+                <EditableControls />
+              </Editable>
+            </Flex>
+            <Flex alignItems="center">
+              <Menu>
+                <MenuButton
+                  as={IconButton}
+                  aria-label="Settings"
+                  icon={<Icon as={BsThreeDots} />}
+                  variant="ghost"
+                />
+                <MenuList>
+                  {type === ItineraryType.NEW && (
+                    <MenuItem
+                      onClick={() => {
+                        if (
+                          confirm(
+                            'This will delete the current itinerary. Are you sure?'
+                          )
+                        ) {
+                          localStorage.removeItem(
+                            LOCAL_STORAGE.ITINERARY_RANGE
+                          );
+                          localStorage.removeItem(LOCAL_STORAGE.COORDS);
+                          if (resetItineraryItems) resetItineraryItems();
+                        }
+                      }}
+                    >
+                      Cancel
+                    </MenuItem>
+                  )}
+                  {type === ItineraryType.EDIT && (
+                    <MenuItem
+                      onClick={() =>
+                        history.push(`${Paths.SingleItinerary}/${id}`)
+                      }
+                    >
+                      Cancel edit
+                    </MenuItem>
+                  )}
+                </MenuList>
+              </Menu>
+              {type === ItineraryType.NEW && (
+                <Button
+                  type="submit"
+                  onClick={createItinerary}
+                  colorScheme="blue"
+                  size="xs"
+                >
+                  Create itinerary
+                </Button>
+              )}
+            </Flex>
           </Flex>
-        )}
+          {startDate && endDate && (
+            <Flex alignItems="center">
+              <CalendarIcon mr="2" />
+              <Text>
+                {formatWeekdayMonthDayYear(startDate, endDate)} &bull;{' '}
+                <Text as="span" fontStyle="italic">
+                  {dates.length} days
+                </Text>
+              </Text>
+            </Flex>
+          )}
+        </Box>
+        <ItineraryInfoWrapper>
+          <Select
+            size="lg"
+            value={selectedDay}
+            onChange={event => {
+              setSelectedDay(event.target.value);
+            }}
+          >
+            {(dates || []).map((date, index) => (
+              <option key={`${index}-${date}`} value={date}>
+                {formatSingleDate(date)} - Day {index + 1}
+              </option>
+            ))}
+          </Select>
+        </ItineraryInfoWrapper>
+        <Flex bg={grey0} p="0 24px 16px 24px">
+          <NotesModal addNote={addNote} />
+          <AdditionalLocationModal />
+        </Flex>
       </Flex>
-      <ItineraryInfoWrapper>
-        <DayContainer>
-          {(dates || []).map((date, index) => (
-            <Day
-              key={`${index}-${date}`}
-              onClick={() => setSelectedDay(date)}
-              selected={date === selectedDay}
-            >
-              <DayText>Day {index + 1}</DayText>
-            </Day>
-          ))}
-        </DayContainer>
-        <ItineraryDetails>
-          <Text fontSize="xs">
-            {`${dates[0]} - ${dates[dates.length - 1]}`}
-          </Text>
-        </ItineraryDetails>
-      </ItineraryInfoWrapper>
       <DragDropContainer
         onDragOver={e => handleDragOver(e)}
         onDrop={e => handleDragDrop(e)}
       >
         {renderItineraryItems()}
       </DragDropContainer>
-      <CTAContainer>
-        <NotesModal addNote={addNote} />
-        <AdditionalLocationModal />
-      </CTAContainer>
     </ActiveItineraryWrapper>
   );
 };

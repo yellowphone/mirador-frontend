@@ -6,10 +6,11 @@ import { EditItineraryDataProps } from './EditItinerary.types';
 import { Box, Text } from '@chakra-ui/layout';
 import { Switch } from '@chakra-ui/switch';
 import { SavedExperiences } from './SavedExperiences';
+import { FloatingItineraryBuilder } from '../create-itinerary/CreateItinerary';
+import { grey0 } from '../../../utils/styles/colors';
 
 const CreateItineraryContainer = styled.section`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  position: relative;
 `;
 export const EditItinerary: FC<EditItineraryDataProps> = ({ data }) => {
   const [checked, setChecked] = useState(false);
@@ -18,10 +19,17 @@ export const EditItinerary: FC<EditItineraryDataProps> = ({ data }) => {
     <>
       <CreateItineraryContainer>
         <Box>
-          <Box d="flex" p={2} alignItems="baseline">
+          <Box
+            background={grey0}
+            d="flex"
+            p={2}
+            alignItems="baseline"
+            position="absolute"
+            zIndex="1"
+          >
             <Text>Searcher</Text>
             <Switch
-              p={1}
+              p="0"
               isChecked={checked}
               onChange={() => setChecked(current => !current)}
             />
@@ -30,8 +38,9 @@ export const EditItinerary: FC<EditItineraryDataProps> = ({ data }) => {
           {!checked && <ItinerarySearcher />}
           {checked && <SavedExperiences data={data} />}
         </Box>
-
-        <ItineraryEditor data={data} />
+        <FloatingItineraryBuilder>
+          <ItineraryEditor data={data} />
+        </FloatingItineraryBuilder>
       </CreateItineraryContainer>
     </>
   );
