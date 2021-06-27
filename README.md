@@ -1,4 +1,23 @@
-# mirador_frontend
+# SPIKE branch for real time data sync for itinerary
+
+- This code chunk will query and provide almost real-time data. 
+- It queries every 100 ms, so whenever a change is made, it is practically real time
+- This might provide us ways for others to make changes and see results immediately, especially for sharing itineraries
+- I think query might be costly, so going to comment out for now, but it is possible
+
+```
+  const { data: testData } = useQuery(FIND_MONGODB_ITINERARY, {
+    client: mongodbClient,
+    pollInterval: 100,
+    variables: {
+      id: data['findItineraryByPublicIdentifier']['mongoid'],
+    },
+  });
+
+  useEffect(() => {
+    console.log(testData);
+  }, [testData]);
+```
 
 Mirador web front end
 

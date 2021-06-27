@@ -1,5 +1,5 @@
 import React, { FC, ReactElement, useEffect, useState } from 'react';
-import { useLazyQuery, useMutation } from '@apollo/client';
+import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
 import { mongodbClient } from '../../../graphql/mongodbClient';
 import { EmptyItinerary } from './EmptyItinerary';
 import {
@@ -36,6 +36,18 @@ export const ItineraryEditor: FC<ItineraryEditorProps> = ({
     },
     onError: err => console.error(err),
   });
+
+  // const { data: testData } = useQuery(FIND_MONGODB_ITINERARY, {
+  //   client: mongodbClient,
+  //   pollInterval: 100,
+  //   variables: {
+  //     id: data['findItineraryByPublicIdentifier']['mongoid'],
+  //   },
+  // });
+
+  // useEffect(() => {
+  //   console.log(testData);
+  // }, [testData]);
 
   useEffect(() => {
     console.log(data);
