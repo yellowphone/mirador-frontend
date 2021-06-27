@@ -37,6 +37,9 @@ export const ItineraryEditor: FC<ItineraryEditorProps> = ({
     onError: err => console.error(err),
   });
 
+  /**
+   * REAL TIME DATA SYNC CODE
+   */
   // const { data: testData } = useQuery(FIND_MONGODB_ITINERARY, {
   //   client: mongodbClient,
   //   pollInterval: 100,

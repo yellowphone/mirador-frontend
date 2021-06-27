@@ -4,6 +4,7 @@
 - It queries every 100 ms, so whenever a change is made, it is practically real time
 - This might provide us ways for others to make changes and see results immediately, especially for sharing itineraries
 - I think query might be costly, so going to comment out for now, but it is possible
+- Only changes we would need to make is get rid of local json instance and basically just feed in `testData` from the example below. We can give it a test soon.
 
 ```
   const { data: testData } = useQuery(FIND_MONGODB_ITINERARY, {
