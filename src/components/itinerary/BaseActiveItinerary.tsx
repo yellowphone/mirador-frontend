@@ -17,7 +17,7 @@ import {
   Select,
 } from '@chakra-ui/react';
 import moment from 'moment';
-import React, { ReactElement } from 'react';
+import React, { ReactElement, SetStateAction } from 'react';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import { useHistory } from 'react-router';
 import { LOCAL_STORAGE } from '../../utils/constants';
@@ -42,6 +42,13 @@ import {
 } from './ItineraryExperienceItem';
 import { NotesModal } from './NotesModal';
 import { BsThreeDots } from 'react-icons/bs';
+import { useState } from 'react';
+import { DateRangePicker, FocusedInputShape } from 'react-dates';
+import { useMutation } from '@apollo/client';
+import { UPDATE_ITINERARY_DATE } from '../../graphql/mutations/mongodbMutation';
+import { useEffect } from 'react';
+import { mongodbClient } from '../../graphql/mongodbClient';
+import { Dispatch } from 'react';
 
 export enum ItineraryType {
   NEW = 'NEW',
@@ -64,6 +71,8 @@ export const BaseActiveItinerary = ({
   title,
   type,
   updateTitle,
+  mongoId,
+  setElements,
 }: {
   addExperience: (experience: ExperienceContentDataProps) => void;
   addNote: (text: string) => void;
@@ -80,11 +89,41 @@ export const BaseActiveItinerary = ({
   title: string;
   type: string;
   updateTitle?: (title: string) => void;
+  mongoId: string;
+  setElements: Dispatch<SetStateAction<ManyElementDataProps>>;
 }): ReactElement => {
   const history = useHistory();
   const hasDates = dates.length > 0;
   const startDate = hasDates ? dates[0] : undefined;
   const endDate = hasDates ? dates[dates.length - 1] : undefined;
+  const [startPickerDate, setStartPickerDate] = useState<moment.Moment | null>(
+    null
+  );
+  const [endPickerDate, setEndPickerDate] = useState<moment.Moment | null>(
+    null
+  );
+  const [focusedInput, setFocusedInput] = useState<FocusedInputShape | null>(
+    null
+  );
+
+  const [updateItineraryDate] = useMutation(UPDATE_ITINERARY_DATE, {
+    client: mongodbClient,
+    onCompleted: data => {
+      delete data.updateItineraryDate._id;
+      setElements(data.updateItineraryDate);
+      console.log(data);
+    },
+  });
+
+  useEffect(() => {
+    updateItineraryDate({
+      variables: {
+        id: mongoId,
+        beginning: startPickerDate?.format('YYYY-MM-DD'),
+        end: endPickerDate?.format('YYYY-MM-DD'),
+      },
+    });
+  }, [startPickerDate, endPickerDate, updateItineraryDate, mongoId]);
 
   const renderItineraryItems = () => {
     return (
@@ -165,62 +204,16 @@ export const BaseActiveItinerary = ({
                 <EditableControls />
               </Editable>
             </Flex>
-            <Flex alignItems="center">
-              <Menu>
-                <MenuButton
-                  as={IconButton}
-                  aria-label="Settings"
-                  icon={<Icon as={BsThreeDots} />}
-                  variant="ghost"
-                />
-                <MenuList>
-                  {type === ItineraryType.NEW && (
-                    <MenuItem
-                      onClick={() => {
-                        if (
-                          confirm(
-                            'This will delete the current itinerary. Are you sure?'
-                          )
-                        ) {
-                          localStorage.removeItem(
-                            LOCAL_STORAGE.ITINERARY_RANGE
-                          );
-                          localStorage.removeItem(LOCAL_STORAGE.COORDS);
-                          if (resetItineraryItems) resetItineraryItems();
-                        }
-                      }}
-                    >
-                      Cancel
-                    </MenuItem>
-                  )}
-                  {type === ItineraryType.EDIT && (
-                    <MenuItem
-                      onClick={() =>
-                        history.push(`${Paths.SingleItinerary}/${id}`)
-                      }
-                    >
-                      Cancel edit
-                    </MenuItem>
-                  )}
-                </MenuList>
-              </Menu>
-              {type === ItineraryType.NEW && (
-                <Button
-                  type="submit"
-                  onClick={createItinerary}
-                  colorScheme="blue"
-                  size="xs"
-                >
-                  Create itinerary
-                </Button>
-              )}
-            </Flex>
           </Flex>
-          {startDate && endDate && (
+          {startPickerDate && endPickerDate && (
             <Flex alignItems="center">
               <CalendarIcon mr="2" />
               <Text>
-                {formatWeekdayMonthDayYear(startDate, endDate)} &bull;{' '}
+                {formatWeekdayMonthDayYear(
+                  startPickerDate.format(`YYYY-MM-DD`),
+                  endPickerDate.format(`YYYY-MM-DD`)
+                )}{' '}
+                &bull;{' '}
                 <Text as="span" fontStyle="italic">
                   {dates.length} days
                 </Text>
@@ -228,21 +221,46 @@ export const BaseActiveItinerary = ({
             </Flex>
           )}
         </Box>
-        <ItineraryInfoWrapper>
-          <Select
-            size="lg"
-            value={selectedDay}
-            onChange={event => {
-              setSelectedDay(event.target.value);
-            }}
-          >
-            {(dates || []).map((date, index) => (
-              <option key={`${index}-${date}`} value={date}>
-                {formatSingleDate(date)} - Day {index + 1}
-              </option>
-            ))}
-          </Select>
-        </ItineraryInfoWrapper>
+
+        <DateRangePicker
+          startDate={startPickerDate}
+          startDateId="startDateId"
+          endDate={endPickerDate}
+          endDateId="endDateId"
+          onDatesChange={({
+            startDate: startPickerDate,
+            endDate: endPickerDate,
+          }: {
+            startDate: moment.Moment | null;
+            endDate: moment.Moment | null;
+          }) => {
+            setStartPickerDate(startPickerDate);
+            setEndPickerDate(endPickerDate);
+          }}
+          focusedInput={focusedInput}
+          onFocusChange={(focusedInput: FocusedInputShape | null) =>
+            setFocusedInput(focusedInput)
+          }
+        />
+
+        {startPickerDate && endPickerDate && (
+          <ItineraryInfoWrapper>
+            <Select
+              size="lg"
+              value={selectedDay}
+              onChange={event => {
+                setSelectedDay(event.target.value);
+              }}
+            >
+              {(dates || []).map((date, index) => (
+                <option key={`${index}-${date}`} value={date}>
+                  {formatSingleDate(date)} - Day {index + 1}
+                </option>
+              ))}
+            </Select>
+          </ItineraryInfoWrapper>
+        )}
+
         <Flex bg={grey0} p="0 24px 16px 24px">
           <NotesModal addNote={addNote} />
           <AdditionalLocationModal />
