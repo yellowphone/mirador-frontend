@@ -15,7 +15,6 @@ import {
   DELETE_ELEMENT_FROM_ITINERARY,
   INSERT_ELEMENT_INTO_ITINERARY,
   SWAP_ELEMENTS_IN_ITINERARY,
-  UPDATE_ITINERARY_DATE,
 } from '../../graphql/mutations/mongodbMutation';
 import { LOCAL_STORAGE } from '../../utils/constants';
 import { Paths } from '../../utils/paths';
@@ -35,7 +34,6 @@ export const ActiveItinerary = ({
   setElements: Dispatch<SetStateAction<ManyElementDataProps>>;
 }): ReactElement => {
   const elementKeys = Object.keys(elements);
-  console.log(elementKeys);
   const [title, setTitle] = useState('My trip');
   const [cookie] = useCookies(['user']);
   const { handleSubmit } = useForm();

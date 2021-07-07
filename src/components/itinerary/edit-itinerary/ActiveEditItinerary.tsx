@@ -27,7 +27,6 @@ export const ActiveEditItinerary = ({
   title: string;
 }): ReactElement => {
   const elementKeys = Object.keys(elements);
-  console.log(elementKeys);
   const [selectedDay, setSelectedDay] = useState(Object.keys(elements)[0]);
 
   const [updateTitle] = useMutation(UPDATE_ITINERARY);
