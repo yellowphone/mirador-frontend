@@ -10,7 +10,10 @@ import { useCookies } from 'react-cookie';
 import { useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
 import { mongodbClient } from '../../graphql/mongodbClient';
-import { CREATE_ITINERARY } from '../../graphql/mutations/itineraryMutation';
+import {
+  CREATE_ITINERARY,
+  UPDATE_ITINERARY,
+} from '../../graphql/mutations/itineraryMutation';
 import {
   DELETE_ELEMENT_FROM_ITINERARY,
   INSERT_ELEMENT_INTO_ITINERARY,
@@ -28,17 +31,15 @@ export const ActiveItinerary = ({
   elements,
   mongoId,
   setElements,
+  public_identifier,
 }: {
   elements: ManyElementDataProps;
   mongoId: string;
   setElements: Dispatch<SetStateAction<ManyElementDataProps>>;
+  public_identifier: string;
 }): ReactElement => {
   const elementKeys = Object.keys(elements);
-  const [title, setTitle] = useState('My trip');
-  const [cookie] = useCookies(['user']);
-  const { handleSubmit } = useForm();
-  const history = useHistory();
-  const [createItinerary] = useMutation(CREATE_ITINERARY);
+  const [title] = useState('My trip');
 
   const [selectedDay, setSelectedDay] = useState(elementKeys[0]);
 
@@ -54,26 +55,13 @@ export const ActiveItinerary = ({
     client: mongodbClient,
   });
 
+  const [updateTitle] = useMutation(UPDATE_ITINERARY);
+
   useEffect(() => {
     if (!selectedDay) {
       setSelectedDay(elementKeys[0]);
     }
   }, [elementKeys, selectedDay]);
-
-  const onSubmit = () => {
-    createItinerary({
-      variables: {
-        title: title,
-        summary: '',
-        mongoid: mongoId,
-        pkuser: cookie['user']['pkuser'],
-      },
-    }).then(data => {
-      const path = `${Paths.SingleItinerary}/${data.data['createItinerary']['public_identifier']}`;
-      history.push(path);
-      localStorage.removeItem(LOCAL_STORAGE.ITINERARY_RANGE);
-    });
-  };
 
   const addElement = (
     type: string,
@@ -134,12 +122,19 @@ export const ActiveItinerary = ({
       itineraryItems={elements}
       selectedDay={selectedDay}
       setSelectedDay={day => setSelectedDay(day)}
-      setTitle={newTitle => setTitle(newTitle)}
       swapItineraryItems={(first, second) => swapElements(first, second)}
       title={title}
       type="NEW"
       mongoId={mongoId}
       setElements={setElements}
+      updateTitle={newTitle => {
+        updateTitle({
+          variables: {
+            public_identifier: public_identifier,
+            title: newTitle,
+          },
+        });
+      }}
     />
   );
 };

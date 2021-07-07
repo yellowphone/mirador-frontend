@@ -63,7 +63,6 @@ export const BaseActiveItinerary = ({
   itineraryItems,
   selectedDay,
   setSelectedDay,
-  setTitle,
   swapItineraryItems,
   title,
   type,
@@ -78,7 +77,6 @@ export const BaseActiveItinerary = ({
   itineraryItems: ManyElementDataProps;
   selectedDay: string;
   setSelectedDay: (day: string) => void;
-  setTitle?: (title: string) => void;
   swapItineraryItems: (firstIndex: number, secondIndex: number) => void;
   title: string;
   type: string;
@@ -107,17 +105,20 @@ export const BaseActiveItinerary = ({
     onCompleted: data => {
       delete data.updateItineraryDate._id;
       setElements(data.updateItineraryDate);
+      console.log(itineraryItems);
     },
   });
 
   useEffect(() => {
-    updateItineraryDate({
-      variables: {
-        id: mongoId,
-        beginning: startPickerDate?.format('YYYY-MM-DD'),
-        end: endPickerDate?.format('YYYY-MM-DD'),
-      },
-    });
+    if (startPickerDate && endPickerDate) {
+      updateItineraryDate({
+        variables: {
+          id: mongoId,
+          beginning: startPickerDate?.format('YYYY-MM-DD'),
+          end: endPickerDate?.format('YYYY-MM-DD'),
+        },
+      });
+    }
   }, [startPickerDate, endPickerDate, updateItineraryDate, mongoId]);
 
   const renderItineraryItems = () => {
@@ -191,7 +192,7 @@ export const BaseActiveItinerary = ({
                 fontSize={'2xl'}
                 fontWeight="bold"
                 defaultValue={title}
-                onChange={type === ItineraryType.NEW ? setTitle : undefined}
+                onChange={type === ItineraryType.NEW ? updateTitle : undefined}
                 onSubmit={type === ItineraryType.EDIT ? updateTitle : undefined}
               >
                 <EditablePreview />
@@ -231,6 +232,20 @@ export const BaseActiveItinerary = ({
           }) => {
             setStartPickerDate(startPickerDate);
             setEndPickerDate(endPickerDate);
+
+            // if (
+            //   startPickerDate &&
+            //   endPickerDate &&
+            //   startPickerDate <= endPickerDate
+            // ) {
+            //   setStartPickerDate(startPickerDate);
+            //   setEndPickerDate(endPickerDate);
+            // } else if (!startPickerDate && !endPickerDate) {
+            //   setStartPickerDate(startPickerDate);
+            //   setEndPickerDate(endPickerDate);
+            // } else {
+            //   alert('Date range is not valid! Try again!');
+            // }
           }}
           focusedInput={focusedInput}
           onFocusChange={(focusedInput: FocusedInputShape | null) =>
