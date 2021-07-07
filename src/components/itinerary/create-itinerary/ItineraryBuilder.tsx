@@ -22,10 +22,10 @@ export const ItineraryBuilder = (): ReactElement => {
 
   const [createItinerary] = useMutation(CREATE_ITINERARY);
 
-  const activeUnsavedItinerary = localStorage.getItem(
-    LOCAL_STORAGE.ITINERARY_RANGE
-  );
-  const activeUnsavedCoords = localStorage.getItem(LOCAL_STORAGE.COORDS);
+  // const activeUnsavedItinerary = localStorage.getItem(
+  //   LOCAL_STORAGE.ITINERARY_RANGE
+  // );
+  // const activeUnsavedCoords = localStorage.getItem(LOCAL_STORAGE.COORDS);
 
   // // Itinerary creates
   // const onItineraryCreate = (start: string, end: string) => {
@@ -45,7 +45,7 @@ export const ItineraryBuilder = (): ReactElement => {
   //   }
   // };
 
-  const hasElements = Object.keys(elements).length > 0;
+  // const hasElements = Object.keys(elements).length > 0;
 
   const createItineraryHelper = useCallback(
     mongoData => {
@@ -85,28 +85,28 @@ export const ItineraryBuilder = (): ReactElement => {
     });
    */
 
-  useEffect(() => {
-    if (activeUnsavedItinerary && activeUnsavedCoords && !hasElements) {
-      setElements(JSON.parse(activeUnsavedItinerary));
-      setCoords(JSON.parse(activeUnsavedCoords));
-    }
-  }, [
-    activeUnsavedCoords,
-    activeUnsavedItinerary,
-    setCoords,
-    coords,
-    hasElements,
-  ]);
+  // useEffect(() => {
+  //   if (activeUnsavedItinerary && activeUnsavedCoords && !hasElements) {
+  //     setElements(JSON.parse(activeUnsavedItinerary));
+  //     setCoords(JSON.parse(activeUnsavedCoords));
+  //   }
+  // }, [
+  //   activeUnsavedCoords,
+  //   activeUnsavedItinerary,
+  //   setCoords,
+  //   coords,
+  //   hasElements,
+  // ]);
 
-  useEffect(() => {
-    if (Object.keys(elements).length > 0) {
-      localStorage.setItem(
-        LOCAL_STORAGE.ITINERARY_RANGE,
-        JSON.stringify(elements)
-      );
-      localStorage.setItem(LOCAL_STORAGE.COORDS, JSON.stringify(coords));
-    }
-  }, [coords, elements]);
+  // useEffect(() => {
+  //   if (Object.keys(elements).length > 0) {
+  //     localStorage.setItem(
+  //       LOCAL_STORAGE.ITINERARY_RANGE,
+  //       JSON.stringify(elements)
+  //     );
+  //     localStorage.setItem(LOCAL_STORAGE.COORDS, JSON.stringify(coords));
+  //   }
+  // }, [coords, elements]);
 
   // return hasElements || activeUnsavedItinerary ? (
   //   <ActiveItinerary
