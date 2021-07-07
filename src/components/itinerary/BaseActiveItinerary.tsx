@@ -232,20 +232,6 @@ export const BaseActiveItinerary = ({
           }) => {
             setStartPickerDate(startPickerDate);
             setEndPickerDate(endPickerDate);
-
-            // if (
-            //   startPickerDate &&
-            //   endPickerDate &&
-            //   startPickerDate <= endPickerDate
-            // ) {
-            //   setStartPickerDate(startPickerDate);
-            //   setEndPickerDate(endPickerDate);
-            // } else if (!startPickerDate && !endPickerDate) {
-            //   setStartPickerDate(startPickerDate);
-            //   setEndPickerDate(endPickerDate);
-            // } else {
-            //   alert('Date range is not valid! Try again!');
-            // }
           }}
           focusedInput={focusedInput}
           onFocusChange={(focusedInput: FocusedInputShape | null) =>
