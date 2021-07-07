@@ -41,7 +41,9 @@ export const ActiveItinerary = ({
   const elementKeys = Object.keys(elements);
   const [title] = useState('My trip');
 
-  const [selectedDay, setSelectedDay] = useState(elementKeys[0]);
+  const [selectedDay, setSelectedDay] = useState<string | undefined>(
+    elementKeys[0]
+  );
 
   const [insertElement] = useMutation(INSERT_ELEMENT_INTO_ITINERARY, {
     client: mongodbClient,
@@ -67,50 +69,56 @@ export const ActiveItinerary = ({
     type: string,
     content: ExperienceContentDataProps | string
   ) => {
-    const newElem = { ...elements };
-    newElem[selectedDay].push({ type: type, content: content });
-    setElements(newElem);
+    if (selectedDay) {
+      const newElem = { ...elements };
+      newElem[selectedDay].push({ type: type, content: content });
+      setElements(newElem);
 
-    insertElement({
-      variables: {
-        id: mongoId,
-        element: {
-          type: type,
-          content: content,
+      insertElement({
+        variables: {
+          id: mongoId,
+          element: {
+            type: type,
+            content: content,
+          },
+          date: selectedDay,
         },
-        date: selectedDay,
-      },
-    });
+      });
+    }
   };
 
   const swapElements = (firstIndex: number, secondIndex: number) => {
-    // swap in state
-    const [removed] = elements[selectedDay].splice(firstIndex, 1);
-    elements[selectedDay].splice(secondIndex, 0, removed);
-    setElements(elements);
+    if (selectedDay) {
+      // swap in state
+      const [removed] = elements[selectedDay].splice(firstIndex, 1);
+      elements[selectedDay].splice(secondIndex, 0, removed);
+      setElements(elements);
 
-    swapElementsMutation({
-      variables: {
-        id: mongoId,
-        date: selectedDay,
-        firstIndex: firstIndex,
-        secondIndex: secondIndex,
-      },
-    });
+      swapElementsMutation({
+        variables: {
+          id: mongoId,
+          date: selectedDay,
+          firstIndex: firstIndex,
+          secondIndex: secondIndex,
+        },
+      });
+    }
   };
 
   const deleteElement = (index: number) => {
-    const newElem = { ...elements };
-    newElem[selectedDay].splice(index, 1);
-    setElements(newElem);
+    if (selectedDay) {
+      const newElem = { ...elements };
+      newElem[selectedDay].splice(index, 1);
+      setElements(newElem);
 
-    deleteElementMutation({
-      variables: {
-        id: mongoId,
-        date: selectedDay,
-        index: index,
-      },
-    });
+      deleteElementMutation({
+        variables: {
+          id: mongoId,
+          date: selectedDay,
+          index: index,
+        },
+      });
+    }
   };
 
   return (

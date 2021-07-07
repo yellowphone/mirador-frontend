@@ -75,8 +75,8 @@ export const BaseActiveItinerary = ({
   dates: string[];
   deleteItineraryItem: (index: number) => void;
   itineraryItems: ManyElementDataProps;
-  selectedDay: string;
-  setSelectedDay: (day: string) => void;
+  selectedDay: string | undefined;
+  setSelectedDay: (day: string | undefined) => void;
   swapItineraryItems: (firstIndex: number, secondIndex: number) => void;
   title: string;
   type: string;
@@ -105,7 +105,7 @@ export const BaseActiveItinerary = ({
     onCompleted: data => {
       delete data.updateItineraryDate._id;
       setElements(data.updateItineraryDate);
-      console.log(itineraryItems);
+      setSelectedDay(undefined);
     },
   });
 
@@ -127,7 +127,7 @@ export const BaseActiveItinerary = ({
         <Droppable droppableId="droppable">
           {provided => (
             <div {...provided.droppableProps} ref={provided.innerRef}>
-              {(itineraryItems[selectedDay] || []).map(
+              {((selectedDay && itineraryItems[selectedDay]) || []).map(
                 (element: ElementProps, index: number) => {
                   switch (element.type) {
                     case 'experience':
