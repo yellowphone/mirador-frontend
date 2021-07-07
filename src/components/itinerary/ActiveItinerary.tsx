@@ -131,11 +131,9 @@ export const ActiveItinerary = ({
     <BaseActiveItinerary
       addExperience={experience => addElement('experience', experience)}
       addNote={text => addElement('text', text)}
-      createItinerary={handleSubmit(onSubmit)}
       dates={elementKeys}
       deleteItineraryItem={index => deleteElement(index)}
       itineraryItems={elements}
-      resetItineraryItems={() => setElements({})}
       selectedDay={selectedDay}
       setSelectedDay={day => setSelectedDay(day)}
       setTitle={newTitle => setTitle(newTitle)}

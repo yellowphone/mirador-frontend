@@ -58,12 +58,9 @@ export enum ItineraryType {
 export const BaseActiveItinerary = ({
   addExperience,
   addNote,
-  createItinerary,
   dates,
   deleteItineraryItem,
   itineraryItems,
-  resetItineraryItems,
-  id,
   selectedDay,
   setSelectedDay,
   setTitle,
@@ -76,12 +73,9 @@ export const BaseActiveItinerary = ({
 }: {
   addExperience: (experience: ExperienceContentDataProps) => void;
   addNote: (text: string) => void;
-  createItinerary?: () => void;
   dates: string[];
   deleteItineraryItem: (index: number) => void;
-  id?: string;
   itineraryItems: ManyElementDataProps;
-  resetItineraryItems?: () => void;
   selectedDay: string;
   setSelectedDay: (day: string) => void;
   setTitle?: (title: string) => void;
@@ -92,15 +86,17 @@ export const BaseActiveItinerary = ({
   mongoId: string;
   setElements: Dispatch<SetStateAction<ManyElementDataProps>>;
 }): ReactElement => {
-  const history = useHistory();
+  // const history = useHistory();
   const hasDates = dates.length > 0;
-  const startDate = hasDates ? dates[0] : undefined;
-  const endDate = hasDates ? dates[dates.length - 1] : undefined;
+  const startDate = hasDates ? moment(dates[0], 'YYYY-MM-DD') : null;
+  const endDate = hasDates
+    ? moment(dates[dates.length - 1], 'YYYY-MM-DD')
+    : null;
   const [startPickerDate, setStartPickerDate] = useState<moment.Moment | null>(
-    null
+    startDate
   );
   const [endPickerDate, setEndPickerDate] = useState<moment.Moment | null>(
-    null
+    endDate
   );
   const [focusedInput, setFocusedInput] = useState<FocusedInputShape | null>(
     null
@@ -111,7 +107,6 @@ export const BaseActiveItinerary = ({
     onCompleted: data => {
       delete data.updateItineraryDate._id;
       setElements(data.updateItineraryDate);
-      console.log(data);
     },
   });
 

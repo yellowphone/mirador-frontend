@@ -27,6 +27,7 @@ export const ActiveEditItinerary = ({
   title: string;
 }): ReactElement => {
   const elementKeys = Object.keys(elements);
+  console.log(elementKeys);
   const [selectedDay, setSelectedDay] = useState(Object.keys(elements)[0]);
 
   const [updateTitle] = useMutation(UPDATE_ITINERARY);
@@ -109,12 +110,12 @@ export const ActiveEditItinerary = ({
       addNote={text => addElement('text', text)}
       dates={elementKeys}
       deleteItineraryItem={index => deleteElement(index)}
-      id={public_identifier}
       itineraryItems={elements}
       selectedDay={selectedDay}
       setSelectedDay={day => setSelectedDay(day)}
       swapItineraryItems={(first, second) => swapElements(first, second)}
       title={title}
+      mongoId={mongoId}
       type="EDIT"
       updateTitle={newTitle => {
         updateTitle({
@@ -124,6 +125,7 @@ export const ActiveEditItinerary = ({
           },
         });
       }}
+      setElements={setElements}
     />
   );
 };
