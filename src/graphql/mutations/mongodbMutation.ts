@@ -1,29 +1,25 @@
 import { gql } from '@apollo/client';
 
-export const CREATE_MONGODB_ITINERARY = gql`
-  mutation createItinerary($beginning: String, $end: String) {
-    createItinerary(beginning: $beginning, end: $end)
+export const CREATE_MONGODB_TRIP = gql`
+  mutation createTrip($beginning: String, $end: String) {
+    createTrip(beginning: $beginning, end: $end)
   }
 `;
 
-export const INSERT_ELEMENT_INTO_ITINERARY = gql`
-  mutation insertElementToItinerary(
-    $id: String
-    $date: String
-    $element: Json
-  ) {
-    insertElementToItinerary(id: $id, date: $date, element: $element)
+export const INSERT_ELEMENT_INTO_TRIP = gql`
+  mutation insertElementToTrip($id: String, $date: String, $element: Json) {
+    insertElementToTrip(id: $id, date: $date, element: $element)
   }
 `;
 
-export const SWAP_ELEMENTS_IN_ITINERARY = gql`
-  mutation swapElementsInItinerary(
+export const SWAP_ELEMENTS_IN_TRIP = gql`
+  mutation swapElementsInTrip(
     $id: String
     $date: String
     $firstIndex: Int
     $secondIndex: Int
   ) {
-    swapElementsInItinerary(
+    swapElementsInTrip(
       id: $id
       date: $date
       firstIndex: $firstIndex
@@ -32,21 +28,21 @@ export const SWAP_ELEMENTS_IN_ITINERARY = gql`
   }
 `;
 
-export const UPDATE_ITINERARY_DATE = gql`
-  mutation updateItineraryDate($id: String, $beginning: String, $end: String) {
-    updateItineraryDate(id: $id, beginning: $beginning, end: $end)
+export const UPDATE_TRIP_DATE = gql`
+  mutation updateTripDate($id: String, $beginning: String, $end: String) {
+    updateTripDate(id: $id, beginning: $beginning, end: $end)
   }
 `;
 
-export const DELETE_ELEMENT_FROM_ITINERARY = gql`
-  mutation deleteElementFromItinerary($id: String, $date: String, $index: Int) {
-    deleteElementFromItinerary(id: $id, date: $date, index: $index)
+export const DELETE_ELEMENT_FROM_TRIP = gql`
+  mutation deleteElementFromTrip($id: String, $date: String, $index: Int) {
+    deleteElementFromTrip(id: $id, date: $date, index: $index)
   }
 `;
 
-export const DELETE_ITINERARY = gql`
-  mutation deleteItinerary($id: String) {
-    deleteItinerary(id: $id)
+export const DELETE_TRIP = gql`
+  mutation deleteTrip($id: String) {
+    deleteTrip(id: $id)
   }
 `;
 

@@ -4,7 +4,7 @@ import { useHistory } from 'react-router';
 import { Paths } from '../../utils/paths';
 import { IBlog } from '../blog/Blog.types';
 import { Experience } from '../experience/single-experience/SingleExperience.type';
-import { FindItineraryByIdObject } from '../itinerary/single-itinerary/SingleItinerary.types';
+import { FindTripByIdObject } from '../trip/single-trip/SingleTrip.types';
 
 export const ExperienceCard = ({
   experience,
@@ -60,16 +60,16 @@ export const BlogCard = ({ blog }: { blog: IBlog }): ReactElement => {
   );
 };
 
-export const ItineraryCard = ({
-  itinerary,
+export const TripCard = ({
+  trip,
 }: {
-  itinerary: FindItineraryByIdObject;
+  trip: FindTripByIdObject;
 }): ReactElement => {
   const history = useHistory();
-  const { title, public_identifier } = itinerary;
+  const { title, public_identifier } = trip;
   return (
     <WrapItem
-      onClick={() => history.push(`${Paths.Itinerary}/${public_identifier}`)}
+      onClick={() => history.push(`${Paths.Trip}/${public_identifier}`)}
     >
       <Box width="300px" borderWidth="1px" borderRadius="lg" overflow="hidden">
         <Box background="rebeccapurple" height="75px" />

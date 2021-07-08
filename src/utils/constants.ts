@@ -1,4 +1,4 @@
 export enum LOCAL_STORAGE {
-  ITINERARY_RANGE = 'itinerary_range',
+  TRIP_RANGE = 'trip_range',
   COORDS = 'mirador-coords',
 }
