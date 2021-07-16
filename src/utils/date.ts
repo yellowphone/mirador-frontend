@@ -7,11 +7,9 @@ export const formatSingleDate = (date: string): string => {
 };
 
 export const formatWeekdayMonthDayYear = (
-  start: string,
-  end: string
+  startDate: moment.Moment,
+  endDate: moment.Moment
 ): string => {
-  const startDate = moment(start);
-  const endDate = moment(end);
   const fullDateString = 'dddd, MMMM Do YYYY';
   const startDateString =
     startDate.year() === endDate.year() ? 'dddd, MMMM Do' : fullDateString;

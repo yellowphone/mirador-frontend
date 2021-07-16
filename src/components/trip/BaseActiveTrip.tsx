@@ -202,10 +202,7 @@ export const BaseActiveTrip = ({
             <Flex alignItems="center">
               <CalendarIcon mr="2" />
               <Text>
-                {formatWeekdayMonthDayYear(
-                  startPickerDate.format(`YYYY-MM-DD`),
-                  endPickerDate.format(`YYYY-MM-DD`)
-                )}{' '}
+                {formatWeekdayMonthDayYear(startPickerDate, endPickerDate)}{' '}
                 &bull;{' '}
                 <Text as="span" fontStyle="italic">
                   {dates.length} days
