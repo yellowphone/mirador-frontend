@@ -87,8 +87,8 @@ export const NavigationBar: FC = () => {
           <Link to={Paths.Blog} as={ReactRouterLink}>
             Blogs
           </Link>
-          <Link to={Paths.Itinerary} as={ReactRouterLink}>
-            Itineraries
+          <Link to={Paths.Trip} as={ReactRouterLink}>
+            Trips
           </Link>
         </HStack>
         <Spacer />
@@ -107,10 +107,8 @@ export const NavigationBar: FC = () => {
                       >
                         New experience
                       </MenuItem>
-                      <MenuItem
-                        onClick={() => onNavigate(Paths.CreateItinerary)}
-                      >
-                        New itinerary
+                      <MenuItem onClick={() => onNavigate(Paths.CreateTrip)}>
+                        New trip
                       </MenuItem>
                       <MenuItem onClick={() => onNavigate(Paths.CreateBlog)}>
                         New blog

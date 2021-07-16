@@ -27,10 +27,10 @@ import { Paths } from '../../../utils/paths';
 import { useHistory } from 'react-router-dom';
 import { useMutation, useLazyQuery } from '@apollo/client';
 import {
-  ADD_EXPERIENCE_TO_ITINERARY,
-  CREATE_ITINERARY,
-} from '../../../graphql/mutations/itineraryMutation';
-import { FIND_ITINERARIES_FOR_USER } from '../../../graphql/queries/itineraryQuery';
+  ADD_EXPERIENCE_TO_TRIP,
+  CREATE_TRIP,
+} from '../../../graphql/mutations/tripMutation';
+import { FIND_TRIPS_FOR_USER } from '../../../graphql/queries/tripQuery';
 import { useForm } from 'react-hook-form';
 import { useCookies } from 'react-cookie';
 
@@ -56,33 +56,33 @@ export const Card: FC<CardDataProps> = ({ experience }) => {
     [history, public_identifier]
   );
 
-  const [showCreateItinerary, setShowCreateItinerary] = useState(false);
+  const [showCreateTrip, setShowCreateTrip] = useState(false);
 
-  const [loadForCreateItinerary, setLoadForCreateItinerary] = useState(false);
+  const [loadForCreateTrip, setLoadForCreateTrip] = useState(false);
 
-  const [addExperienceToItinerary] = useMutation(ADD_EXPERIENCE_TO_ITINERARY);
+  const [addExperienceToTrip] = useMutation(ADD_EXPERIENCE_TO_TRIP);
 
-  const [createItinerary] = useMutation(CREATE_ITINERARY);
+  const [createTrip] = useMutation(CREATE_TRIP);
 
   const [
-    getUserItineraries,
+    getUserTrips,
     {
-      loading: loadingUserItineraries,
-      error: errorUserItineraries,
-      data: userItineraries,
-      refetch: userItinerariesRefetch,
+      loading: loadingUserTrips,
+      error: errorUserTrips,
+      data: userTrips,
+      refetch: userTripsRefetch,
     },
-  ] = useLazyQuery(FIND_ITINERARIES_FOR_USER);
+  ] = useLazyQuery(FIND_TRIPS_FOR_USER);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const { register, handleSubmit } = useForm();
 
-  const onCreateItinerary = (input: { title: string }) => {
-    setLoadForCreateItinerary(true);
+  const onCreateTrip = (input: { title: string }) => {
+    setLoadForCreateTrip(true);
 
-    // creating postgresql itinerary instance with empty mongo id
-    createItinerary({
+    // creating postgresql trip instance with empty mongo id
+    createTrip({
       variables: {
         title: input['title'],
         summary: '',
@@ -91,9 +91,9 @@ export const Card: FC<CardDataProps> = ({ experience }) => {
       },
     })
       .then(() => {
-        setLoadForCreateItinerary(false);
-        userItinerariesRefetch && userItinerariesRefetch();
-        setShowCreateItinerary(false);
+        setLoadForCreateTrip(false);
+        userTripsRefetch && userTripsRefetch();
+        setShowCreateTrip(false);
       })
       .catch(error => {
         window.alert('Oh no! There was an error, check the console');
@@ -167,7 +167,7 @@ export const Card: FC<CardDataProps> = ({ experience }) => {
             size="xs"
             onClick={() => {
               onOpen();
-              getUserItineraries({
+              getUserTrips({
                 variables: {
                   pkuser: cookie['user']['pkuser'],
                 },
@@ -181,29 +181,29 @@ export const Card: FC<CardDataProps> = ({ experience }) => {
             isOpen={isOpen}
             onClose={() => {
               onClose();
-              setShowCreateItinerary(false);
+              setShowCreateTrip(false);
             }}
           >
             <ModalOverlay />
             <ModalContent styles={{ maxHeight: 500 }}>
-              <ModalHeader>Save this experience to your itinerary</ModalHeader>
+              <ModalHeader>Save this experience to your trip</ModalHeader>
               <ModalCloseButton />
               <ModalBody>
-                {isOpen && loadingUserItineraries && <p>Loading...</p>}
-                {isOpen && errorUserItineraries && <p>Error!</p>}
-                {isOpen && userItineraries && (
+                {isOpen && loadingUserTrips && <p>Loading...</p>}
+                {isOpen && errorUserTrips && <p>Error!</p>}
+                {isOpen && userTrips && (
                   <Table>
                     <Tbody>
-                      {userItineraries['findUser']['itineraries'].map(
-                        (item: { pkitinerary: number; title: string }) => {
+                      {userTrips['findUser']['trips'].map(
+                        (item: { pktrip: number; title: string }) => {
                           return (
                             <Tr
-                              key={item.pkitinerary}
+                              key={item.pktrip}
                               onClick={() => {
-                                addExperienceToItinerary({
+                                addExperienceToTrip({
                                   variables: {
                                     pkexperience: fk_experience_location,
-                                    pkitinerary: item.pkitinerary,
+                                    pktrip: item.pktrip,
                                   },
                                 });
                                 onClose();
@@ -215,36 +215,36 @@ export const Card: FC<CardDataProps> = ({ experience }) => {
                         }
                       )}
                       <Tr>
-                        {!showCreateItinerary && (
-                          <Td onClick={() => setShowCreateItinerary(true)}>
+                        {!showCreateTrip && (
+                          <Td onClick={() => setShowCreateTrip(true)}>
                             <AddIcon />
-                            &nbsp;Create a new Itinerary
+                            &nbsp;Create a new Trip
                           </Td>
                         )}
-                        {showCreateItinerary && (
+                        {showCreateTrip && (
                           <Td>
-                            <form onSubmit={handleSubmit(onCreateItinerary)}>
+                            <form onSubmit={handleSubmit(onCreateTrip)}>
                               <Input
                                 size="sm"
                                 style={{ width: '75%' }}
                                 name="title"
-                                placeholder="Title of your itinerary"
+                                placeholder="Title of your trip"
                                 ref={register}
                               />
                               &nbsp;
-                              {!loadForCreateItinerary && (
+                              {!loadForCreateTrip && (
                                 <Button size="sm" type="submit">
                                   <CheckIcon />
                                 </Button>
                               )}
-                              {loadForCreateItinerary && (
+                              {loadForCreateTrip && (
                                 <Button isLoading size="sm" type="submit">
                                   <CheckIcon />
                                 </Button>
                               )}
                               <Button
                                 size="sm"
-                                onClick={() => setShowCreateItinerary(false)}
+                                onClick={() => setShowCreateTrip(false)}
                               >
                                 <CloseIcon />
                               </Button>
@@ -262,7 +262,7 @@ export const Card: FC<CardDataProps> = ({ experience }) => {
                   mr={3}
                   onClick={() => {
                     onClose();
-                    setShowCreateItinerary(false);
+                    setShowCreateTrip(false);
                   }}
                 >
                   Close

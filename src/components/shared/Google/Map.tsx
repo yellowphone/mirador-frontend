@@ -84,17 +84,14 @@ export const Map: FC<IMapDataProps> = ({
     // Add infowindow content! img, title, etc
     div.draggable = true;
     div.ondragstart = function (e) {
-      const dataForItineraryElement = {
+      const dataForTripElement = {
         pkexperience: fk_experience_location,
         title: title,
         imgUrl: imageUrl,
         imgAlt: imageAlt,
       };
       e.dataTransfer &&
-        e.dataTransfer.setData(
-          'element',
-          JSON.stringify(dataForItineraryElement)
-        );
+        e.dataTransfer.setData('element', JSON.stringify(dataForTripElement));
     };
     return div;
   };

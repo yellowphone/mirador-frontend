@@ -38,10 +38,10 @@ export const FIND_USER = gql`
           }
         }
       }
-      itineraries {
+      trips {
         public_identifier
         title
-        itinerary_tags {
+        trip_tags {
           tags {
             tag
           }

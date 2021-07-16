@@ -20,15 +20,15 @@ import { client } from '../graphql/client';
 import { ConnectedExperience } from '../components/experience/ConnectedExperience';
 import { ConnectedBlog } from '../components/blog/ConnectedBlog';
 import { ConnectedHome } from '../components/home/ConnectedHome';
-import { ConnectedItinerary } from '../components/itinerary/ConnectedItinerary';
+import { ConnectedTrip } from '../components/trip/ConnectedTrip';
 import { ConnectedProfile } from '../components/profile/ConnectedProfile';
 import { ConnectedSingleExperience } from '../components/experience/single-experience/ConnectedSingleExperience';
 import { ConnectedCreateExperience } from '../components/experience/create-experience/ConnectedCreateExperience';
 import { ConnectedSingleBlog } from '../components/blog/single-blog/ConnectedSingleBlog';
 import { ConnectedCreateBlog } from '../components/blog/create-blog/ConnectedCreateBlog';
-import { ConnectedCreateItinerary } from '../components/itinerary/create-itinerary/ConnectedCreateItinerary';
-import { ConnectedSingleItinerary } from '../components/itinerary/single-itinerary/ConnectedSingleItinerary';
-import { ConnectedEditItinerary } from '../components/itinerary/edit-itinerary/ConnectedEditItinerary';
+import { ConnectedCreateTrip } from '../components/trip/create-trip/ConnectedCreateTrip';
+import { ConnectedSingleTrip } from '../components/trip/single-trip/ConnectedSingleTrip';
+import { ConnectedEditTrip } from '../components/trip/edit-trip/ConnectedEditTrip';
 import { ConnectedEditBlog } from '../components/blog/edit-blog/ConnectedEditBlog';
 import { LocationContextWrapper } from '../utils/context/LocationContext';
 import { NavigationBar } from '../components/shared/navigation-bar/NavigationBar';
@@ -89,25 +89,21 @@ export const App: React.FC = () => {
                     path={Paths.CreateExperience}
                     component={ConnectedCreateExperience}
                   />
+                  <Route exact path={Paths.Trip} component={ConnectedTrip} />
                   <Route
                     exact
-                    path={Paths.Itinerary}
-                    component={ConnectedItinerary}
+                    path={`${Paths.SingleTrip}/:id`}
+                    component={ConnectedSingleTrip}
                   />
                   <Route
                     exact
-                    path={`${Paths.SingleItinerary}/:id`}
-                    component={ConnectedSingleItinerary}
+                    path={Paths.CreateTrip}
+                    component={ConnectedCreateTrip}
                   />
                   <Route
                     exact
-                    path={Paths.CreateItinerary}
-                    component={ConnectedCreateItinerary}
-                  />
-                  <Route
-                    exact
-                    path={`${Paths.EditItinerary}/:id`}
-                    component={ConnectedEditItinerary}
+                    path={`${Paths.EditTrip}/:id`}
+                    component={ConnectedEditTrip}
                   />
                   <Route
                     exact
