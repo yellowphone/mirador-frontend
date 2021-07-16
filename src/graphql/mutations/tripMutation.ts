@@ -72,7 +72,9 @@ export const DELETE_USER_FROM_TRIP = gql`
 `;
 
 export const DELETE_TRIP = gql`
-  mutation deleteTrip($pktrip: Int!) {
-    deleteTrip(pktrip: $pktrip)
+  mutation deleteTrip($public_identifier: String!) {
+    deleteTrip(public_identifier: $public_identifier) {
+      pktrip
+    }
   }
 `;

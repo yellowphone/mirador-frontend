@@ -138,6 +138,7 @@ export const ActiveEditTrip = ({
         });
       }}
       setElements={setElements}
+      public_identifier={public_identifier}
     />
   );
 };

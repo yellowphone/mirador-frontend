@@ -10,11 +10,17 @@ import { useCookies } from 'react-cookie';
 import { useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
 import { mongodbClient } from '../../graphql/mongodbClient';
-import { CREATE_TRIP, UPDATE_TRIP } from '../../graphql/mutations/tripMutation';
+import {
+  CREATE_TRIP,
+  DELETE_TRIP,
+  DELETE_USER_FROM_TRIP,
+  UPDATE_TRIP,
+} from '../../graphql/mutations/tripMutation';
 import {
   DELETE_ELEMENT_FROM_TRIP,
   INSERT_ELEMENT_INTO_TRIP,
   SWAP_ELEMENTS_IN_TRIP,
+  DELETE_TRIP as DELETE_TRIP_MONGODB,
 } from '../../graphql/mutations/mongodbMutation';
 import { LOCAL_STORAGE } from '../../utils/constants';
 import { Paths } from '../../utils/paths';
@@ -132,6 +138,7 @@ export const ActiveTrip = ({
       type="NEW"
       mongoId={mongoId}
       setElements={setElements}
+      public_identifier={public_identifier}
       updateTitle={newTitle => {
         updateTitle({
           variables: {

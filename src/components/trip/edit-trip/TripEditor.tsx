@@ -72,7 +72,12 @@ export const TripEditor: FC<TripEditorProps> = ({ data }): ReactElement => {
   };
 
   if (Object.keys(elements).length === 0) {
-    return <EmptyTrip onTripCreate={onTripCreate} />;
+    return (
+      <EmptyTrip
+        onTripCreate={onTripCreate}
+        public_identifier={data.findTripByPublicIdentifier.public_identifier}
+      />
+    );
   } else {
     return (
       <ActiveEditTrip

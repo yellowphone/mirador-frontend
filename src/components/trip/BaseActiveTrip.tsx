@@ -1,4 +1,4 @@
-import { CalendarIcon, EditIcon } from '@chakra-ui/icons';
+import { CalendarIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons';
 import {
   Button,
   Editable,
@@ -17,7 +17,7 @@ import {
   Select,
 } from '@chakra-ui/react';
 import moment from 'moment';
-import React, { ReactElement, SetStateAction } from 'react';
+import React, { ReactElement, SetStateAction, useCallback } from 'react';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import { useHistory } from 'react-router';
 import { LOCAL_STORAGE } from '../../utils/constants';
@@ -42,10 +42,14 @@ import { BsThreeDots } from 'react-icons/bs';
 import { useState } from 'react';
 import { DateRangePicker, FocusedInputShape } from 'react-dates';
 import { useMutation } from '@apollo/client';
-import { UPDATE_TRIP_DATE } from '../../graphql/mutations/mongodbMutation';
+import {
+  UPDATE_TRIP_DATE,
+  DELETE_TRIP as DELETE_TRIP_MONGO,
+} from '../../graphql/mutations/mongodbMutation';
 import { useEffect } from 'react';
 import { mongodbClient } from '../../graphql/mongodbClient';
 import { Dispatch } from 'react';
+import { DELETE_TRIP } from '../../graphql/mutations/tripMutation';
 
 export enum TripType {
   NEW = 'NEW',
@@ -66,6 +70,7 @@ export const BaseActiveTrip = ({
   updateTitle,
   mongoId,
   setElements,
+  public_identifier,
 }: {
   addExperience: (experience: ExperienceContentDataProps) => void;
   addNote: (text: string) => void;
@@ -80,8 +85,17 @@ export const BaseActiveTrip = ({
   updateTitle?: (title: string) => void;
   mongoId: string;
   setElements: Dispatch<SetStateAction<ManyElementDataProps>>;
+  public_identifier: string;
 }): ReactElement => {
-  // const history = useHistory();
+  const history = useHistory();
+
+  const onNavigate = useCallback(
+    (path: Paths) => {
+      history.push(path);
+    },
+    [history]
+  );
+
   const hasDates = dates.length > 0;
   const startDate = hasDates ? moment(dates[0], 'YYYY-MM-DD') : null;
   const endDate = hasDates
@@ -103,6 +117,19 @@ export const BaseActiveTrip = ({
       delete data.updateTripDate._id;
       setElements(data.updateTripDate);
       setSelectedDay(undefined);
+    },
+  });
+
+  const [deleteTrip] = useMutation(DELETE_TRIP, {
+    variables: {
+      public_identifier: public_identifier,
+    },
+  });
+
+  const [deleteTripMongo] = useMutation(DELETE_TRIP_MONGO, {
+    client: mongodbClient,
+    variables: {
+      id: mongoId,
     },
   });
 
@@ -210,6 +237,16 @@ export const BaseActiveTrip = ({
               </Text>
             </Flex>
           )}
+          <DeleteIcon
+            onClick={() => {
+              if (deleteTripMongo) deleteTripMongo();
+              if (deleteTrip) {
+                deleteTrip().then(() => {
+                  onNavigate(Paths.Trip);
+                });
+              }
+            }}
+          />
         </Box>
 
         <DateRangePicker
