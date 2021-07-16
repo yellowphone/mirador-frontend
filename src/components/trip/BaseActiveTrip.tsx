@@ -50,6 +50,7 @@ import { useEffect } from 'react';
 import { mongodbClient } from '../../graphql/mongodbClient';
 import { Dispatch } from 'react';
 import { DELETE_TRIP } from '../../graphql/mutations/tripMutation';
+import { Dialog, DialogActions, DialogContent } from '@material-ui/core';
 
 export enum TripType {
   NEW = 'NEW',
@@ -110,6 +111,7 @@ export const BaseActiveTrip = ({
   const [focusedInput, setFocusedInput] = useState<FocusedInputShape | null>(
     null
   );
+  const [alertOpen, setAlertOpen] = useState(false);
 
   const [updateTripDate] = useMutation(UPDATE_TRIP_DATE, {
     client: mongodbClient,
@@ -237,16 +239,37 @@ export const BaseActiveTrip = ({
               </Text>
             </Flex>
           )}
-          <DeleteIcon
-            onClick={() => {
-              if (deleteTripMongo) deleteTripMongo();
-              if (deleteTrip) {
-                deleteTrip().then(() => {
-                  onNavigate(Paths.Trip);
-                });
-              }
-            }}
-          />
+          <Dialog open={alertOpen} onClose={() => setAlertOpen(false)}>
+            <DialogContent>
+              Are you sure you want to delete this trip?
+            </DialogContent>
+            <DialogActions>
+              <Button
+                variant="contained"
+                color="secondary"
+                startIcon={<DeleteIcon />}
+                style={{ backgroundColor: '#f44336' }}
+                onClick={() => {
+                  deleteTripMongo();
+                  deleteTrip().then(() => {
+                    setAlertOpen(false);
+                    onNavigate(Paths.Trip);
+                  });
+                }}
+              >
+                Yes
+              </Button>
+              <Button
+                onClick={() => setAlertOpen(false)}
+                color="primary"
+                autoFocus
+              >
+                No
+              </Button>
+            </DialogActions>
+          </Dialog>
+
+          <DeleteIcon onClick={() => setAlertOpen(true)} />
         </Box>
 
         <DateRangePicker

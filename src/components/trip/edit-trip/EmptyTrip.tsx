@@ -11,6 +11,7 @@ import { useMutation } from '@apollo/client';
 import { DELETE_TRIP } from '../../../graphql/mutations/tripMutation';
 import { useHistory } from 'react-router-dom';
 import { Paths } from '../../../utils/paths';
+import { Dialog, DialogActions, DialogContent } from '@material-ui/core';
 
 const TripBuilderWrapper = styled.article`
   background-color: ${grey0};
@@ -28,6 +29,8 @@ export const EmptyTrip = ({
   onTripCreate: (start: string, end: string) => void;
   public_identifier: string;
 }): ReactElement => {
+  const [alertOpen, setAlertOpen] = useState(false);
+
   const history = useHistory();
 
   const onNavigate = useCallback(
@@ -56,15 +59,32 @@ export const EmptyTrip = ({
       <Text fontSize="sm" marginBottom={4}>
         Here are some details describing what an trip is! Lorem ipsum dolor
       </Text>
-      <DeleteIcon
-        onClick={() => {
-          if (deleteTrip) {
-            deleteTrip().then(() => {
-              onNavigate(Paths.Trip);
-            });
-          }
-        }}
-      />
+      <Dialog open={alertOpen} onClose={() => setAlertOpen(false)}>
+        <DialogContent>
+          Are you sure you want to delete this trip?
+        </DialogContent>
+        <DialogActions>
+          <Button
+            variant="contained"
+            color="secondary"
+            startIcon={<DeleteIcon />}
+            style={{ backgroundColor: '#f44336' }}
+            onClick={() => {
+              deleteTrip().then(() => {
+                setAlertOpen(false);
+                onNavigate(Paths.Trip);
+              });
+            }}
+          >
+            Yes
+          </Button>
+          <Button onClick={() => setAlertOpen(false)} color="primary" autoFocus>
+            No
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <DeleteIcon onClick={() => setAlertOpen(true)} />
       <form
         onSubmit={handleSubmit(() => {
           const stringStartDate = moment(startDate).format('YYYY-MM-DD');
