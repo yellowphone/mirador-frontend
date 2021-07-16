@@ -15,15 +15,15 @@ import { FIND_USER } from '../../graphql/queries/userQuery';
 import { spacer24 } from '../../utils/styles/constants';
 import { IBlog } from '../blog/Blog.types';
 import { Experience } from '../experience/single-experience/SingleExperience.type';
-import { FindItineraryByIdObject } from '../itinerary/single-itinerary/SingleItinerary.types';
-import { BlogCard, ExperienceCard, ItineraryCard } from './Card';
+import { FindTripByIdObject } from '../trip/single-trip/SingleTrip.types';
+import { BlogCard, ExperienceCard, TripCard } from './Card';
 
 export interface UserData {
   blogs: IBlog[];
   email: string;
   experiences: Experience[];
   firstname: string;
-  itineraries: FindItineraryByIdObject[];
+  trips: FindTripByIdObject[];
   lastname: string;
   pkuser: number;
   username: string;
@@ -52,7 +52,7 @@ export const ActionBar = (): React.ReactElement => {
   });
 
   const calcDefaultIndex = useCallback(() => {
-    const tabs = ['experiences', 'blogs', 'itineraries'];
+    const tabs = ['experiences', 'blogs', 'trips'];
     if (!history.location.search) return 0;
     return tabs.findIndex(tab => history.location.search.includes(tab));
   }, [history]);
@@ -69,9 +69,7 @@ export const ActionBar = (): React.ReactElement => {
             Experiences
           </Tab>
           <Tab onClick={() => history.push('/profile?tab=blogs')}>Blogs</Tab>
-          <Tab onClick={() => history.push('/profile?tab=itineraries')}>
-            Itineraries
-          </Tab>
+          <Tab onClick={() => history.push('/profile?tab=trips')}>Trips</Tab>
         </TabList>
 
         <TabPanels>
@@ -98,15 +96,10 @@ export const ActionBar = (): React.ReactElement => {
 
           <TabPanel>
             <Wrap>
-              {userData.itineraries &&
-                userData.itineraries.map(
-                  (itinerary: FindItineraryByIdObject) => (
-                    <ItineraryCard
-                      key={itinerary.public_identifier}
-                      itinerary={itinerary}
-                    />
-                  )
-                )}
+              {userData.trips &&
+                userData.trips.map((trip: FindTripByIdObject) => (
+                  <TripCard key={trip.public_identifier} trip={trip} />
+                ))}
             </Wrap>
           </TabPanel>
         </TabPanels>
