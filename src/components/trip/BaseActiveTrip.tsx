@@ -1,6 +1,5 @@
 import { CalendarIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons';
 import {
-  Button,
   Editable,
   EditableInput,
   EditablePreview,
@@ -8,23 +7,14 @@ import {
   useEditableControls,
   Text,
   Box,
-  IconButton,
-  Icon,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
   Select,
 } from '@chakra-ui/react';
 import moment from 'moment';
-import React, { ReactElement, SetStateAction, useCallback } from 'react';
+import React, { ReactElement, SetStateAction } from 'react';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
-import { useHistory } from 'react-router';
-import { LOCAL_STORAGE } from '../../utils/constants';
 import { formatSingleDate, formatWeekdayMonthDayYear } from '../../utils/date';
-import { Paths } from '../../utils/paths';
 import { grey0 } from '../../utils/styles/colors';
-import { spacer16, spacer24 } from '../../utils/styles/constants';
+import { spacer24 } from '../../utils/styles/constants';
 import {
   ActiveTripWrapper,
   DragDropContainer,
@@ -38,19 +28,14 @@ import {
 import { ManyElementDataProps } from './edit-trip/EditTrip.types';
 import { TripExperienceCard, TripExperienceText } from './TripExperienceItem';
 import { NotesModal } from './NotesModal';
-import { BsThreeDots } from 'react-icons/bs';
 import { useState } from 'react';
 import { DateRangePicker, FocusedInputShape } from 'react-dates';
 import { useMutation } from '@apollo/client';
-import {
-  UPDATE_TRIP_DATE,
-  DELETE_TRIP as DELETE_TRIP_MONGO,
-} from '../../graphql/mutations/mongodbMutation';
+import { UPDATE_TRIP_DATE } from '../../graphql/mutations/mongodbMutation';
 import { useEffect } from 'react';
 import { mongodbClient } from '../../graphql/mongodbClient';
 import { Dispatch } from 'react';
-import { DELETE_TRIP } from '../../graphql/mutations/tripMutation';
-import { Dialog, DialogActions, DialogContent } from '@material-ui/core';
+import { DeleteDialog } from '../shared/trip/DeleteDialog';
 
 export enum TripType {
   NEW = 'NEW',
@@ -88,15 +73,6 @@ export const BaseActiveTrip = ({
   setElements: Dispatch<SetStateAction<ManyElementDataProps>>;
   public_identifier: string;
 }): ReactElement => {
-  const history = useHistory();
-
-  const onNavigate = useCallback(
-    (path: Paths) => {
-      history.push(path);
-    },
-    [history]
-  );
-
   const hasDates = dates.length > 0;
   const startDate = hasDates ? moment(dates[0], 'YYYY-MM-DD') : null;
   const endDate = hasDates
@@ -119,19 +95,6 @@ export const BaseActiveTrip = ({
       delete data.updateTripDate._id;
       setElements(data.updateTripDate);
       setSelectedDay(undefined);
-    },
-  });
-
-  const [deleteTrip] = useMutation(DELETE_TRIP, {
-    variables: {
-      public_identifier: public_identifier,
-    },
-  });
-
-  const [deleteTripMongo] = useMutation(DELETE_TRIP_MONGO, {
-    client: mongodbClient,
-    variables: {
-      id: mongoId,
     },
   });
 
@@ -239,35 +202,12 @@ export const BaseActiveTrip = ({
               </Text>
             </Flex>
           )}
-          <Dialog open={alertOpen} onClose={() => setAlertOpen(false)}>
-            <DialogContent>
-              Are you sure you want to delete this trip?
-            </DialogContent>
-            <DialogActions>
-              <Button
-                variant="contained"
-                color="secondary"
-                startIcon={<DeleteIcon />}
-                style={{ backgroundColor: '#f44336' }}
-                onClick={() => {
-                  deleteTripMongo();
-                  deleteTrip().then(() => {
-                    setAlertOpen(false);
-                    onNavigate(Paths.Trip);
-                  });
-                }}
-              >
-                Yes
-              </Button>
-              <Button
-                onClick={() => setAlertOpen(false)}
-                color="primary"
-                autoFocus
-              >
-                No
-              </Button>
-            </DialogActions>
-          </Dialog>
+          <DeleteDialog
+            public_identifier={public_identifier}
+            mongoId={mongoId}
+            alertOpen={alertOpen}
+            setAlertOpen={setAlertOpen}
+          />
 
           <DeleteIcon onClick={() => setAlertOpen(true)} />
         </Box>

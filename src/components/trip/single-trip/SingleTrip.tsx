@@ -16,12 +16,8 @@ import {
 import { ElementProps } from '../create-trip/CreateTrip.types';
 import { useHistory } from 'react-router';
 import { Paths } from '../../../utils/paths';
-import { useMutation } from '@apollo/client';
-import { DELETE_TRIP as DELETE_TRIP_MONGO } from '../../../graphql/mutations/mongodbMutation';
-import { DELETE_TRIP } from '../../../graphql/mutations/tripMutation';
-import { mongodbClient } from '../../../graphql/mongodbClient';
 import { DeleteIcon } from '@chakra-ui/icons';
-import { Dialog, DialogActions, DialogContent } from '@material-ui/core';
+import { DeleteDialog } from '../../shared/trip/DeleteDialog';
 
 export const SingleTrip: FC<SingleTripProps> = ({
   data,
@@ -42,19 +38,6 @@ export const SingleTrip: FC<SingleTripProps> = ({
     },
     [history, data.public_identifier]
   );
-
-  const [deleteTrip] = useMutation(DELETE_TRIP, {
-    variables: {
-      public_identifier: data.public_identifier,
-    },
-  });
-
-  const [deleteTripMongo] = useMutation(DELETE_TRIP_MONGO, {
-    client: mongodbClient,
-    variables: {
-      id: mongoid,
-    },
-  });
 
   // render elements
   const renderElements = (date: string) => {
@@ -99,31 +82,12 @@ export const SingleTrip: FC<SingleTripProps> = ({
       <p>pktrip: {data.pktrip}</p>
       <p>title: {data.title}</p>
 
-      <Dialog open={alertOpen} onClose={() => setAlertOpen(false)}>
-        <DialogContent>
-          Are you sure you want to delete this trip?
-        </DialogContent>
-        <DialogActions>
-          <Button
-            variant="contained"
-            color="secondary"
-            startIcon={<DeleteIcon />}
-            style={{ backgroundColor: '#f44336' }}
-            onClick={() => {
-              deleteTripMongo();
-              deleteTrip().then(() => {
-                setAlertOpen(false);
-                onNavigate(Paths.Trip, false);
-              });
-            }}
-          >
-            Yes
-          </Button>
-          <Button onClick={() => setAlertOpen(false)} color="primary" autoFocus>
-            No
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <DeleteDialog
+        public_identifier={data.public_identifier}
+        mongoId={mongoid}
+        alertOpen={alertOpen}
+        setAlertOpen={setAlertOpen}
+      />
 
       <DeleteIcon onClick={() => setAlertOpen(true)} />
 

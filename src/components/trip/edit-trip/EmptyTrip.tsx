@@ -12,6 +12,7 @@ import { DELETE_TRIP } from '../../../graphql/mutations/tripMutation';
 import { useHistory } from 'react-router-dom';
 import { Paths } from '../../../utils/paths';
 import { Dialog, DialogActions, DialogContent } from '@material-ui/core';
+import { DeleteDialog } from '../../shared/trip/DeleteDialog';
 
 const TripBuilderWrapper = styled.article`
   background-color: ${grey0};
@@ -31,26 +32,13 @@ export const EmptyTrip = ({
 }): ReactElement => {
   const [alertOpen, setAlertOpen] = useState(false);
 
-  const history = useHistory();
-
-  const onNavigate = useCallback(
-    (path: Paths) => {
-      history.push(path);
-    },
-    [history]
-  );
-
   const [startDate, setStartDate] = useState<moment.Moment | null>(null);
   const [endDate, setEndDate] = useState<moment.Moment | null>(null);
   const [focusedInput, setFocusedInput] = useState<FocusedInputShape | null>(
     null
   );
   const { handleSubmit } = useForm();
-  const [deleteTrip] = useMutation(DELETE_TRIP, {
-    variables: {
-      public_identifier: public_identifier,
-    },
-  });
+
   return (
     <TripBuilderWrapper>
       <Heading as="h1" size="lg" marginBottom={2}>
@@ -59,31 +47,12 @@ export const EmptyTrip = ({
       <Text fontSize="sm" marginBottom={4}>
         Here are some details describing what an trip is! Lorem ipsum dolor
       </Text>
-      <Dialog open={alertOpen} onClose={() => setAlertOpen(false)}>
-        <DialogContent>
-          Are you sure you want to delete this trip?
-        </DialogContent>
-        <DialogActions>
-          <Button
-            variant="contained"
-            color="secondary"
-            startIcon={<DeleteIcon />}
-            style={{ backgroundColor: '#f44336' }}
-            onClick={() => {
-              deleteTrip().then(() => {
-                setAlertOpen(false);
-                onNavigate(Paths.Trip);
-              });
-            }}
-          >
-            Yes
-          </Button>
-          <Button onClick={() => setAlertOpen(false)} color="primary" autoFocus>
-            No
-          </Button>
-        </DialogActions>
-      </Dialog>
-
+      <DeleteDialog
+        public_identifier={public_identifier}
+        mongoId={null}
+        alertOpen={alertOpen}
+        setAlertOpen={setAlertOpen}
+      />
       <DeleteIcon onClick={() => setAlertOpen(true)} />
       <form
         onSubmit={handleSubmit(() => {
