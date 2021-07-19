@@ -52,6 +52,7 @@ export const ConnectedSingleTrip = (): React.ReactElement => {
         <SingleTrip
           data={data['findTripByPublicIdentifier']}
           elements={elements}
+          mongoid={mongoid}
         />
       )}
     </>

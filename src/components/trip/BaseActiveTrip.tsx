@@ -1,6 +1,5 @@
-import { CalendarIcon, EditIcon } from '@chakra-ui/icons';
+import { CalendarIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons';
 import {
-  Button,
   Editable,
   EditableInput,
   EditablePreview,
@@ -8,23 +7,14 @@ import {
   useEditableControls,
   Text,
   Box,
-  IconButton,
-  Icon,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
   Select,
 } from '@chakra-ui/react';
 import moment from 'moment';
 import React, { ReactElement, SetStateAction } from 'react';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
-import { useHistory } from 'react-router';
-import { LOCAL_STORAGE } from '../../utils/constants';
 import { formatSingleDate, formatWeekdayMonthDayYear } from '../../utils/date';
-import { Paths } from '../../utils/paths';
 import { grey0 } from '../../utils/styles/colors';
-import { spacer16, spacer24 } from '../../utils/styles/constants';
+import { spacer24 } from '../../utils/styles/constants';
 import {
   ActiveTripWrapper,
   DragDropContainer,
@@ -38,7 +28,6 @@ import {
 import { ManyElementDataProps } from './edit-trip/EditTrip.types';
 import { TripExperienceCard, TripExperienceText } from './TripExperienceItem';
 import { NotesModal } from './NotesModal';
-import { BsThreeDots } from 'react-icons/bs';
 import { useState } from 'react';
 import { DateRangePicker, FocusedInputShape } from 'react-dates';
 import { useMutation } from '@apollo/client';
@@ -46,6 +35,7 @@ import { UPDATE_TRIP_DATE } from '../../graphql/mutations/mongodbMutation';
 import { useEffect } from 'react';
 import { mongodbClient } from '../../graphql/mongodbClient';
 import { Dispatch } from 'react';
+import { DeleteDialog } from '../shared/trip/DeleteDialog';
 
 export enum TripType {
   NEW = 'NEW',
@@ -66,6 +56,7 @@ export const BaseActiveTrip = ({
   updateTitle,
   mongoId,
   setElements,
+  public_identifier,
 }: {
   addExperience: (experience: ExperienceContentDataProps) => void;
   addNote: (text: string) => void;
@@ -80,8 +71,8 @@ export const BaseActiveTrip = ({
   updateTitle?: (title: string) => void;
   mongoId: string;
   setElements: Dispatch<SetStateAction<ManyElementDataProps>>;
+  public_identifier: string;
 }): ReactElement => {
-  // const history = useHistory();
   const hasDates = dates.length > 0;
   const startDate = hasDates ? moment(dates[0], 'YYYY-MM-DD') : null;
   const endDate = hasDates
@@ -96,6 +87,7 @@ export const BaseActiveTrip = ({
   const [focusedInput, setFocusedInput] = useState<FocusedInputShape | null>(
     null
   );
+  const [alertOpen, setAlertOpen] = useState(false);
 
   const [updateTripDate] = useMutation(UPDATE_TRIP_DATE, {
     client: mongodbClient,
@@ -210,6 +202,14 @@ export const BaseActiveTrip = ({
               </Text>
             </Flex>
           )}
+          <DeleteDialog
+            public_identifier={public_identifier}
+            mongoId={mongoId}
+            alertOpen={alertOpen}
+            setAlertOpen={setAlertOpen}
+          />
+
+          <DeleteIcon onClick={() => setAlertOpen(true)} />
         </Box>
 
         <DateRangePicker

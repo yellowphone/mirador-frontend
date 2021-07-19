@@ -1,4 +1,4 @@
-import React, { FC, useCallback } from 'react';
+import React, { FC, useCallback, useState } from 'react';
 import { SingleTripProps } from './SingleTrip.types';
 import {
   Button,
@@ -16,13 +16,25 @@ import {
 import { ElementProps } from '../create-trip/CreateTrip.types';
 import { useHistory } from 'react-router';
 import { Paths } from '../../../utils/paths';
+import { DeleteIcon } from '@chakra-ui/icons';
+import { DeleteDialog } from '../../shared/trip/DeleteDialog';
 
-export const SingleTrip: FC<SingleTripProps> = ({ data, elements }) => {
+export const SingleTrip: FC<SingleTripProps> = ({
+  data,
+  elements,
+  mongoid,
+}) => {
+  const [alertOpen, setAlertOpen] = useState(false);
+
   const history = useHistory();
 
   const onNavigate = useCallback(
-    (path: Paths) => {
-      history.push(`${path}/${data.public_identifier}`);
+    (path: Paths, public_identifier: boolean) => {
+      if (public_identifier) {
+        history.push(`${path}/${data.public_identifier}`);
+      } else {
+        history.push(`${path}`);
+      }
     },
     [history, data.public_identifier]
   );
@@ -70,7 +82,18 @@ export const SingleTrip: FC<SingleTripProps> = ({ data, elements }) => {
       <p>pktrip: {data.pktrip}</p>
       <p>title: {data.title}</p>
 
-      <Button onClick={() => onNavigate(Paths.EditTrip)}>Edit Trip</Button>
+      <DeleteDialog
+        public_identifier={data.public_identifier}
+        mongoId={mongoid}
+        alertOpen={alertOpen}
+        setAlertOpen={setAlertOpen}
+      />
+
+      <DeleteIcon onClick={() => setAlertOpen(true)} />
+
+      <Button onClick={() => onNavigate(Paths.EditTrip, true)}>
+        Edit Trip
+      </Button>
 
       <Tabs isLazy>
         <TabList overflowX="scroll" maxWidth="100%" maxHeight="100%">

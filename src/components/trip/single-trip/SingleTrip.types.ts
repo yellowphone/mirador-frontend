@@ -3,6 +3,7 @@ import { ManyElementDataProps } from '../create-trip/CreateTrip.types';
 export interface SingleTripProps {
   data: FindTripByIdObject;
   elements: ManyElementDataProps;
+  mongoid: string;
 }
 
 export interface FindTripByIdObject {
