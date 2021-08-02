@@ -68,6 +68,7 @@ export const EmptyTrip = ({
           onFocusChange={(focusedInput: FocusedInputShape | null) =>
             setFocusedInput(focusedInput)
           }
+          isOutsideRange={() => false}
         />
 
         <Button type="submit">Start new trip</Button>

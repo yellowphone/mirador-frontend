@@ -231,6 +231,7 @@ export const BaseActiveTrip = ({
           onFocusChange={(focusedInput: FocusedInputShape | null) =>
             setFocusedInput(focusedInput)
           }
+          isOutsideRange={() => false}
         />
 
         {startPickerDate && endPickerDate && (
