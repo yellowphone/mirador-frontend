@@ -34,13 +34,14 @@ export const ConnectedSingleTrip = (): React.ReactElement => {
     client: mongodbClient,
     fetchPolicy: 'cache-and-network',
     onCompleted: incomingData => {
-      const tempData: ManyElementDataProps = {};
-      Object.keys(incomingData.findTrip).map(key => {
-        if (key != '_id') {
-          tempData[key] = incomingData.findTrip[key];
-        }
-      });
-      setElements(tempData);
+      // const tempData: ManyElementDataProps = {};
+      // Object.keys(incomingData.findTrip).map(key => {
+      //   if (key != '_id') {
+      //     tempData[key] = incomingData.findTrip[key];
+      //   }
+      // });
+      // setElements(tempData);
+      setElements(incomingData.findTrip.trip);
     },
     onError: err => console.error(err),
   });

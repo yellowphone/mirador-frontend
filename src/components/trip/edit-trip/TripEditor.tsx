@@ -21,13 +21,15 @@ export const TripEditor: FC<TripEditorProps> = ({ data }): ReactElement => {
   const [findMongoTrip] = useLazyQuery(FIND_MONGODB_TRIP, {
     client: mongodbClient,
     onCompleted: incomingData => {
-      const tempData: ManyElementDataProps = {};
-      Object.keys(incomingData.findTrip).map((key, index) => {
-        if (key != '_id') {
-          tempData[key] = incomingData.findTrip[key];
-        }
-      });
-      setElements(tempData);
+      // const tempData: ManyElementDataProps = {};
+      // Object.keys(incomingData.findTrip).map((key, index) => {
+      //   if (key != '_id') {
+      //     tempData[key] = incomingData.findTrip[key];
+      //   }
+      // });
+      // setElements(tempData);
+
+      setElements(incomingData.findTrip.trip);
     },
     onError: err => console.error(err),
   });
@@ -63,8 +65,7 @@ export const TripEditor: FC<TripEditorProps> = ({ data }): ReactElement => {
         });
 
         setMongoid(returnData.data.createTrip._id);
-        delete returnData.data.createTrip._id;
-        setElements(returnData.data.createTrip);
+        setElements(returnData.data.createTrip.trip);
       });
     } else {
       alert('Date range is not valid! Try again!');
