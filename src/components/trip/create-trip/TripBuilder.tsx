@@ -44,8 +44,7 @@ export const TripBuilder = (): ReactElement => {
     createMongoTrip().then(data => {
       createTripHelper(data);
       setMongoid(data.data.createTrip._id);
-      delete data.data.createTrip._id;
-      setElements(data.data.createTrip);
+      setElements(data.data.createTrip.trip);
     });
   }, [createTrip, createTripHelper, createMongoTrip]);
 

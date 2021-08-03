@@ -92,8 +92,7 @@ export const BaseActiveTrip = ({
   const [updateTripDate] = useMutation(UPDATE_TRIP_DATE, {
     client: mongodbClient,
     onCompleted: data => {
-      delete data.updateTripDate._id;
-      setElements(data.updateTripDate);
+      setElements(data.updateTripDate.trip);
       setSelectedDay(undefined);
     },
   });
