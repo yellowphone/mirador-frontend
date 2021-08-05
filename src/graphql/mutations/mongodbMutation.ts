@@ -40,6 +40,32 @@ export const DELETE_ELEMENT_FROM_TRIP = gql`
   }
 `;
 
+export const INSERT_ELEMENT_INTO_NOTES = gql`
+  mutation insertElementToNotes($id: String, $element: Json) {
+    insertElementToNotes(id: $id, element: $element)
+  }
+`;
+
+export const SWAP_ELEMENTS_IN_NOTES = gql`
+  mutation swapElementsInNotes(
+    $id: String
+    $firstIndex: Int
+    $secondIndex: Int
+  ) {
+    swapElementsInNotes(
+      id: $id
+      firstIndex: $firstIndex
+      secondIndex: $secondIndex
+    )
+  }
+`;
+
+export const DELETE_ELEMENT_FROM_NOTES = gql`
+  mutation deleteElementFromNotes($id: String, $index: Int) {
+    deleteElementFromNotes(id: $id, index: $index)
+  }
+`;
+
 export const DELETE_TRIP = gql`
   mutation deleteTrip($id: String) {
     deleteTrip(id: $id)

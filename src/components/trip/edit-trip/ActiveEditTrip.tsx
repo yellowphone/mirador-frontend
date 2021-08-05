@@ -5,6 +5,7 @@ import { mongodbClient } from '../../../graphql/mongodbClient';
 import { UPDATE_TRIP } from '../../../graphql/mutations/tripMutation';
 import {
   DELETE_ELEMENT_FROM_TRIP,
+  INSERT_ELEMENT_INTO_NOTES,
   INSERT_ELEMENT_INTO_TRIP,
   SWAP_ELEMENTS_IN_TRIP,
 } from '../../../graphql/mutations/mongodbMutation';
@@ -13,30 +14,41 @@ import {
   ExperienceContentDataProps,
   ManyElementDataProps,
 } from '../create-trip/CreateTrip.types';
+import { ElementProps } from './EditTrip.types';
 
 export const ActiveEditTrip = ({
   elements,
+  notes,
   mongoId,
   setElements,
+  setNotes,
   public_identifier,
   title,
 }: {
   elements: ManyElementDataProps;
+  notes: ElementProps[];
   mongoId: string;
   setElements: Dispatch<SetStateAction<ManyElementDataProps>>;
+  setNotes: Dispatch<SetStateAction<ElementProps[]>>;
   public_identifier: string;
   title: string;
 }): ReactElement => {
-  const elementKeys = Object.keys(elements);
-  const [selectedDay, setSelectedDay] = useState<string | undefined>(
-    elementKeys[0]
-  );
+  // const elementKeys = Object.keys(elements);
+  const [keys, setKeys] = useState<string[]>([]);
+  const [selectedDay, setSelectedDay] = useState<string | undefined>('');
+
+  useEffect(() => {
+    console.log('re-render');
+    console.log(elements);
+    console.log(notes);
+    setKeys(Object.keys(elements));
+  }, [elements, notes]);
 
   useEffect(() => {
     if (!selectedDay) {
-      setSelectedDay(elementKeys[0]);
+      setSelectedDay(keys[0]);
     }
-  }, [elementKeys, selectedDay]);
+  }, [keys, selectedDay]);
 
   const [updateTitle] = useMutation(UPDATE_TRIP);
 
@@ -49,6 +61,10 @@ export const ActiveEditTrip = ({
   });
 
   const [deleteElementMutation] = useMutation(DELETE_ELEMENT_FROM_TRIP, {
+    client: mongodbClient,
+  });
+
+  const [insertElementNotesMutation] = useMutation(INSERT_ELEMENT_INTO_NOTES, {
     client: mongodbClient,
   });
 
@@ -75,6 +91,25 @@ export const ActiveEditTrip = ({
         },
       });
     }
+  };
+
+  const addElementToNotes = (
+    type: string,
+    content: ExperienceContentDataProps | string
+  ) => {
+    const newElem = [...notes];
+    newElem.push({ type: type, content: content });
+    setNotes(newElem);
+
+    insertElementNotesMutation({
+      variables: {
+        id: mongoId,
+        element: {
+          type: type,
+          content: content,
+        },
+      },
+    });
   };
 
   const swapElements = (firstIndex: number, secondIndex: number) => {
@@ -120,9 +155,10 @@ export const ActiveEditTrip = ({
     <BaseActiveTrip
       addExperience={experience => addElement('experience', experience)}
       addNote={text => addElement('text', text)}
-      dates={elementKeys}
+      dates={keys}
       deleteTripItem={index => deleteElement(index)}
       tripItems={elements}
+      tripNotes={notes}
       selectedDay={selectedDay}
       setSelectedDay={day => setSelectedDay(day)}
       swapTripItems={(first, second) => swapElements(first, second)}
@@ -138,6 +174,8 @@ export const ActiveEditTrip = ({
         });
       }}
       setElements={setElements}
+      setNotes={setNotes}
+      addElementNotes={text => addElementToNotes('text', text)}
       public_identifier={public_identifier}
     />
   );

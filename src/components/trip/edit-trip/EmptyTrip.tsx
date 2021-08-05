@@ -13,6 +13,7 @@ import { useHistory } from 'react-router-dom';
 import { Paths } from '../../../utils/paths';
 import { Dialog, DialogActions, DialogContent } from '@material-ui/core';
 import { DeleteDialog } from '../../shared/trip/DeleteDialog';
+import { Search } from '../../shared/Google/Search';
 
 const TripBuilderWrapper = styled.article`
   background-color: ${grey0};

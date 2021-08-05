@@ -36,6 +36,7 @@ import { useEffect } from 'react';
 import { mongodbClient } from '../../graphql/mongodbClient';
 import { Dispatch } from 'react';
 import { DeleteDialog } from '../shared/trip/DeleteDialog';
+import { TripNoteEditor } from './TripNoteEditor';
 
 export enum TripType {
   NEW = 'NEW',
@@ -48,6 +49,7 @@ export const BaseActiveTrip = ({
   dates,
   deleteTripItem,
   tripItems,
+  tripNotes,
   selectedDay,
   setSelectedDay,
   swapTripItems,
@@ -56,6 +58,8 @@ export const BaseActiveTrip = ({
   updateTitle,
   mongoId,
   setElements,
+  setNotes,
+  addElementNotes,
   public_identifier,
 }: {
   addExperience: (experience: ExperienceContentDataProps) => void;
@@ -63,6 +67,7 @@ export const BaseActiveTrip = ({
   dates: string[];
   deleteTripItem: (index: number) => void;
   tripItems: ManyElementDataProps;
+  tripNotes: ElementProps[];
   selectedDay: string | undefined;
   setSelectedDay: (day: string | undefined) => void;
   swapTripItems: (firstIndex: number, secondIndex: number) => void;
@@ -71,6 +76,8 @@ export const BaseActiveTrip = ({
   updateTitle?: (title: string) => void;
   mongoId: string;
   setElements: Dispatch<SetStateAction<ManyElementDataProps>>;
+  setNotes: Dispatch<SetStateAction<ElementProps[]>>;
+  addElementNotes: (text: string) => void;
   public_identifier: string;
 }): ReactElement => {
   const hasDates = dates.length > 0;
@@ -251,17 +258,35 @@ export const BaseActiveTrip = ({
           </TripInfoWrapper>
         )}
 
-        <Flex bg={grey0} p="0 24px 16px 24px">
-          <NotesModal addNote={addNote} />
-          <AdditionalLocationModal />
-        </Flex>
+        {startPickerDate && endPickerDate && (
+          <Flex bg={grey0} p="0 24px 16px 24px">
+            <NotesModal addNote={addNote} />
+            <AdditionalLocationModal />
+          </Flex>
+        )}
+
+        {!startPickerDate && !endPickerDate && (
+          <Flex bg={grey0} p="0 24px 16px 24px">
+            <NotesModal addNote={addElementNotes} />
+            <AdditionalLocationModal />
+          </Flex>
+        )}
       </Flex>
-      <DragDropContainer
-        onDragOver={e => handleDragOver(e)}
-        onDrop={e => handleDragDrop(e)}
-      >
-        {renderTripItems()}
-      </DragDropContainer>
+      {!startPickerDate && !endPickerDate && (
+        <TripNoteEditor
+          notes={tripNotes}
+          setNotes={setNotes}
+          mongoId={mongoId}
+        />
+      )}
+      {startPickerDate && endPickerDate && (
+        <DragDropContainer
+          onDragOver={e => handleDragOver(e)}
+          onDrop={e => handleDragDrop(e)}
+        >
+          {renderTripItems()}
+        </DragDropContainer>
+      )}
     </ActiveTripWrapper>
   );
 };

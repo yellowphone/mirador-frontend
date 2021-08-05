@@ -21,24 +21,32 @@ import {
   INSERT_ELEMENT_INTO_TRIP,
   SWAP_ELEMENTS_IN_TRIP,
   DELETE_TRIP as DELETE_TRIP_MONGODB,
+  INSERT_ELEMENT_INTO_NOTES,
+  SWAP_ELEMENTS_IN_NOTES,
+  DELETE_ELEMENT_FROM_NOTES,
 } from '../../graphql/mutations/mongodbMutation';
 import { LOCAL_STORAGE } from '../../utils/constants';
 import { Paths } from '../../utils/paths';
 import { BaseActiveTrip } from './BaseActiveTrip';
 import {
+  ElementProps,
   ExperienceContentDataProps,
   ManyElementDataProps,
 } from './create-trip/CreateTrip.types';
 
 export const ActiveTrip = ({
   elements,
+  notes,
   mongoId,
   setElements,
+  setNotes,
   public_identifier,
 }: {
   elements: ManyElementDataProps;
+  notes: ElementProps[];
   mongoId: string;
   setElements: Dispatch<SetStateAction<ManyElementDataProps>>;
+  setNotes: Dispatch<SetStateAction<ElementProps[]>>;
   public_identifier: string;
 }): ReactElement => {
   const elementKeys = Object.keys(elements);
@@ -57,6 +65,10 @@ export const ActiveTrip = ({
   });
 
   const [deleteElementMutation] = useMutation(DELETE_ELEMENT_FROM_TRIP, {
+    client: mongodbClient,
+  });
+
+  const [insertElementNotesMutation] = useMutation(INSERT_ELEMENT_INTO_NOTES, {
     client: mongodbClient,
   });
 
@@ -88,6 +100,25 @@ export const ActiveTrip = ({
         },
       });
     }
+  };
+
+  const addElementToNotes = (
+    type: string,
+    content: ExperienceContentDataProps | string
+  ) => {
+    const newElem = [...notes];
+    newElem.push({ type: type, content: content });
+    setNotes(newElem);
+
+    insertElementNotesMutation({
+      variables: {
+        id: mongoId,
+        element: {
+          type: type,
+          content: content,
+        },
+      },
+    });
   };
 
   const swapElements = (firstIndex: number, secondIndex: number) => {
@@ -131,6 +162,7 @@ export const ActiveTrip = ({
       dates={elementKeys}
       deleteTripItem={index => deleteElement(index)}
       tripItems={elements}
+      tripNotes={notes}
       selectedDay={selectedDay}
       setSelectedDay={day => setSelectedDay(day)}
       swapTripItems={(first, second) => swapElements(first, second)}
@@ -138,6 +170,8 @@ export const ActiveTrip = ({
       type="NEW"
       mongoId={mongoId}
       setElements={setElements}
+      setNotes={setNotes}
+      addElementNotes={text => addElementToNotes('text', text)}
       public_identifier={public_identifier}
       updateTitle={newTitle => {
         updateTitle({
