@@ -7,9 +7,7 @@ import {
   ManyElementDataProps,
   ElementProps,
 } from './EditTrip.types';
-import { CREATE_MONGODB_TRIP } from '../../../graphql/mutations/mongodbMutation';
 import { FIND_MONGODB_TRIP } from '../../../graphql/queries/mongodbQuery';
-import { UPDATE_TRIP } from '../../../graphql/mutations/tripMutation';
 import { ActiveEditTrip } from './ActiveEditTrip';
 
 export const TripEditor: FC<TripEditorProps> = ({ data }): ReactElement => {
@@ -17,48 +15,26 @@ export const TripEditor: FC<TripEditorProps> = ({ data }): ReactElement => {
   const [elements, setElements] = useState<ManyElementDataProps>({});
   const [notes, setNotes] = useState<ElementProps[]>([]);
 
-  // const [createMongoTrip] = useMutation(CREATE_MONGODB_TRIP, {
-  //   client: mongodbClient,
-  // });
-
-  // const [updateTrip] = useMutation(UPDATE_TRIP);
-
-  const { data: mongoData } = useQuery(FIND_MONGODB_TRIP, {
+  const [findMongoTrip] = useLazyQuery(FIND_MONGODB_TRIP, {
     client: mongodbClient,
     fetchPolicy: 'cache-and-network',
-    onError: err => console.error(err),
-    variables: {
-      id: data.findTripByPublicIdentifier.mongoid,
+    onCompleted: incomingData => {
+      setElements(incomingData.findTrip.trip);
+      setNotes(incomingData.findTrip.notes);
     },
+    onError: err => console.error(err),
   });
 
-  // const [findMongoTrip, { data: mongoData }] = useLazyQuery(FIND_MONGODB_TRIP, {
-  //   client: mongodbClient,
-  //   fetchPolicy: 'cache-and-network',
-  //   // onCompleted: incomingData => {
-  //   //   setElements(incomingData.findTrip.trip);
-  //   //   setNotes(incomingData.findTrip.notes);
-  //   // },
-  //   onError: err => console.error(err),
-  // });
-
   useEffect(() => {
-    if (mongoData) {
-      setElements(mongoData.findTrip.trip);
-      setNotes(mongoData.findTrip.notes);
+    if (data['findTripByPublicIdentifier']['mongoid']) {
+      setMongoid(data.findTripByPublicIdentifier.mongoid);
+      findMongoTrip({
+        variables: {
+          id: data['findTripByPublicIdentifier']['mongoid'],
+        },
+      });
     }
-  }, [mongoData]);
-
-  // useEffect(() => {
-  //   if (data['findTripByPublicIdentifier']['mongoid']) {
-  //     setMongoid(data.findTripByPublicIdentifier.mongoid);
-  //     // findMongoTrip({
-  //     //   variables: {
-  //     //     id: data['findTripByPublicIdentifier']['mongoid'],
-  //     //   },
-  //     });
-  //   }
-  // }, [data, findMongoTrip]);
+  }, [data, findMongoTrip]);
 
   return (
     <ActiveEditTrip
