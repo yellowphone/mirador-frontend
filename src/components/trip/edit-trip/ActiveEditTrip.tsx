@@ -33,22 +33,16 @@ export const ActiveEditTrip = ({
   public_identifier: string;
   title: string;
 }): ReactElement => {
-  // const elementKeys = Object.keys(elements);
-  const [keys, setKeys] = useState<string[]>([]);
-  const [selectedDay, setSelectedDay] = useState<string | undefined>('');
-
-  useEffect(() => {
-    console.log('re-render');
-    console.log(elements);
-    console.log(notes);
-    setKeys(Object.keys(elements));
-  }, [elements, notes]);
+  const elementKeys = Object.keys(elements);
+  const [selectedDay, setSelectedDay] = useState<string | undefined>(
+    elementKeys[0]
+  );
 
   useEffect(() => {
     if (!selectedDay) {
-      setSelectedDay(keys[0]);
+      setSelectedDay(elementKeys[0]);
     }
-  }, [keys, selectedDay]);
+  }, [elementKeys, selectedDay]);
 
   const [updateTitle] = useMutation(UPDATE_TRIP);
 
@@ -155,7 +149,7 @@ export const ActiveEditTrip = ({
     <BaseActiveTrip
       addExperience={experience => addElement('experience', experience)}
       addNote={text => addElement('text', text)}
-      dates={keys}
+      dates={elementKeys}
       deleteTripItem={index => deleteElement(index)}
       tripItems={elements}
       tripNotes={notes}
