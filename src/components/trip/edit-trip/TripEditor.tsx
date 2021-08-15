@@ -15,36 +15,41 @@ export const TripEditor: FC<TripEditorProps> = ({ data }): ReactElement => {
   const [elements, setElements] = useState<ManyElementDataProps>({});
   const [notes, setNotes] = useState<ElementProps[]>([]);
 
-  const [findMongoTrip] = useLazyQuery(FIND_MONGODB_TRIP, {
+  const {
+    data: mongoData,
+    loading,
+    error,
+  } = useQuery(FIND_MONGODB_TRIP, {
     client: mongodbClient,
     fetchPolicy: 'cache-and-network',
-    onCompleted: incomingData => {
-      setElements(incomingData.findTrip.trip);
-      setNotes(incomingData.findTrip.notes);
+    variables: {
+      id: data['findTripByPublicIdentifier']['mongoid'],
     },
     onError: err => console.error(err),
   });
 
   useEffect(() => {
-    if (data['findTripByPublicIdentifier']['mongoid']) {
-      setMongoid(data.findTripByPublicIdentifier.mongoid);
-      findMongoTrip({
-        variables: {
-          id: data['findTripByPublicIdentifier']['mongoid'],
-        },
-      });
-    }
-  }, [data, findMongoTrip]);
+    setElements(mongoData.findTrip.trip);
+    setNotes(mongoData.findTrip.notes);
+  }, [mongoData]);
+
+  useEffect(() => {
+    setMongoid(data.findTripByPublicIdentifier.mongoid);
+  }, [data.findTripByPublicIdentifier.mongoid]);
 
   return (
-    <ActiveEditTrip
-      elements={elements}
-      notes={notes}
-      setElements={setElements}
-      setNotes={setNotes}
-      mongoId={mongoid}
-      public_identifier={data.findTripByPublicIdentifier.public_identifier}
-      title={data.findTripByPublicIdentifier.title}
-    />
+    <>
+      {!loading && error === undefined && (
+        <ActiveEditTrip
+          elements={elements}
+          notes={notes}
+          setElements={setElements}
+          setNotes={setNotes}
+          mongoId={mongoid}
+          public_identifier={data.findTripByPublicIdentifier.public_identifier}
+          title={data.findTripByPublicIdentifier.title}
+        />
+      )}
+    </>
   );
 };
