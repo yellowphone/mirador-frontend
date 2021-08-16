@@ -1,11 +1,9 @@
 import React, { ReactElement, useCallback, useEffect, useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { mongodbClient } from '../../../graphql/mongodbClient';
-import { EmptyTrip } from './EmptyTrip';
 import { ActiveTrip } from '../ActiveTrip';
-import { ManyElementDataProps } from './CreateTrip.types';
+import { ElementProps, ManyElementDataProps } from './CreateTrip.types';
 import { CREATE_MONGODB_TRIP } from '../../../graphql/mutations/mongodbMutation';
-import { LOCAL_STORAGE } from '../../../utils/constants';
 import { useLocationContext } from '../../../utils/context/LocationContext';
 import { useCookies } from 'react-cookie';
 import { CREATE_TRIP } from '../../../graphql/mutations/tripMutation';
@@ -15,6 +13,7 @@ export const TripBuilder = (): ReactElement => {
   const [publicIdentifier, setPublicIdentifier] = useState('');
   const { coords, setCoords } = useLocationContext();
   const [elements, setElements] = useState<ManyElementDataProps>({});
+  const [notes, setNotes] = useState<ElementProps[]>([]);
   const [cookie] = useCookies(['user']);
 
   const [createMongoTrip] = useMutation(CREATE_MONGODB_TRIP, {
@@ -44,15 +43,17 @@ export const TripBuilder = (): ReactElement => {
     createMongoTrip().then(data => {
       createTripHelper(data);
       setMongoid(data.data.createTrip._id);
-      delete data.data.createTrip._id;
-      setElements(data.data.createTrip);
+      setElements(data.data.createTrip.trip);
+      setNotes(data.data.createTrip.notes);
     });
   }, [createTrip, createTripHelper, createMongoTrip]);
 
   return (
     <ActiveTrip
       elements={elements}
+      notes={notes}
       setElements={setElements}
+      setNotes={setNotes}
       mongoId={mongoid}
       public_identifier={publicIdentifier}
     />

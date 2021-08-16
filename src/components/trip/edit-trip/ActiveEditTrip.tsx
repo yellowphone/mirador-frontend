@@ -5,6 +5,7 @@ import { mongodbClient } from '../../../graphql/mongodbClient';
 import { UPDATE_TRIP } from '../../../graphql/mutations/tripMutation';
 import {
   DELETE_ELEMENT_FROM_TRIP,
+  INSERT_ELEMENT_INTO_NOTES,
   INSERT_ELEMENT_INTO_TRIP,
   SWAP_ELEMENTS_IN_TRIP,
 } from '../../../graphql/mutations/mongodbMutation';
@@ -13,17 +14,22 @@ import {
   ExperienceContentDataProps,
   ManyElementDataProps,
 } from '../create-trip/CreateTrip.types';
+import { ElementProps } from './EditTrip.types';
 
 export const ActiveEditTrip = ({
   elements,
+  notes,
   mongoId,
   setElements,
+  setNotes,
   public_identifier,
   title,
 }: {
   elements: ManyElementDataProps;
+  notes: ElementProps[];
   mongoId: string;
   setElements: Dispatch<SetStateAction<ManyElementDataProps>>;
+  setNotes: Dispatch<SetStateAction<ElementProps[]>>;
   public_identifier: string;
   title: string;
 }): ReactElement => {
@@ -52,6 +58,10 @@ export const ActiveEditTrip = ({
     client: mongodbClient,
   });
 
+  const [insertElementNotesMutation] = useMutation(INSERT_ELEMENT_INTO_NOTES, {
+    client: mongodbClient,
+  });
+
   const addElement = (
     type: string,
     content: ExperienceContentDataProps | string
@@ -75,6 +85,25 @@ export const ActiveEditTrip = ({
         },
       });
     }
+  };
+
+  const addElementToNotes = (
+    type: string,
+    content: ExperienceContentDataProps | string
+  ) => {
+    const newElem = [...notes];
+    newElem.push({ type: type, content: content });
+    setNotes(newElem);
+
+    insertElementNotesMutation({
+      variables: {
+        id: mongoId,
+        element: {
+          type: type,
+          content: content,
+        },
+      },
+    });
   };
 
   const swapElements = (firstIndex: number, secondIndex: number) => {
@@ -123,6 +152,7 @@ export const ActiveEditTrip = ({
       dates={elementKeys}
       deleteTripItem={index => deleteElement(index)}
       tripItems={elements}
+      tripNotes={notes}
       selectedDay={selectedDay}
       setSelectedDay={day => setSelectedDay(day)}
       swapTripItems={(first, second) => swapElements(first, second)}
@@ -138,6 +168,8 @@ export const ActiveEditTrip = ({
         });
       }}
       setElements={setElements}
+      setNotes={setNotes}
+      addElementNotes={text => addElementToNotes('text', text)}
       public_identifier={public_identifier}
     />
   );
