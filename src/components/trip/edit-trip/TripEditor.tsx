@@ -1,7 +1,6 @@
 import React, { FC, ReactElement, useEffect, useState } from 'react';
-import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { mongodbClient } from '../../../graphql/mongodbClient';
-import { EmptyTrip } from './EmptyTrip';
 import {
   TripEditorProps,
   ManyElementDataProps,

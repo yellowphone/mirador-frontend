@@ -1,11 +1,9 @@
 import React, { ReactElement, useCallback, useEffect, useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { mongodbClient } from '../../../graphql/mongodbClient';
-import { EmptyTrip } from './EmptyTrip';
 import { ActiveTrip } from '../ActiveTrip';
 import { ElementProps, ManyElementDataProps } from './CreateTrip.types';
 import { CREATE_MONGODB_TRIP } from '../../../graphql/mutations/mongodbMutation';
-import { LOCAL_STORAGE } from '../../../utils/constants';
 import { useLocationContext } from '../../../utils/context/LocationContext';
 import { useCookies } from 'react-cookie';
 import { CREATE_TRIP } from '../../../graphql/mutations/tripMutation';

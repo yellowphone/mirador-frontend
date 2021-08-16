@@ -258,34 +258,29 @@ export const BaseActiveTrip = ({
           </TripInfoWrapper>
         )}
 
-        {startPickerDate && endPickerDate && (
-          <Flex bg={grey0} p="0 24px 16px 24px">
-            <NotesModal addNote={addNote} />
-            <AdditionalLocationModal />
-          </Flex>
-        )}
-
-        {!startPickerDate && !endPickerDate && (
-          <Flex bg={grey0} p="0 24px 16px 24px">
-            <NotesModal addNote={addElementNotes} />
-            <AdditionalLocationModal />
-          </Flex>
-        )}
+        <Flex bg={grey0} p="0 24px 16px 24px">
+          <NotesModal
+            addNote={
+              startPickerDate && endPickerDate ? addNote : addElementNotes
+            }
+          />
+          <AdditionalLocationModal />
+        </Flex>
       </Flex>
-      {!startPickerDate && !endPickerDate && (
-        <TripNoteEditor
-          notes={tripNotes}
-          setNotes={setNotes}
-          mongoId={mongoId}
-        />
-      )}
-      {startPickerDate && endPickerDate && (
+
+      {startPickerDate && endPickerDate ? (
         <DragDropContainer
           onDragOver={e => handleDragOver(e)}
           onDrop={e => handleDragDrop(e)}
         >
           {renderTripItems()}
         </DragDropContainer>
+      ) : (
+        <TripNoteEditor
+          notes={tripNotes}
+          setNotes={setNotes}
+          mongoId={mongoId}
+        />
       )}
     </ActiveTripWrapper>
   );
