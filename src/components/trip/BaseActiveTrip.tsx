@@ -247,19 +247,18 @@ export const BaseActiveTrip = ({
           />
 
           {!startPickerDate && !endPickerDate && (
-            <Flex bg={grey0} p="0 24px 16px 24px">
-              <NotesModal addNote={addElementNotes} />
-              <AdditionalLocationModal />
-            </Flex>
+            <>
+              <Flex bg={grey0} p="0 24px 16px 24px">
+                <NotesModal addNote={addElementNotes} />
+                <AdditionalLocationModal />
+              </Flex>
+              <TripNoteEditor
+                notes={tripNotes}
+                setNotes={setNotes}
+                mongoId={mongoId}
+              />
+            </>
           )}
-          {!startPickerDate && !endPickerDate && (
-            <TripNoteEditor
-              notes={tripNotes}
-              setNotes={setNotes}
-              mongoId={mongoId}
-            />
-          )}
-
           {startPickerDate && endPickerDate && (
             <>
               <NoteWrapper>
