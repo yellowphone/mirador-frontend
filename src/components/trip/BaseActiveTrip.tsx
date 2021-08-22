@@ -18,7 +18,9 @@ import { spacer24 } from '../../utils/styles/constants';
 import {
   ActiveTripWrapper,
   DragDropContainer,
+  NoteWrapper,
   TripInfoWrapper,
+  TripPlannerWrapper,
 } from './ActiveTrip.style';
 import { AdditionalLocationModal } from './AdditionalLocationModal';
 import {
@@ -178,110 +180,128 @@ export const BaseActiveTrip = ({
   };
 
   return (
-    <ActiveTripWrapper>
-      <Flex flexDir="column" position="sticky" top="0" minWidth="550px">
-        <Box p={spacer24} backgroundColor={grey0}>
-          <Flex alignItems="center" justifyContent="space-between">
-            <Flex alignItems="center">
-              <Editable
-                fontSize={'2xl'}
-                fontWeight="bold"
-                defaultValue={title}
-                onChange={type === TripType.NEW ? updateTitle : undefined}
-                onSubmit={type === TripType.EDIT ? updateTitle : undefined}
-              >
-                <EditablePreview />
-                <EditableInput />
-                <EditableControls />
-              </Editable>
+    <>
+      <ActiveTripWrapper
+        overflow={!startPickerDate && !endPickerDate ? 'scroll' : ''}
+      >
+        <Flex flexDir="column" position="sticky" top="0" minWidth="550px">
+          <Box p={spacer24} backgroundColor={grey0}>
+            <Flex alignItems="center" justifyContent="space-between">
+              <Flex alignItems="center">
+                <Editable
+                  fontSize={'2xl'}
+                  fontWeight="bold"
+                  defaultValue={title}
+                  onChange={type === TripType.NEW ? updateTitle : undefined}
+                  onSubmit={type === TripType.EDIT ? updateTitle : undefined}
+                >
+                  <EditablePreview />
+                  <EditableInput />
+                  <EditableControls />
+                </Editable>
+              </Flex>
             </Flex>
-          </Flex>
-          {startPickerDate && endPickerDate && (
-            <Flex alignItems="center">
-              <CalendarIcon mr="2" />
-              <Text>
-                {formatWeekdayMonthDayYear(startPickerDate, endPickerDate)}{' '}
-                &bull;{' '}
-                <Text as="span" fontStyle="italic">
-                  {dates.length} days
+            {startPickerDate && endPickerDate && (
+              <Flex alignItems="center">
+                <CalendarIcon mr="2" />
+                <Text>
+                  {formatWeekdayMonthDayYear(startPickerDate, endPickerDate)}{' '}
+                  &bull;{' '}
+                  <Text as="span" fontStyle="italic">
+                    {dates.length} days
+                  </Text>
                 </Text>
-              </Text>
-            </Flex>
-          )}
-          <DeleteDialog
-            public_identifier={public_identifier}
-            mongoId={mongoId}
-            alertOpen={alertOpen}
-            setAlertOpen={setAlertOpen}
-          />
+              </Flex>
+            )}
+            <DeleteDialog
+              public_identifier={public_identifier}
+              mongoId={mongoId}
+              alertOpen={alertOpen}
+              setAlertOpen={setAlertOpen}
+            />
 
-          <DeleteIcon onClick={() => setAlertOpen(true)} />
-        </Box>
-
-        <DateRangePicker
-          startDate={startPickerDate}
-          startDateId="startDateId"
-          endDate={endPickerDate}
-          endDateId="endDateId"
-          onDatesChange={({
-            startDate: startPickerDate,
-            endDate: endPickerDate,
-          }: {
-            startDate: moment.Moment | null;
-            endDate: moment.Moment | null;
-          }) => {
-            setStartPickerDate(startPickerDate);
-            setEndPickerDate(endPickerDate);
-          }}
-          focusedInput={focusedInput}
-          onFocusChange={(focusedInput: FocusedInputShape | null) =>
-            setFocusedInput(focusedInput)
-          }
-          isOutsideRange={() => false}
-        />
-
-        {startPickerDate && endPickerDate && (
-          <TripInfoWrapper>
-            <Select
-              size="lg"
-              value={selectedDay}
-              onChange={event => {
-                setSelectedDay(event.target.value);
-              }}
-            >
-              {(dates || []).map((date, index) => (
-                <option key={`${index}-${date}`} value={date}>
-                  {formatSingleDate(date)} - Day {index + 1}
-                </option>
-              ))}
-            </Select>
-          </TripInfoWrapper>
-        )}
-
-        <Flex bg={grey0} p="0 24px 16px 24px">
-          <NotesModal
-            addNote={
-              startPickerDate && endPickerDate ? addNote : addElementNotes
+            <DeleteIcon onClick={() => setAlertOpen(true)} />
+          </Box>
+          <DateRangePicker
+            startDate={startPickerDate}
+            startDateId="startDateId"
+            endDate={endPickerDate}
+            endDateId="endDateId"
+            onDatesChange={({
+              startDate: startPickerDate,
+              endDate: endPickerDate,
+            }: {
+              startDate: moment.Moment | null;
+              endDate: moment.Moment | null;
+            }) => {
+              setStartPickerDate(startPickerDate);
+              setEndPickerDate(endPickerDate);
+            }}
+            focusedInput={focusedInput}
+            onFocusChange={(focusedInput: FocusedInputShape | null) =>
+              setFocusedInput(focusedInput)
             }
+            isOutsideRange={() => false}
           />
-          <AdditionalLocationModal />
-        </Flex>
-      </Flex>
 
-      {startPickerDate && endPickerDate ? (
-        <DragDropContainer
-          onDragOver={e => handleDragOver(e)}
-          onDrop={e => handleDragDrop(e)}
-        >
-          {renderTripItems()}
-        </DragDropContainer>
-      ) : (
-        <TripNoteEditor
-          notes={tripNotes}
-          setNotes={setNotes}
-          mongoId={mongoId}
-        />
-      )}
-    </ActiveTripWrapper>
+          {!startPickerDate && !endPickerDate && (
+            <>
+              <Flex bg={grey0} p="0 24px 16px 24px">
+                <NotesModal addNote={addElementNotes} />
+                <AdditionalLocationModal />
+              </Flex>
+              <TripNoteEditor
+                notes={tripNotes}
+                setNotes={setNotes}
+                mongoId={mongoId}
+              />
+            </>
+          )}
+          {startPickerDate && endPickerDate && (
+            <>
+              <NoteWrapper>
+                <Flex bg={grey0} p="0 24px 16px 24px">
+                  <NotesModal addNote={addElementNotes} />
+                </Flex>
+                <TripNoteEditor
+                  notes={tripNotes}
+                  setNotes={setNotes}
+                  mongoId={mongoId}
+                />
+              </NoteWrapper>
+
+              <TripPlannerWrapper>
+                <TripInfoWrapper>
+                  <Select
+                    size="lg"
+                    value={selectedDay}
+                    onChange={event => {
+                      setSelectedDay(event.target.value);
+                    }}
+                  >
+                    {(dates || []).map((date, index) => (
+                      <option key={`${index}-${date}`} value={date}>
+                        {formatSingleDate(date)} - Day {index + 1}
+                      </option>
+                    ))}
+                  </Select>
+                </TripInfoWrapper>
+
+                <Flex bg={grey0} p="0 24px 16px 24px">
+                  <NotesModal addNote={addNote} />
+                  <AdditionalLocationModal />
+                </Flex>
+                <DragDropContainer
+                  onDragOver={e => handleDragOver(e)}
+                  onDrop={e => handleDragDrop(e)}
+                >
+                  {renderTripItems()}
+                </DragDropContainer>
+              </TripPlannerWrapper>
+            </>
+          )}
+        </Flex>
+      </ActiveTripWrapper>
+    </>
   );
 };

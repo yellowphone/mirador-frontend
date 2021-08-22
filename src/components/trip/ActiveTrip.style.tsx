@@ -2,9 +2,19 @@ import { spacer16, spacer24 } from '../../utils/styles/constants';
 import styled from 'styled-components';
 import { grey0 } from '../../utils/styles/colors';
 
-export const ActiveTripWrapper = styled.div`
-  overflow: scroll;
+export const ActiveTripWrapper = styled.div<{ overflow: string }>`
   height: calc(100vh - 140px);
+  overflow: ${({ overflow }) => overflow};
+`;
+
+export const NoteWrapper = styled.div`
+  overflow: scroll;
+  height: 30vh;
+`;
+
+export const TripPlannerWrapper = styled.div`
+  overflow: scroll;
+  height: 30vh;
 `;
 
 export const TripInfoWrapper = styled.div`
