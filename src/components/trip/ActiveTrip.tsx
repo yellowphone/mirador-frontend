@@ -6,27 +6,14 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import { useCookies } from 'react-cookie';
-import { useForm } from 'react-hook-form';
-import { useHistory } from 'react-router-dom';
 import { mongodbClient } from '../../graphql/mongodbClient';
-import {
-  CREATE_TRIP,
-  DELETE_TRIP,
-  DELETE_USER_FROM_TRIP,
-  UPDATE_TRIP,
-} from '../../graphql/mutations/tripMutation';
+import { UPDATE_TRIP } from '../../graphql/mutations/tripMutation';
 import {
   DELETE_ELEMENT_FROM_TRIP,
   INSERT_ELEMENT_INTO_TRIP,
   SWAP_ELEMENTS_IN_TRIP,
-  DELETE_TRIP as DELETE_TRIP_MONGODB,
   INSERT_ELEMENT_INTO_NOTES,
-  SWAP_ELEMENTS_IN_NOTES,
-  DELETE_ELEMENT_FROM_NOTES,
 } from '../../graphql/mutations/mongodbMutation';
-import { LOCAL_STORAGE } from '../../utils/constants';
-import { Paths } from '../../utils/paths';
 import { BaseActiveTrip } from './BaseActiveTrip';
 import {
   ElementProps,

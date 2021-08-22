@@ -7,13 +7,15 @@ export const formatSingleDate = (date: string): string => {
 };
 
 export const formatWeekdayMonthDayYear = (
-  startDate: moment.Moment,
-  endDate: moment.Moment
+  startDate: Date,
+  endDate: Date
 ): string => {
+  const start = moment(startDate);
+  const end = moment(endDate);
   const fullDateString = 'dddd, MMMM Do YYYY';
   const startDateString =
-    startDate.year() === endDate.year() ? 'dddd, MMMM Do' : fullDateString;
-  const formattedStartDate = moment(startDate).format(startDateString);
-  const formattedEndDate = moment(endDate).format(fullDateString);
+    start.year() === end.year() ? 'dddd, MMMM Do' : fullDateString;
+  const formattedStartDate = start.format(startDateString);
+  const formattedEndDate = end.format(fullDateString);
   return `${formattedStartDate} - ${formattedEndDate}`;
 };
