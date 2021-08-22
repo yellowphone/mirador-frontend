@@ -109,14 +109,14 @@ export const BaseActiveTrip = ({
 
   useEffect(() => {
     if (!startDate && hasDates) {
-      const date = new Date(dates[0]);
+      const date = new Date(dates[0] + 'T00:00:00');
       setStartDate(date);
     }
   }, [startDate, hasDates, dates]);
 
   useEffect(() => {
     if (!endDate && hasDates) {
-      const date = new Date(dates[dates.length - 1]);
+      const date = new Date(dates[dates.length - 1] + 'T00:00:00');
       setEndDate(date);
     }
   }, [endDate, hasDates, dates]);
