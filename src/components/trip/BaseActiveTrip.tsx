@@ -182,9 +182,7 @@ export const BaseActiveTrip = ({
   return (
     <>
       <ActiveTripWrapper
-        style={{
-          overflow: !startPickerDate && !endPickerDate ? 'scroll' : '',
-        }}
+        overflow={!startPickerDate && !endPickerDate ? 'scroll' : ''}
       >
         <Flex flexDir="column" position="sticky" top="0" minWidth="550px">
           <Box p={spacer24} backgroundColor={grey0}>
