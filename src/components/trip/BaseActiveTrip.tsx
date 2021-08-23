@@ -31,7 +31,6 @@ import { ManyElementDataProps } from './edit-trip/EditTrip.types';
 import { TripExperienceCard, TripExperienceText } from './TripExperienceItem';
 import { NotesModal } from './NotesModal';
 import { useState } from 'react';
-import { DateRangePicker, FocusedInputShape } from 'react-dates';
 import { useMutation } from '@apollo/client';
 import { UPDATE_TRIP_DATE } from '../../graphql/mutations/mongodbMutation';
 import { useEffect } from 'react';
@@ -39,6 +38,7 @@ import { mongodbClient } from '../../graphql/mongodbClient';
 import { Dispatch } from 'react';
 import { DeleteDialog } from '../shared/trip/DeleteDialog';
 import { TripNoteEditor } from './TripNoteEditor';
+import { DatePicker } from '../DatePicker';
 
 export enum TripType {
   NEW = 'NEW',
@@ -83,19 +83,8 @@ export const BaseActiveTrip = ({
   public_identifier: string;
 }): ReactElement => {
   const hasDates = dates.length > 0;
-  const startDate = hasDates ? moment(dates[0], 'YYYY-MM-DD') : null;
-  const endDate = hasDates
-    ? moment(dates[dates.length - 1], 'YYYY-MM-DD')
-    : null;
-  const [startPickerDate, setStartPickerDate] = useState<moment.Moment | null>(
-    startDate
-  );
-  const [endPickerDate, setEndPickerDate] = useState<moment.Moment | null>(
-    endDate
-  );
-  const [focusedInput, setFocusedInput] = useState<FocusedInputShape | null>(
-    null
-  );
+  const [startDate, setStartDate] = useState<Date | undefined>();
+  const [endDate, setEndDate] = useState<Date | undefined>();
   const [alertOpen, setAlertOpen] = useState(false);
 
   const [updateTripDate] = useMutation(UPDATE_TRIP_DATE, {
@@ -107,16 +96,30 @@ export const BaseActiveTrip = ({
   });
 
   useEffect(() => {
-    if (startPickerDate && endPickerDate) {
+    if (startDate && endDate) {
       updateTripDate({
         variables: {
           id: mongoId,
-          beginning: startPickerDate?.format('YYYY-MM-DD'),
-          end: endPickerDate?.format('YYYY-MM-DD'),
+          beginning: moment(startDate)?.format('YYYY-MM-DD'),
+          end: moment(endDate)?.format('YYYY-MM-DD'),
         },
       });
     }
-  }, [startPickerDate, endPickerDate, updateTripDate, mongoId]);
+  }, [startDate, endDate, updateTripDate, mongoId]);
+
+  useEffect(() => {
+    if (!startDate && hasDates) {
+      const date = new Date(dates[0] + 'T00:00:00');
+      setStartDate(date);
+    }
+  }, [startDate, hasDates, dates]);
+
+  useEffect(() => {
+    if (!endDate && hasDates) {
+      const date = new Date(dates[dates.length - 1] + 'T00:00:00');
+      setEndDate(date);
+    }
+  }, [endDate, hasDates, dates]);
 
   const renderTripItems = () => {
     return (
@@ -181,9 +184,7 @@ export const BaseActiveTrip = ({
 
   return (
     <>
-      <ActiveTripWrapper
-        overflow={!startPickerDate && !endPickerDate ? 'scroll' : ''}
-      >
+      <ActiveTripWrapper overflow={!startDate && !endDate ? 'scroll' : ''}>
         <Flex flexDir="column" position="sticky" top="0" minWidth="550px">
           <Box p={spacer24} backgroundColor={grey0}>
             <Flex alignItems="center" justifyContent="space-between">
@@ -201,12 +202,11 @@ export const BaseActiveTrip = ({
                 </Editable>
               </Flex>
             </Flex>
-            {startPickerDate && endPickerDate && (
+            {startDate && endDate && (
               <Flex alignItems="center">
                 <CalendarIcon mr="2" />
                 <Text>
-                  {formatWeekdayMonthDayYear(startPickerDate, endPickerDate)}{' '}
-                  &bull;{' '}
+                  {formatWeekdayMonthDayYear(startDate, endDate)} &bull;{' '}
                   <Text as="span" fontStyle="italic">
                     {dates.length} days
                   </Text>
@@ -222,29 +222,14 @@ export const BaseActiveTrip = ({
 
             <DeleteIcon onClick={() => setAlertOpen(true)} />
           </Box>
-          <DateRangePicker
-            startDate={startPickerDate}
-            startDateId="startDateId"
-            endDate={endPickerDate}
-            endDateId="endDateId"
-            onDatesChange={({
-              startDate: startPickerDate,
-              endDate: endPickerDate,
-            }: {
-              startDate: moment.Moment | null;
-              endDate: moment.Moment | null;
-            }) => {
-              setStartPickerDate(startPickerDate);
-              setEndPickerDate(endPickerDate);
-            }}
-            focusedInput={focusedInput}
-            onFocusChange={(focusedInput: FocusedInputShape | null) =>
-              setFocusedInput(focusedInput)
-            }
-            isOutsideRange={() => false}
+          <DatePicker
+            startDate={startDate}
+            endDate={endDate}
+            setStartDate={setStartDate}
+            setEndDate={setEndDate}
           />
 
-          {!startPickerDate && !endPickerDate && (
+          {!startDate && !endDate && (
             <>
               <Flex bg={grey0} p="0 24px 16px 24px">
                 <NotesModal addNote={addElementNotes} />
@@ -257,7 +242,7 @@ export const BaseActiveTrip = ({
               />
             </>
           )}
-          {startPickerDate && endPickerDate && (
+          {startDate && endDate && (
             <>
               <NoteWrapper>
                 <Flex bg={grey0} p="0 24px 16px 24px">

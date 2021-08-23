@@ -45,9 +45,9 @@ export const Map: FC<IMapDataProps> = ({
     streetViewControlOptions: {
       position: 6,
     },
-    // fullscreenControlOptions: {
-    //   position: 5, // LEFT_TOP
-    // },
+    fullscreenControlOptions: {
+      position: 5, // LEFT_TOP
+    },
   };
 
   const history = useHistory();
