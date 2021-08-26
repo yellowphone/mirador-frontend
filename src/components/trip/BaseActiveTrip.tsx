@@ -32,7 +32,10 @@ import { TripExperienceCard, TripExperienceText } from './TripExperienceItem';
 import { NotesModal } from './NotesModal';
 import { useState } from 'react';
 import { useMutation } from '@apollo/client';
-import { UPDATE_TRIP_DATE } from '../../graphql/mutations/mongodbMutation';
+import {
+  SWAP_ELEMENTS_IN_NOTES,
+  UPDATE_TRIP_DATE,
+} from '../../graphql/mutations/mongodbMutation';
 import { useEffect } from 'react';
 import { mongodbClient } from '../../graphql/mongodbClient';
 import { Dispatch } from 'react';
@@ -95,6 +98,25 @@ export const BaseActiveTrip = ({
     },
   });
 
+  const [swapElementsNotesMutation] = useMutation(SWAP_ELEMENTS_IN_NOTES, {
+    client: mongodbClient,
+  });
+
+  const swapElementsInNotes = (firstIndex: number, secondIndex: number) => {
+    const notes = [...tripNotes];
+    const [removed] = notes.splice(firstIndex, 1);
+    notes.splice(secondIndex, 0, removed);
+    setNotes(notes);
+
+    swapElementsNotesMutation({
+      variables: {
+        id: mongoId,
+        firstIndex: firstIndex,
+        secondIndex: secondIndex,
+      },
+    });
+  };
+
   useEffect(() => {
     if (startDate && endDate) {
       updateTripDate({
@@ -124,7 +146,7 @@ export const BaseActiveTrip = ({
   const renderTripItems = () => {
     return (
       <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId="droppable">
+        <Droppable droppableId="droppable-trip">
           {provided => (
             <div {...provided.droppableProps} ref={provided.innerRef}>
               {((selectedDay && tripItems[selectedDay]) || []).map(
@@ -162,8 +184,43 @@ export const BaseActiveTrip = ({
   };
 
   const onDragEnd = (result: DropResult) => {
+    // insert elem array and delete other elem array using indexes
+    console.log(result);
     if (!result.destination) return;
-    swapTripItems(result.source.index, result.destination.index);
+
+    // swapping items in trip
+    if (
+      result.destination.droppableId === result.source.droppableId &&
+      result.destination.droppableId === 'droppable-trip'
+    ) {
+      swapTripItems(result.source.index, result.destination.index);
+    }
+
+    // swapping items in notes
+    if (
+      result.destination.droppableId === result.source.droppableId &&
+      result.destination.droppableId === 'droppable-notes'
+    ) {
+      swapElementsInNotes(result.source.index, result.destination.index);
+    }
+
+    // moving note element to trips
+    if (
+      result.source.droppableId === 'droppable-notes' &&
+      result.destination.droppableId === 'droppable-trip'
+    ) {
+      // using the index for source and destination,
+      // arr.splice(index, 0, element) // inserting
+      // arr.splice(index, 1) // deleting
+      // make sure to create mongodb queries that will do the actions on mongo
+    }
+
+    // moving trip element to notes
+    if (
+      result.source.droppableId === 'droppable-trip' &&
+      result.destination.droppableId === 'droppable-notes'
+    ) {
+    }
   };
 
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
@@ -239,6 +296,7 @@ export const BaseActiveTrip = ({
                 notes={tripNotes}
                 setNotes={setNotes}
                 mongoId={mongoId}
+                onDragEnd={onDragEnd}
               />
             </>
           )}
@@ -252,6 +310,7 @@ export const BaseActiveTrip = ({
                   notes={tripNotes}
                   setNotes={setNotes}
                   mongoId={mongoId}
+                  onDragEnd={onDragEnd}
                 />
               </NoteWrapper>
 

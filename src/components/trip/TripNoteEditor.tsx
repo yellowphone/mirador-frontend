@@ -18,16 +18,14 @@ export const TripNoteEditor = ({
   notes,
   setNotes,
   mongoId,
+  onDragEnd,
 }: {
   notes: ElementProps[];
   setNotes: Dispatch<SetStateAction<ElementProps[]>>;
   mongoId: string;
+  onDragEnd: (result: DropResult) => void;
 }): ReactElement => {
   const [insertElementNotesMutation] = useMutation(INSERT_ELEMENT_INTO_NOTES, {
-    client: mongodbClient,
-  });
-
-  const [swapElementsNotesMutation] = useMutation(SWAP_ELEMENTS_IN_NOTES, {
     client: mongodbClient,
   });
 
@@ -54,20 +52,6 @@ export const TripNoteEditor = ({
     });
   };
 
-  const swapElementsInNotes = (firstIndex: number, secondIndex: number) => {
-    const [removed] = notes.splice(firstIndex, 1);
-    notes.splice(secondIndex, 0, removed);
-    setNotes(notes);
-
-    swapElementsNotesMutation({
-      variables: {
-        id: mongoId,
-        firstIndex: firstIndex,
-        secondIndex: secondIndex,
-      },
-    });
-  };
-
   const deleteElementFromNotes = (index: number) => {
     const newElem = [...notes];
     newElem.splice(index, 1);
@@ -81,10 +65,10 @@ export const TripNoteEditor = ({
     });
   };
 
-  const onDragEnd = (result: DropResult) => {
-    if (!result.destination) return;
-    swapElementsInNotes(result.source.index, result.destination.index);
-  };
+  // const onDragEnd = (result: DropResult) => {
+  //   if (!result.destination) return;
+  //   swapElementsInNotes(result.source.index, result.destination.index);
+  // };
 
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -98,7 +82,7 @@ export const TripNoteEditor = ({
   const renderNoteItems = () => {
     return (
       <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId="droppable">
+        <Droppable droppableId="droppable-notes">
           {provided => (
             <div {...provided.droppableProps} ref={provided.innerRef}>
               {(notes || []).map((element: ElementProps, index: number) => {
