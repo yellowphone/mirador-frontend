@@ -3,7 +3,12 @@ import {
   ElementProps,
   ExperienceContentDataProps,
 } from './create-trip/CreateTrip.types';
-import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
+import {
+  DragDropContext,
+  Droppable,
+  DroppableProvided,
+  DropResult,
+} from 'react-beautiful-dnd';
 import { TripExperienceCard, TripExperienceText } from './TripExperienceItem';
 import { useMutation } from '@apollo/client';
 import {
@@ -65,10 +70,11 @@ export const TripNoteEditor = ({
     });
   };
 
-  // const onDragEnd = (result: DropResult) => {
-  //   if (!result.destination) return;
-  //   swapElementsInNotes(result.source.index, result.destination.index);
-  // };
+  const getItemStyle = (isDragging: boolean) => ({
+    userSelect: 'none',
+    padding: 5,
+    background: isDragging ? 'lightgreen' : '',
+  });
 
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -82,8 +88,12 @@ export const TripNoteEditor = ({
   const renderNoteItems = () => {
     return (
       <Droppable droppableId="droppable-notes">
-        {provided => (
-          <div {...provided.droppableProps} ref={provided.innerRef}>
+        {(provided, snapshot) => (
+          <div
+            {...provided.droppableProps}
+            ref={provided.innerRef}
+            style={getItemStyle(snapshot.isDragging)}
+          >
             {(notes || []).map((element: ElementProps, index: number) => {
               switch (element.type) {
                 case 'experience':

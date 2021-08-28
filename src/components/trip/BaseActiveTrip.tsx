@@ -133,6 +133,12 @@ export const BaseActiveTrip = ({
     });
   };
 
+  const getItemStyle = (isDragging: boolean) => ({
+    userSelect: 'none',
+    padding: 5,
+    background: isDragging ? 'lightgreen' : '',
+  });
+
   useEffect(() => {
     if (startDate && endDate) {
       updateTripDate({
@@ -162,8 +168,12 @@ export const BaseActiveTrip = ({
   const renderTripItems = () => {
     return (
       <Droppable droppableId="droppable-trip">
-        {provided => (
-          <div {...provided.droppableProps} ref={provided.innerRef}>
+        {(provided, snapshot) => (
+          <div
+            {...provided.droppableProps}
+            ref={provided.innerRef}
+            style={getItemStyle(snapshot.isDragging)}
+          >
             {((selectedDay && tripItems[selectedDay]) || []).map(
               (element: ElementProps, index: number) => {
                 switch (element.type) {
