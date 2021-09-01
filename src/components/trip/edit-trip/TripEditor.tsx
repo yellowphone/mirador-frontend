@@ -28,8 +28,10 @@ export const TripEditor: FC<TripEditorProps> = ({ data }): ReactElement => {
   });
 
   useEffect(() => {
-    setElements(mongoData.findTrip.trip);
-    setNotes(mongoData.findTrip.notes);
+    if (mongoData) {
+      setElements(mongoData.findTrip.trip);
+      setNotes(mongoData.findTrip.notes);
+    }
   }, [mongoData]);
 
   useEffect(() => {
