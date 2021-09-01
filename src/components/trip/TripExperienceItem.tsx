@@ -11,14 +11,16 @@ export const TripExperienceCard = ({
   deleteElement,
   element,
   index,
+  draggableId,
 }: {
   deleteElement: (index: number) => void;
   element: ElementProps;
   index: number;
+  draggableId: string;
 }): ReactElement => {
   const elem = element.content as ExperienceContentDataProps;
   return (
-    <Draggable draggableId={index.toString()} index={index}>
+    <Draggable draggableId={draggableId} index={index}>
       {provided => (
         <div
           ref={provided.innerRef}
@@ -61,13 +63,15 @@ export const TripExperienceText = ({
   deleteElement,
   element,
   index,
+  draggableId,
 }: {
   deleteElement: (index: number) => void;
   element: ElementProps;
   index: number;
+  draggableId: string;
 }): ReactElement => {
   return (
-    <Draggable draggableId={index.toString()} index={index}>
+    <Draggable draggableId={draggableId} index={index}>
       {provided => (
         <div
           ref={provided.innerRef}

@@ -32,7 +32,12 @@ import { TripExperienceCard, TripExperienceText } from './TripExperienceItem';
 import { NotesModal } from './NotesModal';
 import { useState } from 'react';
 import { useMutation } from '@apollo/client';
-import { UPDATE_TRIP_DATE } from '../../graphql/mutations/mongodbMutation';
+import {
+  INSERT_NOTE_ELEMENT_INTO_TRIP,
+  INSERT_TRIP_ELEMENT_INTO_NOTES,
+  SWAP_ELEMENTS_IN_NOTES,
+  UPDATE_TRIP_DATE,
+} from '../../graphql/mutations/mongodbMutation';
 import { useEffect } from 'react';
 import { mongodbClient } from '../../graphql/mongodbClient';
 import { Dispatch } from 'react';
@@ -95,6 +100,45 @@ export const BaseActiveTrip = ({
     },
   });
 
+  const [swapElementsNotesMutation] = useMutation(SWAP_ELEMENTS_IN_NOTES, {
+    client: mongodbClient,
+  });
+
+  const [insertNoteElementIntoTrip] = useMutation(
+    INSERT_NOTE_ELEMENT_INTO_TRIP,
+    {
+      client: mongodbClient,
+    }
+  );
+
+  const [insertTripElementIntoNotes] = useMutation(
+    INSERT_TRIP_ELEMENT_INTO_NOTES,
+    {
+      client: mongodbClient,
+    }
+  );
+
+  const swapElementsInNotes = (firstIndex: number, secondIndex: number) => {
+    const notes = [...tripNotes];
+    const [removed] = notes.splice(firstIndex, 1);
+    notes.splice(secondIndex, 0, removed);
+    setNotes(notes);
+
+    swapElementsNotesMutation({
+      variables: {
+        id: mongoId,
+        firstIndex: firstIndex,
+        secondIndex: secondIndex,
+      },
+    });
+  };
+
+  const getItemStyle = (isDragging: boolean) => ({
+    userSelect: 'none',
+    padding: 5,
+    background: isDragging ? 'lightgreen' : '',
+  });
+
   useEffect(() => {
     if (startDate && endDate) {
       updateTripDate({
@@ -123,47 +167,125 @@ export const BaseActiveTrip = ({
 
   const renderTripItems = () => {
     return (
-      <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId="droppable">
-          {provided => (
-            <div {...provided.droppableProps} ref={provided.innerRef}>
-              {((selectedDay && tripItems[selectedDay]) || []).map(
-                (element: ElementProps, index: number) => {
-                  switch (element.type) {
-                    case 'experience':
-                      return (
-                        <TripExperienceCard
-                          deleteElement={deleteTripItem}
-                          element={element}
-                          index={index}
-                          key={`${
-                            (element.content as ExperienceContentDataProps)
-                              .pkexperience
-                          }-${index}`}
-                        />
-                      );
-                    case 'text':
-                      return (
-                        <TripExperienceText
-                          deleteElement={deleteTripItem}
-                          element={element}
-                          index={index}
-                          key={`${element.content}-${index}`}
-                        />
-                      );
-                  }
+      <Droppable droppableId="droppable-trip">
+        {(provided, snapshot) => (
+          <div
+            {...provided.droppableProps}
+            ref={provided.innerRef}
+            style={getItemStyle(snapshot.isDragging)}
+          >
+            {((selectedDay && tripItems[selectedDay]) || []).map(
+              (element: ElementProps, index: number) => {
+                switch (element.type) {
+                  case 'experience':
+                    return (
+                      <TripExperienceCard
+                        deleteElement={deleteTripItem}
+                        element={element}
+                        index={index}
+                        draggableId={`trip-${index.toString()}`}
+                        key={`${
+                          (element.content as ExperienceContentDataProps)
+                            .pkexperience
+                        }-${index}`}
+                      />
+                    );
+                  case 'text':
+                    return (
+                      <TripExperienceText
+                        deleteElement={deleteTripItem}
+                        element={element}
+                        index={index}
+                        draggableId={`trip-${index.toString()}`}
+                        key={`${element.content}-${index}`}
+                      />
+                    );
                 }
-              )}
-            </div>
-          )}
-        </Droppable>
-      </DragDropContext>
+              }
+            )}
+          </div>
+        )}
+      </Droppable>
     );
   };
 
   const onDragEnd = (result: DropResult) => {
+    // insert elem array and delete other elem array using indexes
+    console.log(result);
     if (!result.destination) return;
-    swapTripItems(result.source.index, result.destination.index);
+
+    // swapping items in trip
+    if (
+      result.destination.droppableId === result.source.droppableId &&
+      result.destination.droppableId === 'droppable-trip'
+    ) {
+      swapTripItems(result.source.index, result.destination.index);
+    }
+
+    // swapping items in notes
+    if (
+      result.destination.droppableId === result.source.droppableId &&
+      result.destination.droppableId === 'droppable-notes'
+    ) {
+      swapElementsInNotes(result.source.index, result.destination.index);
+    }
+
+    // moving note element to trips
+    if (
+      result.source.droppableId === 'droppable-notes' &&
+      result.destination.droppableId === 'droppable-trip'
+    ) {
+      if (selectedDay) {
+        const notes = [...tripNotes];
+        const newElem = { ...tripItems };
+        const newInnerElem = [...tripItems[selectedDay]];
+        const [removed] = notes.splice(result.source.index, 1);
+        newInnerElem.splice(result.destination.index, 0, removed);
+        newElem[selectedDay] = newInnerElem;
+
+        setNotes(notes);
+        setElements(newElem);
+
+        insertNoteElementIntoTrip({
+          variables: {
+            id: mongoId,
+            noteIndex: result.source.index,
+            tripIndex: result.destination.index,
+            date: selectedDay,
+          },
+        });
+      }
+    }
+
+    // handle some logic where if array is empty, dnd can still work
+    // destination is null tho
+
+    // moving trip element to notes
+    if (
+      result.source.droppableId === 'droppable-trip' &&
+      result.destination.droppableId === 'droppable-notes'
+    ) {
+      if (selectedDay) {
+        const notes = [...tripNotes];
+        const newElem = { ...tripItems };
+        const newInnerElem = [...tripItems[selectedDay]];
+        const [removed] = newInnerElem.splice(result.source.index, 1);
+        notes.splice(result.destination.index, 0, removed);
+        newElem[selectedDay] = newInnerElem;
+
+        setNotes(notes);
+        setElements(newElem);
+
+        insertTripElementIntoNotes({
+          variables: {
+            id: mongoId,
+            noteIndex: result.destination.index,
+            tripIndex: result.source.index,
+            date: selectedDay,
+          },
+        });
+      }
+    }
   };
 
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
@@ -229,62 +351,66 @@ export const BaseActiveTrip = ({
             setEndDate={setEndDate}
           />
 
-          {!startDate && !endDate && (
-            <>
-              <Flex bg={grey0} p="0 24px 16px 24px">
-                <NotesModal addNote={addElementNotes} />
-                <AdditionalLocationModal />
-              </Flex>
-              <TripNoteEditor
-                notes={tripNotes}
-                setNotes={setNotes}
-                mongoId={mongoId}
-              />
-            </>
-          )}
-          {startDate && endDate && (
-            <>
-              <NoteWrapper>
+          <DragDropContext onDragEnd={onDragEnd}>
+            {!startDate && !endDate && (
+              <>
                 <Flex bg={grey0} p="0 24px 16px 24px">
                   <NotesModal addNote={addElementNotes} />
+                  <AdditionalLocationModal />
                 </Flex>
                 <TripNoteEditor
                   notes={tripNotes}
                   setNotes={setNotes}
                   mongoId={mongoId}
+                  onDragEnd={onDragEnd}
                 />
-              </NoteWrapper>
+              </>
+            )}
+            {startDate && endDate && (
+              <>
+                <NoteWrapper>
+                  <Flex bg={grey0} p="0 24px 16px 24px">
+                    <NotesModal addNote={addElementNotes} />
+                  </Flex>
+                  <TripNoteEditor
+                    notes={tripNotes}
+                    setNotes={setNotes}
+                    mongoId={mongoId}
+                    onDragEnd={onDragEnd}
+                  />
+                </NoteWrapper>
 
-              <TripPlannerWrapper>
-                <TripInfoWrapper>
-                  <Select
-                    size="lg"
-                    value={selectedDay}
-                    onChange={event => {
-                      setSelectedDay(event.target.value);
-                    }}
+                <TripPlannerWrapper>
+                  <TripInfoWrapper>
+                    <Select
+                      size="lg"
+                      value={selectedDay}
+                      onChange={event => {
+                        setSelectedDay(event.target.value);
+                      }}
+                    >
+                      {(dates || []).map((date, index) => (
+                        <option key={`${index}-${date}`} value={date}>
+                          {formatSingleDate(date)} - Day {index + 1}
+                        </option>
+                      ))}
+                    </Select>
+                  </TripInfoWrapper>
+
+                  <Flex bg={grey0} p="0 24px 16px 24px">
+                    <NotesModal addNote={addNote} />
+                    <AdditionalLocationModal />
+                  </Flex>
+                  <DragDropContainer
+                    onDragOver={e => handleDragOver(e)}
+                    onDrop={e => handleDragDrop(e)}
                   >
-                    {(dates || []).map((date, index) => (
-                      <option key={`${index}-${date}`} value={date}>
-                        {formatSingleDate(date)} - Day {index + 1}
-                      </option>
-                    ))}
-                  </Select>
-                </TripInfoWrapper>
-
-                <Flex bg={grey0} p="0 24px 16px 24px">
-                  <NotesModal addNote={addNote} />
-                  <AdditionalLocationModal />
-                </Flex>
-                <DragDropContainer
-                  onDragOver={e => handleDragOver(e)}
-                  onDrop={e => handleDragDrop(e)}
-                >
-                  {renderTripItems()}
-                </DragDropContainer>
-              </TripPlannerWrapper>
-            </>
-          )}
+                    {renderTripItems()}
+                  </DragDropContainer>
+                </TripPlannerWrapper>
+              </>
+            )}
+          </DragDropContext>
         </Flex>
       </ActiveTripWrapper>
     </>

@@ -3,7 +3,12 @@ import {
   ElementProps,
   ExperienceContentDataProps,
 } from './create-trip/CreateTrip.types';
-import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
+import {
+  DragDropContext,
+  Droppable,
+  DroppableProvided,
+  DropResult,
+} from 'react-beautiful-dnd';
 import { TripExperienceCard, TripExperienceText } from './TripExperienceItem';
 import { useMutation } from '@apollo/client';
 import {
@@ -18,16 +23,14 @@ export const TripNoteEditor = ({
   notes,
   setNotes,
   mongoId,
+  onDragEnd,
 }: {
   notes: ElementProps[];
   setNotes: Dispatch<SetStateAction<ElementProps[]>>;
   mongoId: string;
+  onDragEnd: (result: DropResult) => void;
 }): ReactElement => {
   const [insertElementNotesMutation] = useMutation(INSERT_ELEMENT_INTO_NOTES, {
-    client: mongodbClient,
-  });
-
-  const [swapElementsNotesMutation] = useMutation(SWAP_ELEMENTS_IN_NOTES, {
     client: mongodbClient,
   });
 
@@ -54,20 +57,6 @@ export const TripNoteEditor = ({
     });
   };
 
-  const swapElementsInNotes = (firstIndex: number, secondIndex: number) => {
-    const [removed] = notes.splice(firstIndex, 1);
-    notes.splice(secondIndex, 0, removed);
-    setNotes(notes);
-
-    swapElementsNotesMutation({
-      variables: {
-        id: mongoId,
-        firstIndex: firstIndex,
-        secondIndex: secondIndex,
-      },
-    });
-  };
-
   const deleteElementFromNotes = (index: number) => {
     const newElem = [...notes];
     newElem.splice(index, 1);
@@ -81,10 +70,11 @@ export const TripNoteEditor = ({
     });
   };
 
-  const onDragEnd = (result: DropResult) => {
-    if (!result.destination) return;
-    swapElementsInNotes(result.source.index, result.destination.index);
-  };
+  const getItemStyle = (isDragging: boolean) => ({
+    userSelect: 'none',
+    padding: 5,
+    background: isDragging ? 'lightgreen' : '',
+  });
 
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -97,39 +87,43 @@ export const TripNoteEditor = ({
 
   const renderNoteItems = () => {
     return (
-      <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId="droppable">
-          {provided => (
-            <div {...provided.droppableProps} ref={provided.innerRef}>
-              {(notes || []).map((element: ElementProps, index: number) => {
-                switch (element.type) {
-                  case 'experience':
-                    return (
-                      <TripExperienceCard
-                        deleteElement={index => deleteElementFromNotes(index)}
-                        element={element}
-                        index={index}
-                        key={`${
-                          (element.content as ExperienceContentDataProps)
-                            .pkexperience
-                        }-${index}`}
-                      />
-                    );
-                  case 'text':
-                    return (
-                      <TripExperienceText
-                        deleteElement={index => deleteElementFromNotes(index)}
-                        element={element}
-                        index={index}
-                        key={`${element.content}-${index}`}
-                      />
-                    );
-                }
-              })}
-            </div>
-          )}
-        </Droppable>
-      </DragDropContext>
+      <Droppable droppableId="droppable-notes">
+        {(provided, snapshot) => (
+          <div
+            {...provided.droppableProps}
+            ref={provided.innerRef}
+            style={getItemStyle(snapshot.isDragging)}
+          >
+            {(notes || []).map((element: ElementProps, index: number) => {
+              switch (element.type) {
+                case 'experience':
+                  return (
+                    <TripExperienceCard
+                      deleteElement={index => deleteElementFromNotes(index)}
+                      element={element}
+                      index={index}
+                      draggableId={`notes-${index.toString()}`}
+                      key={`${
+                        (element.content as ExperienceContentDataProps)
+                          .pkexperience
+                      }-${index}`}
+                    />
+                  );
+                case 'text':
+                  return (
+                    <TripExperienceText
+                      deleteElement={index => deleteElementFromNotes(index)}
+                      element={element}
+                      index={index}
+                      draggableId={`notes-${index.toString()}`}
+                      key={`${element.content}-${index}`}
+                    />
+                  );
+              }
+            })}
+          </div>
+        )}
+      </Droppable>
     );
   };
 
