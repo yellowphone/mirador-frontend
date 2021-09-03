@@ -30,3 +30,10 @@ export const DragDropContainer = styled.div`
   height: 100vh;
   padding: 0 ${spacer24} ${spacer24} ${spacer24};
 `;
+
+export const FloatingTripBuilder = styled.article`
+  margin: ${spacer16};
+  right: 0;
+  top: 0;
+  position: absolute;
+`;

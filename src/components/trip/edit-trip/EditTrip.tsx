@@ -6,8 +6,8 @@ import { EditTripDataProps } from './EditTrip.types';
 import { Box, Text } from '@chakra-ui/layout';
 import { Switch } from '@chakra-ui/switch';
 import { SavedExperiences } from './SavedExperiences';
-import { FloatingTripBuilder } from '../create-trip/CreateTrip';
 import { grey0 } from '../../../utils/styles/colors';
+import { FloatingTripBuilder } from '../ActiveTrip.style';
 
 const CreateTripContainer = styled.section`
   position: relative;
