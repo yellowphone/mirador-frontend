@@ -15,10 +15,12 @@ import { mongodbClient } from '../../graphql/mongodbClient';
 import { DragDropContainer } from './ActiveTrip.style';
 
 export const TripNoteEditor = ({
+  hasDates,
   notes,
   setNotes,
   mongoId,
 }: {
+  hasDates;
   notes: ElementProps[];
   setNotes: Dispatch<SetStateAction<ElementProps[]>>;
   mongoId: string;
@@ -135,6 +137,7 @@ export const TripNoteEditor = ({
 
   return (
     <DragDropContainer
+      compact={hasDates}
       onDragOver={e => handleDragOver(e)}
       onDrop={e => handleDragDrop(e)}
     >

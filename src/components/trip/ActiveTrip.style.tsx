@@ -9,12 +9,12 @@ export const ActiveTripWrapper = styled.div<{ overflow: string }>`
 
 export const NoteWrapper = styled.div`
   overflow: scroll;
-  height: 30vh;
+  height: calc(100% / 3);
 `;
 
 export const TripPlannerWrapper = styled.div`
   overflow: scroll;
-  height: 30vh;
+  height: calc(100% / 2);
 `;
 
 export const TripInfoWrapper = styled.div`
@@ -25,8 +25,8 @@ export const TripInfoWrapper = styled.div`
   text-transform: uppercase;
 `;
 
-export const DragDropContainer = styled.div`
+export const DragDropContainer = styled.div<{ compact?: boolean }>`
   background-color: ${grey0};
-  height: 100vh;
+  height: ${({ compact }) => (compact ? '100%' : '100vh')};
   padding: 0 ${spacer24} ${spacer24} ${spacer24};
 `;

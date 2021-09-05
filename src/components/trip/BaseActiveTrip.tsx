@@ -179,7 +179,13 @@ export const BaseActiveTrip = ({
   return (
     <>
       <ActiveTripWrapper overflow={!startDate && !endDate ? 'scroll' : ''}>
-        <Flex flexDir="column" position="sticky" top="0" minWidth="550px">
+        <Flex
+          flexDir="column"
+          position="sticky"
+          top="0"
+          minWidth="550px"
+          height="100%"
+        >
           <BaseActiveTripHeader
             mongoId={mongoId}
             updateTitle={updateTitle}
@@ -201,6 +207,7 @@ export const BaseActiveTrip = ({
                 <AdditionalLocationModal />
               </Flex>
               <TripNoteEditor
+                hasDates={false}
                 notes={tripNotes}
                 setNotes={setNotes}
                 mongoId={mongoId}
@@ -214,6 +221,7 @@ export const BaseActiveTrip = ({
                   <NotesModal addNote={addElementNotes} />
                 </Flex>
                 <TripNoteEditor
+                  hasDates
                   notes={tripNotes}
                   setNotes={setNotes}
                   mongoId={mongoId}
@@ -241,6 +249,7 @@ export const BaseActiveTrip = ({
                   <AdditionalLocationModal />
                 </Flex>
                 <DragDropContainer
+                  compact
                   onDragOver={e => handleDragOver(e)}
                   onDrop={e => handleDragDrop(e)}
                 >
