@@ -39,6 +39,8 @@ import { Dispatch } from 'react';
 import { DeleteDialog } from '../shared/trip/DeleteDialog';
 import { TripNoteEditor } from './TripNoteEditor';
 import { DatePicker } from '../DatePicker';
+import { BaseActiveTripHeader } from './BaseActiveTripHeader';
+import { BaseActiveTripDatePicker } from './BaseActiveTripDatePicker';
 
 export enum TripType {
   NEW = 'NEW',
@@ -85,7 +87,6 @@ export const BaseActiveTrip = ({
   const hasDates = dates.length > 0;
   const [startDate, setStartDate] = useState<Date | undefined>();
   const [endDate, setEndDate] = useState<Date | undefined>();
-  const [alertOpen, setAlertOpen] = useState(false);
 
   const [updateTripDate] = useMutation(UPDATE_TRIP_DATE, {
     client: mongodbClient,
@@ -175,76 +176,24 @@ export const BaseActiveTrip = ({
     addExperience(draggedElement);
   };
 
-  const EditableControls = () => {
-    const { isEditing, getEditButtonProps } = useEditableControls();
-    return !isEditing ? (
-      <EditIcon marginLeft={2} w="4" height="4" {...getEditButtonProps()} />
-    ) : null;
-  };
-
   return (
     <>
       <ActiveTripWrapper overflow={!startDate && !endDate ? 'scroll' : ''}>
         <Flex flexDir="column" position="sticky" top="0" minWidth="550px">
-          <Flex
-            p={spacer24}
-            backgroundColor={grey0}
-            alignItems="center"
-            justifyContent="space-between"
-          >
-            <Flex alignItems="center" justifyContent="space-between">
-              <Flex alignItems="center">
-                <Editable
-                  fontSize={'2xl'}
-                  fontWeight="bold"
-                  defaultValue={title}
-                  onChange={type === TripType.NEW ? updateTitle : undefined}
-                  onSubmit={type === TripType.EDIT ? updateTitle : undefined}
-                >
-                  <EditablePreview />
-                  <EditableInput />
-                  <EditableControls />
-                </Editable>
-              </Flex>
-            </Flex>
-            <DeleteIcon onClick={() => setAlertOpen(true)} />
-            <DeleteDialog
-              public_identifier={public_identifier}
-              mongoId={mongoId}
-              alertOpen={alertOpen}
-              setAlertOpen={setAlertOpen}
-            />
-          </Flex>
-          {startDate && endDate && (
-            <Flex
-              alignItems="center"
-              p={`0 ${spacer24} ${spacer24} ${spacer24}`}
-              backgroundColor={grey0}
-            >
-              <CalendarIcon mr="2" />
-              <Text>
-                {formatWeekdayMonthDayYear(startDate, endDate)} &bull;{' '}
-                <Text as="span" fontStyle="italic">
-                  {dates.length} days
-                </Text>
-              </Text>
-            </Flex>
-          )}
-          <Flex
-            flexDir="column"
-            p={`0 ${spacer24} ${spacer24} ${spacer24}`}
-            backgroundColor={grey0}
-          >
-            <Text pb={spacer8} fontWeight="bold" fontSize="sm">
-              Dates (optional)
-            </Text>
-            <DatePicker
-              startDate={startDate}
-              endDate={endDate}
-              setStartDate={setStartDate}
-              setEndDate={setEndDate}
-            />
-          </Flex>
+          <BaseActiveTripHeader
+            mongoId={mongoId}
+            updateTitle={updateTitle}
+            id={public_identifier}
+            title={title}
+            type={type}
+          />
+          <BaseActiveTripDatePicker
+            dateCount={dates.length}
+            endDate={endDate}
+            setEndDate={setEndDate}
+            setStartDate={setStartDate}
+            startDate={startDate}
+          />
           {!startDate && !endDate && (
             <>
               <Flex bg={grey0} p="0 24px 16px 24px">
@@ -270,7 +219,6 @@ export const BaseActiveTrip = ({
                   mongoId={mongoId}
                 />
               </NoteWrapper>
-
               <TripPlannerWrapper>
                 <TripInfoWrapper>
                   <Select
