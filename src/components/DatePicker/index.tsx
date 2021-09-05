@@ -3,19 +3,11 @@ import DayPickerInput from 'react-day-picker/DayPickerInput';
 import 'react-day-picker/lib/style.css';
 import styled from 'styled-components';
 import { grey0 } from '../../utils/styles/colors';
-import {
-  spacer16,
-  spacer24,
-  spacer4,
-  spacer8,
-} from '../../utils/styles/constants';
+import { spacer16, spacer4, spacer8 } from '../../utils/styles/constants';
 import { DayPickerProps } from 'react-day-picker/types/Props';
 
 const DatePickerWrapper = styled.div`
   background-color: ${grey0};
-  padding-left: ${spacer24};
-  padding-right: ${spacer24};
-  padding-bottom: ${spacer24};
 
   .DayPickerInput input {
     border-radius: ${spacer8};

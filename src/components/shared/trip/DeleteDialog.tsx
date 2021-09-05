@@ -1,17 +1,21 @@
 import { useMutation } from '@apollo/client';
-import { DeleteIcon } from '@chakra-ui/icons';
 import {
-  Dialog,
-  DialogContent,
-  DialogActions,
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogOverlay,
   Button,
-} from '@material-ui/core';
+} from '@chakra-ui/react';
+import { FocusableElement } from '@chakra-ui/utils';
 import React, {
   ReactElement,
   useCallback,
   SetStateAction,
   Dispatch,
 } from 'react';
+import { useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import { mongodbClient } from '../../../graphql/mongodbClient';
 import { DELETE_TRIP as DELETE_TRIP_MONGO } from '../../../graphql/mutations/mongodbMutation';
@@ -30,6 +34,7 @@ export const DeleteDialog = ({
   setAlertOpen: Dispatch<SetStateAction<boolean>>;
 }): ReactElement => {
   const history = useHistory();
+  const destructiveRef = useRef<FocusableElement | null>(null);
 
   const onNavigate = useCallback(
     (path: Paths) => {
@@ -51,33 +56,41 @@ export const DeleteDialog = ({
     },
   });
 
+  const onClose = () => setAlertOpen(false);
   return (
-    <Dialog open={alertOpen} onClose={() => setAlertOpen(false)}>
-      <DialogContent>Are you sure you want to delete this trip?</DialogContent>
-      <DialogActions>
-        <Button
-          variant="contained"
-          color="secondary"
-          startIcon={<DeleteIcon />}
-          style={{ backgroundColor: '#f44336' }}
-          onClick={() => {
-            if (mongoId) {
-              deleteTripMongo();
-            }
-            if (public_identifier) {
-              deleteTrip().then(() => {
-                setAlertOpen(false);
-                onNavigate(Paths.Trip);
-              });
-            }
-          }}
-        >
-          Yes
-        </Button>
-        <Button onClick={() => setAlertOpen(false)} color="primary" autoFocus>
-          No
-        </Button>
-      </DialogActions>
-    </Dialog>
+    <AlertDialog
+      leastDestructiveRef={destructiveRef}
+      isOpen={alertOpen}
+      onClose={onClose}
+    >
+      <AlertDialogOverlay>
+        <AlertDialogContent>
+          <AlertDialogHeader>Delete trip</AlertDialogHeader>
+          <AlertDialogBody>
+            Are you sure you want to delete this trip?
+          </AlertDialogBody>
+          <AlertDialogFooter>
+            <Button
+              onClick={() => {
+                if (mongoId) {
+                  deleteTripMongo();
+                }
+                if (public_identifier) {
+                  deleteTrip().then(() => {
+                    onClose();
+                    onNavigate(Paths.Trip);
+                  });
+                }
+              }}
+            >
+              Cancel
+            </Button>
+            <Button colorScheme="red" onClick={onClose} ml={3}>
+              Delete
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialogOverlay>
+    </AlertDialog>
   );
 };

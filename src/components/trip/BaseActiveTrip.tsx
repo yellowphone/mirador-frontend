@@ -14,7 +14,7 @@ import React, { ReactElement, SetStateAction } from 'react';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import { formatSingleDate, formatWeekdayMonthDayYear } from '../../utils/date';
 import { grey0 } from '../../utils/styles/colors';
-import { spacer24 } from '../../utils/styles/constants';
+import { spacer24, spacer8 } from '../../utils/styles/constants';
 import {
   ActiveTripWrapper,
   DragDropContainer,
@@ -186,7 +186,12 @@ export const BaseActiveTrip = ({
     <>
       <ActiveTripWrapper overflow={!startDate && !endDate ? 'scroll' : ''}>
         <Flex flexDir="column" position="sticky" top="0" minWidth="550px">
-          <Box p={spacer24} backgroundColor={grey0}>
+          <Flex
+            p={spacer24}
+            backgroundColor={grey0}
+            alignItems="center"
+            justifyContent="space-between"
+          >
             <Flex alignItems="center" justifyContent="space-between">
               <Flex alignItems="center">
                 <Editable
@@ -202,33 +207,44 @@ export const BaseActiveTrip = ({
                 </Editable>
               </Flex>
             </Flex>
-            {startDate && endDate && (
-              <Flex alignItems="center">
-                <CalendarIcon mr="2" />
-                <Text>
-                  {formatWeekdayMonthDayYear(startDate, endDate)} &bull;{' '}
-                  <Text as="span" fontStyle="italic">
-                    {dates.length} days
-                  </Text>
-                </Text>
-              </Flex>
-            )}
+            <DeleteIcon onClick={() => setAlertOpen(true)} />
             <DeleteDialog
               public_identifier={public_identifier}
               mongoId={mongoId}
               alertOpen={alertOpen}
               setAlertOpen={setAlertOpen}
             />
-
-            <DeleteIcon onClick={() => setAlertOpen(true)} />
-          </Box>
-          <DatePicker
-            startDate={startDate}
-            endDate={endDate}
-            setStartDate={setStartDate}
-            setEndDate={setEndDate}
-          />
-
+          </Flex>
+          {startDate && endDate && (
+            <Flex
+              alignItems="center"
+              p={`0 ${spacer24} ${spacer24} ${spacer24}`}
+              backgroundColor={grey0}
+            >
+              <CalendarIcon mr="2" />
+              <Text>
+                {formatWeekdayMonthDayYear(startDate, endDate)} &bull;{' '}
+                <Text as="span" fontStyle="italic">
+                  {dates.length} days
+                </Text>
+              </Text>
+            </Flex>
+          )}
+          <Flex
+            flexDir="column"
+            p={`0 ${spacer24} ${spacer24} ${spacer24}`}
+            backgroundColor={grey0}
+          >
+            <Text pb={spacer8} fontWeight="bold" fontSize="sm">
+              Dates (optional)
+            </Text>
+            <DatePicker
+              startDate={startDate}
+              endDate={endDate}
+              setStartDate={setStartDate}
+              setEndDate={setEndDate}
+            />
+          </Flex>
           {!startDate && !endDate && (
             <>
               <Flex bg={grey0} p="0 24px 16px 24px">
