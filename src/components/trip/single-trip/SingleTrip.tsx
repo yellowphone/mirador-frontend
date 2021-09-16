@@ -18,6 +18,7 @@ import { useHistory } from 'react-router';
 import { Paths } from '../../../utils/paths';
 import { DeleteIcon } from '@chakra-ui/icons';
 import { DeleteDialog } from '../../shared/trip/DeleteDialog';
+import { CheckPermissions } from '../../shared/trip/TripPermission';
 
 export const SingleTrip: FC<SingleTripProps> = ({
   data,
@@ -25,7 +26,6 @@ export const SingleTrip: FC<SingleTripProps> = ({
   mongoid,
 }) => {
   const [alertOpen, setAlertOpen] = useState(false);
-
   const history = useHistory();
 
   const onNavigate = useCallback(
@@ -82,18 +82,22 @@ export const SingleTrip: FC<SingleTripProps> = ({
       <p>pktrip: {data.pktrip}</p>
       <p>title: {data.title}</p>
 
-      <DeleteDialog
-        public_identifier={data.public_identifier}
-        mongoId={mongoid}
-        alertOpen={alertOpen}
-        setAlertOpen={setAlertOpen}
-      />
+      {CheckPermissions(data.users) && (
+        <>
+          <DeleteDialog
+            public_identifier={data.public_identifier}
+            mongoId={mongoid}
+            alertOpen={alertOpen}
+            setAlertOpen={setAlertOpen}
+          />
 
-      <DeleteIcon onClick={() => setAlertOpen(true)} />
+          <DeleteIcon onClick={() => setAlertOpen(true)} />
 
-      <Button onClick={() => onNavigate(Paths.EditTrip, true)}>
-        Edit Trip
-      </Button>
+          <Button onClick={() => onNavigate(Paths.EditTrip, true)}>
+            Edit Trip
+          </Button>
+        </>
+      )}
 
       <Tabs isLazy>
         <TabList overflowX="scroll" maxWidth="100%" maxHeight="100%">
