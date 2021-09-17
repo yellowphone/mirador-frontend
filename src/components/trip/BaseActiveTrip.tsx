@@ -257,9 +257,6 @@ export const BaseActiveTrip = ({
       }
     }
 
-    // handle some logic where if array is empty, dnd can still work
-    // destination is null tho
-
     // moving trip element to notes
     if (
       result.source.droppableId === 'droppable-trip' &&
